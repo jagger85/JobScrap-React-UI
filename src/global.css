@@ -1,0 +1,247 @@
+:root {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  
+  /* Dark Mode Palette */
+  --background: #1f1f1f;
+  --grey1: #252525;
+  --grey2: #404040;
+  --grey3: #1f1f1f;
+  --grey4: #282828;
+  --grey-icons: #a9a9a9;
+  --font: #b7b7b7;
+  --primary: #1985a1;
+  --secondary: #1a9bbd; 
+  --error: #d9534f; 
+  --warning: #f0ad4e; 
+  --success: #5cb85c; 
+  
+    /* Dark Mode Palette RGBA */
+
+  --rgba-background: 31, 31, 31;
+  --rgba-grey1: 31, 31, 31;
+  --rgba-grey2: 37, 37, 37;
+  --rgba-grey3: 40, 40, 40;
+  --rgba-grey4:64, 64, 64;
+  --rgba-grey-icons: 169, 169, 169;
+  --rgba-font: 193, 191, 191;
+  --rgba-font-secondary: 145, 145, 145;
+  --rgba-primary: 25, 133, 161;
+  --rgba-secondary: 26, 155, 189;
+  --rgba-error: 217, 83, 79;
+  --rgba-warning: 240, 173, 78;
+  --rgba-success: 92, 184, 92;
+
+
+  /* Border Radius */
+  --l-radius: 8px;
+  --m-radius: 4px;
+  --s-radius: 2px;
+
+  /* Transitions */
+  --fast-transition: 0.2s;
+  --medium-transition: 0.5s;
+  --slow-transition: 1s;
+
+    /* Font Sizes */
+    --xxxs:0.5rem;
+    --xxs:0.7rem;
+    --xs:0.9rem;
+    --s:1.2rem;
+    --m:1.6rem; /* Normal paragraph text */
+    --l:2.1rem;
+    --xl:2.8rem;
+    --xxl:3.7rem;
+    --xxxl:5rem;
+    --xxxxl:6.7rem;
+    --xxxxxl:8.9rem;
+    --xxxxxxl:11.9rem;
+  
+    /* Spacing */
+    --spacing-xxs: 0.25rem;
+    --spacing-xs: 0.4rem;
+    --spacing-s: 0.65rem;
+    --spacing-m: 1.05rem;
+    --spacing-l: 1.7rem;
+    --spacing-xl: 2.75rem; 
+    --spacing-xxl: 4.45rem;
+
+  /* Shadows */
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04),
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    0 3px 6px rgba(0, 0, 0, 0.06),
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 2px hsla(0, 0%, 100%, 0.1);
+  --shadow-inner: inset 2px 2px 4px rgba(0, 0, 0, 0.08),
+    inset -1px -1px 1px hsla(0, 0%, 100%, 0.06);
+  --shadow-down: 0 0px 3px rgba(0, 0, 0, 0.08), 0 0px 2px rgba(0, 0, 0, 0.08),
+    0 6px 0px rgba(0, 0, 0, 0.08), 0 0px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px hsla(0, 0%, 100%, 0.08);
+  --shadow-up: 0 0px 0px rgba(0, 0, 0, 0.08), 0 0px 0px rgba(0, 0, 0, 0.08),
+    0 0px 0px rgba(0, 0, 0, 0.08), 0 0px 0px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px hsla(0, 0%, 100%, 0.08);
+  --double-border: 0 0 0 2px #202020d9, 0 0 0 3px #2d2d2d;
+  --double-border-hover: 0 0 0 2px #1985a1, 0 0 0 3px #2d2d2d;
+  --double-border-red: 0 0 0 2px var(--red), 0 0 0 3px #2d2d2d;
+  --double-border-orange: 0 0 0 2px var(--orange), 0 0 0 3px #2d2d2d;
+  --primary-light: 0 0 5px rgba(25, 133, 161, 0.5);
+  
+  /* Global panel witdth */
+  --panel-width : 600px;
+  --panel-height : 450px;
+}
+
+
+body {
+  background-color: var(--background);
+  color: var(--primary);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Roboto', sans-serif; /* Apply the smooth font */
+  font-size: 16px; /* Base font size */
+  line-height: 1.5; /* Improve readability */
+  color: var(--grey-icons);
+}
+
+input:not([class*='react-select'] *){
+  background-color: var(--grey3);
+  color: var(--font);
+  border: 1px solid #404040;
+  border-radius: var(--s-radius);
+
+  padding: 0.4rem;
+  font-size: 1rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  min-height: 2.5rem;
+}
+
+input:not([class*='react-select'] *) {
+  height: 23px;
+}
+
+textarea:focus,
+input:focus:not([class*='react-select']):not([class*='react-select'] *) {
+  border-color: var(--primary);
+  outline: none;
+}
+
+button {
+  border: 0px solid transparent;
+  box-shadow: var(--double-border);
+  border-radius: var(--s-radius);
+  background-color: var(--grey4);
+  color: var(--grey-icons);
+  margin: 0.25rem;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-size: var(--s);
+  max-width: 20ch;
+  min-height: 2ch;
+} 
+
+
+button:hover {
+  box-shadow: var(--double-border-hover);
+  transition: box-shadow var(--fast-transition) ease;
+}
+
+button:active {
+  box-shadow: var(--double-border);
+  opacity: 0.4;
+}
+.download-button{
+  min-width: 30ch;
+}
+.elevated {
+  background-color: var(--grey4);
+  border-radius: var(--l-radius);
+  box-shadow: var(--shadow);         
+  padding: 16px; 
+  transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+  width: var(--panel-width);
+  height: var(--panel-height);
+}
+
+.page-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.separator {
+  height: 2px; /* Adjust the height as needed */
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--primary),
+    transparent
+  );
+  border-radius: var(--s-radius); /* Smooth effect on the edges */
+  margin: -0.2rem 0 2rem 0; /* Adjust the margin to overflow horizontally */
+  transition: background-color var(--fast-transition) ease; /* Smooth transition effect */
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.notification-exit {
+  animation: fadeOut 0.5s ease-out;
+}
+
+.toast-close-button {
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+  margin: 0 !important;
+  padding: 2px !important;
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0 !important;
+}
+
+.toast-close-button:hover {
+  box-shadow: none !important;
+}
+
+.toast-close-button:active {
+  opacity: 0.4 !important;
+}
+
+/* Add this after your existing button styles */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: var(--double-border) !important; /* Prevent hover effect */
+}
+
+input:-webkit-autofill {
+  background-color: var(--grey3) !important;
+  color: var(--font) !important;
+  box-shadow: 0 0 0px 1000px var(--grey3) inset !important;
+  -webkit-text-fill-color: var(--font) !important;
+}
+

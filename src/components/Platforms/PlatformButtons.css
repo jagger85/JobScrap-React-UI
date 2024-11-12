@@ -1,0 +1,197 @@
+.icon-home:after { content: "\2302"; } 
+.icon-cog:after { content: "\2699"; } 
+.icon-cw:after { content: "\27f3"; } 
+.icon-location:after { content: "\e724"; } 
+
+* { 
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing:    border-box; 
+  box-sizing:         border-box; 
+  margin: 0;
+  padding: 0;
+}
+
+.buttons-wrapper {
+  color: var(--grey-icons);
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--grey4);
+  color: var(--grey-icons);
+  margin: 0;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 0;
+  cursor: pointer;
+}
+
+.nav button:before {
+  content: "";
+  display: block;
+  background: var(--grey1);
+  border-top: 2px solid var(--grey2);
+  position: absolute;
+  top: -9px;
+  left: -9px;
+  bottom: -9px;
+  right: -9px;
+  z-index: -1;
+  border-radius: 50%;
+  box-shadow: var(--shadow-inner);
+}
+
+.nav button:hover {
+  color: var(--primary);
+  background: var(--grey3);
+}
+
+.nav button img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.nav button:hover img {
+  transform: scale(1.1);
+}
+
+.nav button.selected {
+  background-color: var(--grey1);
+  box-shadow: var(--double-border);
+}
+
+.nav button.selected img {
+  transform: scale(0.9);
+}
+
+.nav button.waiting {
+  background-color: var(--waiting-color);
+}
+
+.nav button.processing {
+  background-color: var(--processing-color);
+}
+
+.nav button.finished {
+  background-color: var(--finished-color);
+}
+
+.nav button.error {
+  background-color: var(--error-color);
+}
+
+/* Remove unused styles */
+a, a:hover, a:focus {
+  display: none;
+}
+
+h1, p, p + p, ul {
+  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
+}
+
+h1 {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 36px;
+  font-size: 2rem;    
+  line-height: 1.5; 
+  font-weight: bold;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 25px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.nav li {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  flex: 0 1 auto;
+}
+
+/* Platform Status Border Colors */
+.nav button[data-status='idle'] {
+  border: 2px solid var(--grey3);
+}
+
+.nav button[data-status='waiting'] {
+  border: 2px solid rgba(var(--rgba-warning),0.5);
+}
+
+.nav button[data-status='processing'] {
+  background-color: var(--grey1);
+  box-shadow: var(--shadow-inner);
+  border: 1px solid var(--primary);
+  
+}
+
+.nav button[data-status='finished'] {
+  border: 2px solid var(--success);
+  transition: border-color 0.3s ease;
+}
+
+.nav button[data-status='error'] {
+  border: 2px solid var(--error);
+  animation: shake 0.2s ease-in-out;
+}
+.nav li[data-status='processing'] {
+  border-radius: 50px;
+  animation: pulse-processing 1.5s infinite;
+} 
+
+@keyframes pulse-processing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--rgba-primary), 1);
+  }
+  25% {
+    box-shadow: 0 0 0 2px rgba(var(--rgba-primary), 0.75);
+  }
+  50% {
+    box-shadow: 0 0 0 2px rgba(var(--rgba-primary), 0.5);
+  }
+  75% {
+    box-shadow: 0 0 0 2px rgba(var(--rgba-primary), 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 2px rgba(var(--rgba-primary), 0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
+}
+
+/* Add CSS variables for RGB values of status colors */
+:root {
+  /* ... existing variables ... */
+  --waiting-color-rgb: 255, 193, 7;    /* Yellow */
+  --processing-color-rgb: 13, 110, 253; /* Blue */
+  --finished-color-rgb: 25, 135, 84;    /* Green */
+  --error-color-rgb: 220, 53, 69;       /* Red */
+}

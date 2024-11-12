@@ -1,0 +1,138 @@
+.settings-overlay {
+  position: fixed;
+  left: 50%;
+  bottom: var(--spacing-xl);
+  transform: translateX(-50%);
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--medium-transition) ease;
+  z-index: 1000;
+}
+
+.settings-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settings-panel {
+  background-color: var(--grey1);
+  width: 100%;
+  width: var(--panel-width);
+  border-radius: var(--l-radius);
+  padding: var(--spacing-l);
+  transform: translateY(100%);
+  transition: transform var(--medium-transition) ease;
+  box-shadow: var(--shadow);
+}
+
+.settings-overlay.show .settings-panel {
+  transform: translateY(0);
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-l);
+}
+
+.settings-header h2 {
+  color: var(--font);
+  margin: 0;
+  font-size: var(--l);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--grey-icons);
+  font-size: var(--xl);
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  max-width: none;
+  box-shadow: none;
+}
+
+.close-button:hover {
+  box-shadow: none;
+  color: var(--primary);
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--font);
+  font-size: var(--m);
+}
+
+/* Toggle Switch Styles */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--grey2);
+  transition: var(--fast-transition);
+  border-radius: 34px;
+  box-shadow: var(--shadow-inner);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--grey-icons);
+  transition: var(--fast-transition);
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary);
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+  background-color: white;
+}
+
+input:disabled + .slider {
+  background-color: var(--grey2);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input:disabled + .slider:before {
+  background-color: var(--grey-icons);
+  opacity: 0.6;
+}
+
+.toggle-switch input:disabled ~ .slider {
+  cursor: not-allowed;
+} 
