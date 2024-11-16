@@ -86,9 +86,6 @@ export function useAuth() {
       password,
     }
 
-    console.log('Making request to:', endpoint)
-    console.log('Request payload:', requestBody)
-
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -100,13 +97,8 @@ export function useAuth() {
       })
 
       console.log('Response status:', response.status)
-      console.log(
-        'Response headers:',
-        Object.fromEntries(response.headers.entries())
-      )
 
       const responseText = await response.text()
-      console.log('Raw response:', responseText)
 
       if (!response.ok) {
         let errorMsg = responseText;
@@ -121,7 +113,6 @@ export function useAuth() {
       }
 
       const data = responseText ? JSON.parse(responseText) : null
-      console.log('Parsed response data:', data)
 
       if (!data || !data.access_token) {
         const errorMessage = 'Invalid response format: missing access token'
