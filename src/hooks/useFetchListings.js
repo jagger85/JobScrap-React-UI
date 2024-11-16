@@ -1,14 +1,9 @@
 import { useState } from 'react';
 import { StorageRepository } from '../utils/storageRepository';
 import { STORAGE_KEYS } from '../constants';
+import { API_BASE_URL } from './useApi'
 
-/**
- * Base URL for the backend API
- * @type {string}
- */
-const API_BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${
-  import.meta.env.VITE_BACKEND_PORT
-}`;
+
 
 /**
  * Custom hook for fetching job listings from the backend
