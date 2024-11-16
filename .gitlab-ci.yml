@@ -28,7 +28,7 @@ deploy:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
   script:
     # First, pull the latest changes on the remote server
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "cd /home/dev/client && git pull origin master"
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "cd /home/dev/client && git pull origin staging"
     
     # Ensure the target directory exists and is empty
     - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "mkdir -p /var/www/client && rm -rf /var/www/client/*"
