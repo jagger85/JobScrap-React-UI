@@ -5,30 +5,15 @@ stages:
 build:
   stage: build
   image: node:18
-  variables:
-    GIT_STRATEGY: clone  # Ensure we get a fresh clone
-    GIT_CHECKOUT: "true" # Ensure we check out the code
   script:
-    # Debug: Show which commit we're building
-    - echo "Building commit $CI_COMMIT_SHA on branch $CI_COMMIT_REF_NAME"
-    - git rev-parse HEAD
-    - git status
-    
-    # Install and build
     - npm ci
     - npm run build
     - echo "Build output contents:"
     - ls -la dist
-    - echo "Total files in dist:"
-    - find dist -type f | wc -l
   artifacts:
     paths:
       - dist/
     expire_in: 1 week
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
 
 deploy:
   stage: deploy
@@ -36,37 +21,22 @@ deploy:
   needs:
     - build
   before_script:
-    - apk add --no-cache openssh rsync
+    - apk add --no-cache openssh git
     - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-    - chmod 600 ~/.ssh/known_hosts
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
   script:
-    # Verify we have files to deploy
-    - echo "Deploying commit $CI_COMMIT_SHA"
-    - echo "Files to be deployed:"
-    - ls -la dist
-    - find dist -type f | wc -l
+    # First, pull the latest changes on the remote server
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "cd /var/www/client && git pull origin master"
     
-    # Create backup of current deployment
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "cd /var/www && if [ -d client ]; then mv client client_backup_$(date +%Y%m%d_%H%M%S); fi"
+    # Ensure the target directory exists and is empty
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "mkdir -p /var/www/client && rm -rf /var/www/client/*"
     
-    # Create new directory and deploy
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "mkdir -p /var/www/client"
-    - rsync -av --delete dist/ $SSH_USER@$SSH_HOST:/var/www/client/
-    
-    # Verify deployed files and save deployment info
-    - |
-      ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "
-        echo 'Deployed contents:' && 
-        ls -la /var/www/client && 
-        echo 'Total files:' && 
-        find /var/www/client -type f | wc -l &&
-        echo $CI_COMMIT_SHA > /var/www/client/.deploy-version
-      "
+    # Then copy the files
+    - scp -r dist/* $SSH_USER@$SSH_HOST:/var/www/client/
   only:
     - staging
+
 
 
