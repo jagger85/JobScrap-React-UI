@@ -1,0 +1,30 @@
+# .gitlab-ci.yml
+stages:
+  - build
+  - deploy
+
+# Build the project
+build:
+  stage: build
+  image: node:18 # Node.js version image
+  script:
+    - npm ci # Install dependencies cleanly
+    - npm run build -- --emptyOutDir # Build the Vite React app
+  artifacts:
+    paths:
+      - dist # Store the build artifacts
+    expire_in: 1 week # Retain build files for a week
+
+# Deploy the build artifacts to the remote Linux machine
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh
+  script:
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - # Add SSH key
+    - mkdir -p ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - scp -r dist/* $SSH_USER@$SSH_HOST:/var/www/client 
+  only:
+    - staging # Deploy only when pushing to the main branch
