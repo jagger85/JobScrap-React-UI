@@ -26,7 +26,7 @@ deploy:
     - eval $(ssh-agent -s)  # Start SSH agent
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -  # Add private key for remote server
   script:
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "cd client && git pull origin staging && npm install && npm run build -- --emptyOutDir"
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "cd /home/dev/client && git pull origin staging && npm install && npm run build -- --emptyOutDir"
     - scp -r dist/* $SSH_USER@$SSH_HOST:/var/www/client
   only:
     - staging
