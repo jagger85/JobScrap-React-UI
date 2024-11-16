@@ -20,12 +20,12 @@ deploy:
   stage: deploy
   image: alpine:latest
   before_script:
-    - apk add --no-cache openssh  # Install SSH
+    - apk add --no-cache openssh  # Ensure SSH is installed
   script:
     - mkdir -p ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts  # Set known hosts
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "bash -l -c 'cd client && git pull origin staging && npm install && npm run build -- --emptyOutDir'"
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts  # Setup known hosts for SSH
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "cd client && git pull origin staging && npm install && npm run build -- --emptyOutDir"
     - scp -r dist/* $SSH_USER@$SSH_HOST:/var/www/client  # Copy files to server
   only:
-    - staging  # Deploy only when pushing to the staging branch
+    - staging  # Run only on the staging branch
 
