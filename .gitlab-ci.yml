@@ -10,6 +10,8 @@ build:
     - npm run build
     - echo "Build output contents:"
     - ls -la dist
+  variables:
+    VITE_API_URL: ${VITE_API_URL}
   artifacts:
     paths:
       - dist/
