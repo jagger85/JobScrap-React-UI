@@ -4,14 +4,7 @@ import useMessageStore from '../utils/messageStore'
 import { ToasterManager } from '../components/Toasters'
 import { useStorage } from '../hooks/useLocalStorage'
 import { STORAGE_KEYS } from '../constants'
-
-/**
- * Base URL for authentication API endpoints
- * @type {string}
- */
-const API_BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${
-  import.meta.env.VITE_BACKEND_PORT
-}`
+import { API_BASE_URL } from './useApi'
 
 /**
  * Checks if a JWT token has expired
@@ -87,7 +80,7 @@ export function useAuth() {
       throw new Error(errorMessage);
     }
 
-    const endpoint = `${API_BASE_URL}/api/login`
+    const endpoint = `${API_BASE_URL}/login`
     const requestBody = {
       username,
       password,

@@ -3,14 +3,8 @@ import { useState } from 'react';
 import { StorageRepository } from '../utils/storageRepository';
 import { STORAGE_KEYS } from '../constants';
 import { useAppStatus } from './useAppStatus';
+import { API_BASE_URL } from './useApi'
 
-/**
- * Base URL for the backend API
- * @type {string}
- */
-const API_BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${
-    import.meta.env.VITE_BACKEND_PORT
-}`
 
 /**
  * Custom hook to handle platform reset operations
@@ -54,7 +48,7 @@ const useResetServer = () => {
             const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY);
             console.log('Starting server reset...');
 
-            const response = await fetch(`${API_BASE_URL}/api/reset`, {
+            const response = await fetch(`${API_BASE_URL}/reset`, {
                 method: 'GET',
                 headers: {
                     'Authorization': token ? `Bearer ${token}` : '',
