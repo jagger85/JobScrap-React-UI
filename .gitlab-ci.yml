@@ -26,11 +26,8 @@ deploy:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -  # Add SSH private key
     - mkdir -p ~/.ssh
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts  # Setup known hosts
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "
-        cd client && \
-        git pull origin staging && \
-        npm install && \
-        npm run build -- --emptyOutDir"  # Run build on the remote server
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 
+      "bash -l -c 'cd client && git pull origin staging && npm install && npm run build -- --emptyOutDir'"
     - scp -r dist/* $SSH_USER@$SSH_HOST:/var/www/client  # Copy files to server
   only:
     - staging  # Deploy only when pushing to the staging branch
