@@ -22,12 +22,10 @@ deploy:
   before_script:
     - apk add --no-cache openssh  # Install SSH
   script:
-    - eval $(ssh-agent -s)  # Start SSH agent
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add /home/dev/.ssh/gitlabkey # Add SSH private key
     - mkdir -p ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts  # Setup known hosts
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 
-      "bash -l -c 'cd client && git pull origin staging && npm install && npm run build -- --emptyOutDir'"
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts  # Set known hosts
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "bash -l -c 'cd client && git pull origin staging && npm install && npm run build -- --emptyOutDir'"
     - scp -r dist/* $SSH_USER@$SSH_HOST:/var/www/client  # Copy files to server
   only:
     - staging  # Deploy only when pushing to the staging branch
+
