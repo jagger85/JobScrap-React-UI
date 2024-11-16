@@ -1,5 +1,5 @@
 const getBaseUrl = () => {
-    // Debug logs
+    // Debug logs using import.meta.env
     console.log('Environment variables:', {
       isProd: import.meta.env.PROD,
       mode: import.meta.env.MODE,

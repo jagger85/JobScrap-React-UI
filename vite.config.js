@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    outDir: 'dist', // Change this to 'dist' for CI/CD
+    outDir: 'dist',
     emptyOutDir: true,
   },
   plugins: [react()],
@@ -13,6 +13,8 @@ export default defineConfig({
     port: 3000,
   },
   define: {
-    'process.env.NODE_ENV': JSON.stringify('production')
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
   }
 })
