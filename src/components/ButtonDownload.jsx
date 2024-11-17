@@ -84,7 +84,6 @@ export default function ButtonDownload({selectedDate}) {
         
         await downloadCSV(fetchedListings);
         await resetAll(reset);
-        ToasterManager.showToast('success', 'CSV file downloaded successfully');
       } else {
         if (selectedPlatforms.length === 0) {
           ToasterManager.showToast('error', 'Please select at least one platform');
