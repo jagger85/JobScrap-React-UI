@@ -102,7 +102,7 @@ export function useServerConnection() {
               break
             case 'error':
               if (data.message) {
-             //   setMessage({ type: data.type, content: data.message })
+                ToasterManager.showToast('error', data.message);
               }
               break
             case 'debug':
