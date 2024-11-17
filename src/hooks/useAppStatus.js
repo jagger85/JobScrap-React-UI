@@ -109,7 +109,6 @@ export function useAppStatus() {
 
       if (newOperationStatus === OPERATION_STATUS.FINISHED && 
           current.operationsStatus !== OPERATION_STATUS.FINISHED) {
-        console.log('Playing success sound...')
         playSuccess()
       }
 
@@ -134,21 +133,21 @@ export function useAppStatus() {
    * @function
    */
   const reset = useCallback(() => {
-    console.log('Resetting app status...')
-    const initialState = createInitialState()
-    setState(current => ({
-      ...initialState,
-      platforms: Object.fromEntries(
-        Object.entries(current.platforms).map(([key, _]) => [
-          key,
-          {
-            isSelected: false,
-            status: PLATFORM_STATUS.IDLE
-          }
-        ])
-      ),
-      operationsStatus: OPERATION_STATUS.IDLE
-    }))
+    setState(() => {
+        const newState = {
+            operationsStatus: OPERATION_STATUS.IDLE,
+            platforms: Object.fromEntries(
+                Object.values(PLATFORMS).map(platform => [
+                    platform,
+                    {
+                        isSelected: false,
+                        status: PLATFORM_STATUS.IDLE
+                    }
+                ])
+            )
+        }
+        return newState
+    })
   }, [])
 
   /**

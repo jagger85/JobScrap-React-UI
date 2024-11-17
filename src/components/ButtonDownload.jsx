@@ -44,17 +44,8 @@ export default function ButtonDownload({selectedDate}) {
   const handleDownloadCSV = async (results) => {
     try {
       await downloadCSV(results) 
-      
-      try {
-        await resetAll()
-        // Force a re-render if needed
-        setTimeout(() => {
-          reset()
-        }, 0);
-        ToasterManager.showToast('success', 'CSV file downloaded successfully')
-      } catch (resetError) {
-        console.error('Reset failed:', resetError)
-      }
+      await resetAll(reset)
+      ToasterManager.showToast('success', 'CSV file downloaded successfully')
     } catch (error) {
       console.error('Failed to download CSV:', error)
       ToasterManager.showToast('error', 'Failed to download CSV file')

@@ -28,12 +28,6 @@ const useResetServer = () => {
     const [error, setError] = useState(null);
 
     /**
-     * Reset function from useAppStatus hook
-     * @type {Function}
-     */
-    const { reset } = useAppStatus()
-
-    /**
      * Resets all platforms by calling the server reset endpoint
      * @async
      * @function
@@ -46,7 +40,6 @@ const useResetServer = () => {
         
         try {
             const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY);
-            console.log('Starting server reset...');
 
             const response = await fetch(`${API_BASE_URL}/reset`, {
                 method: 'GET',
@@ -56,7 +49,6 @@ const useResetServer = () => {
             });
             
             if (response.status === 200) {
-                console.log('Server reset successful');
                 return true;
             }
             throw new Error('Reset failed');
@@ -75,22 +67,10 @@ const useResetServer = () => {
      * @function
      * @throws {Error} When any part of the reset process fails
      */
-    const resetAll = async () => {
+    const resetAll = async (reset) => {
         try {
-            console.log('Starting resetAll...');
-            // First reset the local state
             reset();
-            
-            // Then reset the server
             await resetPlatforms();
-            
-            // Force a final state reset to ensure UI is updated
-            reset();
-            
-            // Wait for any pending state updates
-            await new Promise(resolve => setTimeout(resolve, 0));
-            
-            console.log('Final reset completed');
         } catch (error) {
             console.error('Reset all failed:', error);
             throw error;

@@ -43,7 +43,7 @@ export const useFetchListings = () => {
     const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/fetch-listings`, {
+      const response = await fetch(`${API_BASE_URL}/fetch-listings`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -43,12 +43,10 @@ export function useAuth() {
   useEffect(() => {
     if (token) {
       if (isTokenExpired(token)) {
-        console.log('Stored token has expired');
         clearToken();
         setAuth(false);
       } else {
         setAuth(true);
-        console.log('User authenticated from valid stored token');
       }
     }
   }, [token, setAuth, clearToken]);
@@ -64,7 +62,6 @@ export function useAuth() {
    */
   const login = async (username, password, rememberMe = false) => {
     if (token && !isTokenExpired(token)) {
-      console.log('Using existing valid token');
       return token;
     }
     

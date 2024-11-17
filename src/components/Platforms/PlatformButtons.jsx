@@ -25,36 +25,38 @@ export default function PlatformButtons() {
 
   const { platforms, togglePlatform } = useContext(PlatformsContext)
 
+  console.log('Current platforms state:', platforms)
+
   /**
-   * Memoized list of platform buttons
-   * Re-renders only when platforms state changes
+   * Memoized list of platform buttons with handleClick inside the memo
    * @returns {JSX.Element[]} Array of platform button elements
    */
   const platformButtons = useMemo(() => {
-    return Object.values(PLATFORMS).map((platformName) => (
-      <li
-        key={platformName}
-        data-status={platforms[platformName].status}
-      >
-        <button
-          onClick={() => handleClick(platformName)}
-          className={platforms[platformName]?.isSelected ? 'selected' : ''}
-          data-status={platforms[platformName].status}
-          title={platformName}
-          type="button"
-        >
-          <img
-            src={PLATFORM_ICONS[platformName]}
-            alt={platformName}
-          />
-        </button>
-      </li>
-    ))
-  }, [platforms])
+    return Object.values(PLATFORMS).map((platformName) => {
+      const isSelected = platforms[platformName]?.isSelected || false
+      const status = platforms[platformName]?.status || 'idle'
 
-  const handleClick = (platformName) => {
-    togglePlatform(platformName)
-  }
+      return (
+        <li
+          key={platformName}
+          data-status={status}
+        >
+          <button
+            onClick={() => togglePlatform(platformName)}
+            className={isSelected ? 'selected' : ''}
+            data-status={status}
+            title={platformName}
+            type="button"
+          >
+            <img
+              src={PLATFORM_ICONS[platformName]}
+              alt={platformName}
+            />
+          </button>
+        </li>
+      )
+    })
+  }, [platforms, togglePlatform])
 
   return (
     <div className="platforms-container">
