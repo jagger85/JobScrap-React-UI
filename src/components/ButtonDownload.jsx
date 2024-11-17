@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useRef } from 'react'
 import { useJobListings } from '../hooks/useJoblistings.js'
 import '../jobsweep.css'
 import { ToasterManager } from './Toasters'
@@ -23,6 +23,7 @@ export default function ButtonDownload({selectedDate}) {
   const { platforms, operationsStatus, reset } = useContext(PlatformsContext)
   const { fetchListings } = useFetchListings()
   const { resetAll } = useResetServer()
+  const isProcessing = useRef(false);
 
   /**
    * Memoized list of selected platform keys
@@ -36,38 +37,32 @@ export default function ButtonDownload({selectedDate}) {
   }, [platforms])
 
   /**
-   * Handles the CSV download operation and subsequent reset
-   * @async
-   * @param {Array} results - The job listings to be downloaded
-   * @throws {Error} When download or reset operations fail
-   */
-  const handleDownloadCSV = async (results) => {
-    try {
-      await downloadCSV(results) 
-      await resetAll(reset)
-      ToasterManager.showToast('success', 'CSV file downloaded successfully')
-    } catch (error) {
-      console.error('Failed to download CSV:', error)
-      ToasterManager.showToast('error', 'Failed to download CSV file')
-    }
-  }
-
-  /**
    * Handles the main button click action
    * Either initiates job scraping or downloads existing results
    * @async
    * @throws {Error} When operations fail
    */
   const handleButtonClick = async () => {
+    if (isProcessing.current) return;
+    isProcessing.current = true;
+
+    console.log('Button clicked, operation status:', operationsStatus);
     try {
       if (operationsStatus === OPERATION_STATUS.FINISHED) {
+        console.log('Starting fetch listings');
         const fetchedListings = await fetchListings()
+        console.log('Fetch listings completed', fetchedListings?.length);
         if (!fetchedListings?.length) {
           ToasterManager.showToast('error', 'No results available to download')
           return
         }
         
-        await handleDownloadCSV(fetchedListings)
+        // Download the CSV first
+        await downloadCSV(fetchedListings)
+        
+        // Only reset after successful download
+        await resetAll(reset)
+        ToasterManager.showToast('success', 'CSV file downloaded successfully')
       } else {
         if (selectedPlatforms.length === 0) {
           ToasterManager.showToast('error', 'Please select at least one platform')
@@ -79,6 +74,8 @@ export default function ButtonDownload({selectedDate}) {
     } catch (error) {
       console.error('Operation failed:', error)
       ToasterManager.showToast('error', `Failed to ${operationsStatus === OPERATION_STATUS.FINISHED ? 'download results' : 'fetch listings'}`)
+    } finally {
+      isProcessing.current = false;
     }
   }
 
