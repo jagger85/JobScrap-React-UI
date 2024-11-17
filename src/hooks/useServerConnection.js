@@ -112,6 +112,7 @@ export function useServerConnection() {
               break
             case 'heartbeat':
               //TODO is neccesary the heartbeat?
+              console.log('heartbeat')
               break
             default:
               console.warn('Unknown message type:', data.type)
