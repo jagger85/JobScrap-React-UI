@@ -4,7 +4,7 @@ const getBaseUrl = () => {
       return import.meta.env.VITE_API_URL
     }
     
-    return `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
+    return `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/api`
 }
   
 export const API_BASE_URL = getBaseUrl()
