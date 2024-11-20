@@ -1,14 +1,8 @@
 import useMessageStore from '../utils/messageStore'
 import { StorageRepository } from '../utils/storageRepository'
 import { STORAGE_KEYS } from '../constants'
+import { API_BASE_URL } from './useApi'
 
-/**
- * Base URL for the backend API
- * @type {string}
- */
-const API_BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${
-  import.meta.env.VITE_BACKEND_PORT
-}`
 
 // Log environment variables in development
 if (import.meta.env.DEV) {
@@ -42,7 +36,7 @@ export function useJobListings() {
       throw new Error('Backend URL not configured in environment variables')
     }
 
-    const endpoint = `${API_BASE_URL}/api/listings`
+    const endpoint = `${API_BASE_URL}/listings`
     const requestBody = {
       platforms: selectedPlatforms,
       dateRange: selectedDate,

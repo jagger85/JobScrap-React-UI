@@ -73,7 +73,6 @@ function convertJSONToCSV(jsonData, columnHeaders) {
 export async function downloadCSV(jsonData, headers = JOB_LISTING_HEADERS, filename = 'export') {
   return new Promise((resolve, reject) => {
     try {
-      console.log('Creating CSV data...')
       const csvData = convertJSONToCSV(jsonData, headers)
 
       if (csvData === '') {
@@ -92,13 +91,11 @@ export async function downloadCSV(jsonData, headers = JOB_LISTING_HEADERS, filen
       link.style.display = 'none'
       
       document.body.appendChild(link)
-      console.log('Triggering download...')
       link.click()
       
       setTimeout(() => {
         document.body.removeChild(link)
         URL.revokeObjectURL(url)
-        console.log('Download cleanup completed')
         resolve()
       }, 500)
     } catch (error) {

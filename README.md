@@ -1,8 +1,81 @@
-# React + Vite
+# JobSweeper 🧹
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for aggregating and managing job listings from multiple platforms. Built with React and Vite.
 
-Currently, two official plugins are available:
+## 🌟 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Multi-Platform Support**: Scrape job listings from multiple platforms including LinkedIn, JobStreet, Kalibrr, and Indeed
+- **Flexible Date Ranges**: Filter jobs by different time periods (24 hours, week, 15 days, month)
+- **Real-time Updates**: Live status updates for scraping operations
+- **Export Functionality**: Download job listings in CSV format
+- **Dark Mode**: Eye-friendly dark theme interface
+- **Secure Authentication**: Token-based authentication system
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+
+2. Install dependencies
+
+```bash
+npm install
+``` 
+
+3. Create environment files
+
+```bash
+.env.development
+VITE_BACKEND_HOST=localhost
+VITE_BACKEND_PORT=3000
+.env.production
+VITE_API_URL=your_production_api_url
+```
+
+4. Start the development server
+
+```bash
+npm run dev
+``` 
+
+## 🛠️ Built With
+
+- React 18
+- Vite
+- Zustand (State Management)
+- React Router DOM
+- CSS Modules
+
+## 🔧 Configuration
+
+The application can be configured through environment variables:
+
+- `VITE_API_URL`: Production API URL
+- `VITE_BACKEND_HOST`: Development backend host
+- `VITE_BACKEND_PORT`: Development backend port
+
+## 🚢 Deployment
+
+Build the production bundle:
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist` directory.
+
+
+## 🙏 Acknowledgments
+
+- Icons provided by Lucide React
+- UI components inspired by modern design principles
+
+---
+
+Made with 💖 by [Jagger85](https://gitlab.com/Jagger85)

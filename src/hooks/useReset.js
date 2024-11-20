@@ -3,14 +3,8 @@ import { useState } from 'react';
 import { StorageRepository } from '../utils/storageRepository';
 import { STORAGE_KEYS } from '../constants';
 import { useAppStatus } from './useAppStatus';
+import { API_BASE_URL } from './useApi'
 
-/**
- * Base URL for the backend API
- * @type {string}
- */
-const API_BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${
-    import.meta.env.VITE_BACKEND_PORT
-}`
 
 /**
  * Custom hook to handle platform reset operations
@@ -34,12 +28,6 @@ const useResetServer = () => {
     const [error, setError] = useState(null);
 
     /**
-     * Reset function from useAppStatus hook
-     * @type {Function}
-     */
-    const { reset } = useAppStatus()
-
-    /**
      * Resets all platforms by calling the server reset endpoint
      * @async
      * @function
@@ -52,9 +40,8 @@ const useResetServer = () => {
         
         try {
             const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY);
-            console.log('Starting server reset...');
 
-            const response = await fetch(`${API_BASE_URL}/api/reset`, {
+            const response = await fetch(`${API_BASE_URL}/reset`, {
                 method: 'GET',
                 headers: {
                     'Authorization': token ? `Bearer ${token}` : '',
@@ -62,7 +49,6 @@ const useResetServer = () => {
             });
             
             if (response.status === 200) {
-                console.log('Server reset successful');
                 return true;
             }
             throw new Error('Reset failed');
@@ -81,22 +67,10 @@ const useResetServer = () => {
      * @function
      * @throws {Error} When any part of the reset process fails
      */
-    const resetAll = async () => {
+    const resetAll = async (reset) => {
         try {
-            console.log('Starting resetAll...');
-            // First reset the local state
             reset();
-            
-            // Then reset the server
             await resetPlatforms();
-            
-            // Force a final state reset to ensure UI is updated
-            reset();
-            
-            // Wait for any pending state updates
-            await new Promise(resolve => setTimeout(resolve, 0));
-            
-            console.log('Final reset completed');
         } catch (error) {
             console.error('Reset all failed:', error);
             throw error;

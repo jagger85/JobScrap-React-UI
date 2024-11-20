@@ -7,18 +7,7 @@ import { ToasterManager } from '../components/Toasters'
 import { StorageRepository } from '../utils/storageRepository'
 import { STORAGE_KEYS } from '../constants'
 import { EventSourcePolyfill } from 'event-source-polyfill';
-
-/**
- * Backend host configuration from environment
- * @type {string}
- */
-const BACKEND_HOST = import.meta.env.VITE_BACKEND_HOST
-
-/**
- * Backend port configuration from environment
- * @type {string}
- */
-const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT
+import { API_BASE_URL } from './useApi'
 
 /**
  * Maximum number of connection retry attempts
@@ -65,12 +54,12 @@ export function useServerConnection() {
       return
     }
 
-    const backendUrl = `http://${BACKEND_HOST}:${BACKEND_PORT}/api/jobsweep-sse`
-    console.log(`Connection attempt ${retryCount.current + 1} to:`, backendUrl)
+    const sseUrl = `${ API_BASE_URL }/jobsweep-sse`
+    console.log(`Connection attempt ${retryCount.current + 1} to:`, sseUrl)
 
     try {
       const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY)
-      const newEventSource = new EventSourcePolyfill(backendUrl, {
+      const newEventSource = new EventSourcePolyfill(sseUrl, {
         withCredentials: true,
         headers: {
           'Authorization': `Bearer ${token}`
@@ -91,7 +80,6 @@ export function useServerConnection() {
       newEventSource.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data)
-         // let counter = 0
           switch (data.type) {
             case 'platform_states':
               console.log('%cReceived platform states:', 'color: blue; font-weight: bold;', data.platforms);
@@ -109,14 +97,12 @@ export function useServerConnection() {
             case 'progress':
             case 'warning':
               if (data.message) {
-               // counter += 1 
                 ToasterManager.showToast('warning', data.message);
-               // console.log('acabo de mandar un toast '+ counter)
               }
               break
             case 'error':
               if (data.message) {
-             //   setMessage({ type: data.type, content: data.message })
+                ToasterManager.showToast('error', data.message);
               }
               break
             case 'debug':
@@ -126,6 +112,7 @@ export function useServerConnection() {
               break
             case 'heartbeat':
               //TODO is neccesary the heartbeat?
+              console.log('heartbeat')
               break
             default:
               console.warn('Unknown message type:', data.type)

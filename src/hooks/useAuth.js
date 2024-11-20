@@ -4,14 +4,7 @@ import useMessageStore from '../utils/messageStore'
 import { ToasterManager } from '../components/Toasters'
 import { useStorage } from '../hooks/useLocalStorage'
 import { STORAGE_KEYS } from '../constants'
-
-/**
- * Base URL for authentication API endpoints
- * @type {string}
- */
-const API_BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${
-  import.meta.env.VITE_BACKEND_PORT
-}`
+import { API_BASE_URL } from './useApi'
 
 /**
  * Checks if a JWT token has expired
@@ -50,12 +43,10 @@ export function useAuth() {
   useEffect(() => {
     if (token) {
       if (isTokenExpired(token)) {
-        console.log('Stored token has expired');
         clearToken();
         setAuth(false);
       } else {
         setAuth(true);
-        console.log('User authenticated from valid stored token');
       }
     }
   }, [token, setAuth, clearToken]);
@@ -71,7 +62,6 @@ export function useAuth() {
    */
   const login = async (username, password, rememberMe = false) => {
     if (token && !isTokenExpired(token)) {
-      console.log('Using existing valid token');
       return token;
     }
     
@@ -87,14 +77,11 @@ export function useAuth() {
       throw new Error(errorMessage);
     }
 
-    const endpoint = `${API_BASE_URL}/api/login`
+    const endpoint = `${API_BASE_URL}/login`
     const requestBody = {
       username,
       password,
     }
-
-    console.log('Making request to:', endpoint)
-    console.log('Request payload:', requestBody)
 
     try {
       const response = await fetch(endpoint, {
@@ -107,13 +94,8 @@ export function useAuth() {
       })
 
       console.log('Response status:', response.status)
-      console.log(
-        'Response headers:',
-        Object.fromEntries(response.headers.entries())
-      )
 
       const responseText = await response.text()
-      console.log('Raw response:', responseText)
 
       if (!response.ok) {
         let errorMsg = responseText;
@@ -128,7 +110,6 @@ export function useAuth() {
       }
 
       const data = responseText ? JSON.parse(responseText) : null
-      console.log('Parsed response data:', data)
 
       if (!data || !data.access_token) {
         const errorMessage = 'Invalid response format: missing access token'

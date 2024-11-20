@@ -80,7 +80,7 @@ export function useAppStatus() {
   const updatePlatformStatus = useCallback((platform, status) => {
     setState((current) => {
       if (!(platform in current.platforms)) {
-        return current
+        return current;
       }
 
       const updatedPlatforms = {
@@ -89,66 +89,55 @@ export function useAppStatus() {
           ...current.platforms[platform],
           status,
         },
-      }
+      };
 
-      const selectedPlatforms = Object.values(updatedPlatforms).filter(p => p.isSelected)
-      
-      const isInProgress = Object.values(updatedPlatforms).some((p) =>
-        [PLATFORM_STATUS.PROCESSING, PLATFORM_STATUS.WAITING].includes(
-          p.status.toLowerCase()
-        )
-      )
+      // Check if any platform (selected or not) is in PROCESSING or WAITING state
+      const hasProcessingOrWaiting = Object.values(updatedPlatforms).some(p => 
+        [PLATFORM_STATUS.PROCESSING, PLATFORM_STATUS.WAITING].includes(p.status.toLowerCase())
+      );
 
-      const newOperationStatus = selectedPlatforms.length === 0 
-        ? OPERATION_STATUS.IDLE
-        : isInProgress
-          ? OPERATION_STATUS.PROCESSING
-          : selectedPlatforms.every((p) => p.status.toLowerCase() === 'finished')
-            ? OPERATION_STATUS.FINISHED
-            : current.operationsStatus
+      // If any platform is processing/waiting, operation must be PROCESSING
+      let newOperationStatus = hasProcessingOrWaiting 
+        ? OPERATION_STATUS.PROCESSING 
+        : current.operationsStatus;
 
-      if (newOperationStatus === OPERATION_STATUS.FINISHED && 
-          current.operationsStatus !== OPERATION_STATUS.FINISHED) {
-        console.log('Playing success sound...')
-        playSuccess()
-      }
-
-      if (newOperationStatus !== current.operationsStatus) {
-        console.log('Operation Status changed:', {
-          from: current.operationsStatus,
-          to: newOperationStatus,
-          selectedPlatforms: selectedPlatforms.length
-        })
-      }
+      console.log('Current State:', {
+        platforms: Object.entries(updatedPlatforms).map(([key, value]) => ({
+          platform: key,
+          status: value.status
+        })),
+        hasProcessingOrWaiting,
+        operationStatus: newOperationStatus
+      });
 
       return {
         ...current,
         platforms: updatedPlatforms,
-        operationsStatus: newOperationStatus,
-      }
-    })
-  }, [playSuccess])
+        operationsStatus: newOperationStatus
+      };
+    });
+  }, [playSuccess]);
 
   /**
    * Resets all platforms to their initial state
    * @function
    */
   const reset = useCallback(() => {
-    console.log('Resetting app status...')
-    const initialState = createInitialState()
-    setState(current => ({
-      ...initialState,
-      platforms: Object.fromEntries(
-        Object.entries(current.platforms).map(([key, _]) => [
-          key,
-          {
-            isSelected: false,
-            status: PLATFORM_STATUS.IDLE
-          }
-        ])
-      ),
-      operationsStatus: OPERATION_STATUS.IDLE
-    }))
+    setState(() => {
+        const newState = {
+            operationsStatus: OPERATION_STATUS.IDLE,
+            platforms: Object.fromEntries(
+                Object.values(PLATFORMS).map(platform => [
+                    platform,
+                    {
+                        isSelected: false,
+                        status: PLATFORM_STATUS.IDLE
+                    }
+                ])
+            )
+        }
+        return newState
+    })
   }, [])
 
   /**
