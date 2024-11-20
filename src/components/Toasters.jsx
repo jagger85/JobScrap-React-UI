@@ -96,9 +96,6 @@ const Toasters = () => {
       if (isDuplicate) return prev;
       return [...prev, { id, type, message }];
     });
-
-    // Set up timeout to auto-remove the notification
-    notificationTimeouts.current[id] = setTimeout(() => removeNotification(id), 5000);
   }, []);
 
   /**
@@ -107,9 +104,6 @@ const Toasters = () => {
    */
   const removeNotification = useCallback((id) => {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
-
-    // Clear the timeout for the removed notification
-    clearTimeout(notificationTimeouts.current[id]);
     delete notificationTimeouts.current[id];
   }, []);
 

@@ -23,7 +23,6 @@ export default function Sweeper() {
    * @param {string} dateRange - The newly selected date range
    */
   const handleDateChange = (dateRange) => {
-    console.log(dateRange)
     setSelectedDate(dateRange)
   }
 

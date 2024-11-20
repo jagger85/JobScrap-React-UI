@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useRef } from 'react'
 import { useJobListings } from '../hooks/useJoblistings.js'
 import '../jobsweep.css'
 import { ToasterManager } from './Toasters'
@@ -23,96 +23,112 @@ export default function ButtonDownload({selectedDate}) {
   const { platforms, operationsStatus, reset } = useContext(PlatformsContext)
   const { fetchListings } = useFetchListings()
   const { resetAll } = useResetServer()
+  const isProcessing = useRef(false);
 
   /**
    * Memoized list of selected platform keys
-   * @returns {string[]} Array of selected platform identifiers
    */
   const selectedPlatforms = useMemo(() => {
     return Object.entries(platforms)
-      // eslint-disable-next-line no-unused-vars
       .filter(([_, platform]) => platform.isSelected)
       .map(([platformKey]) => platformKey)
   }, [platforms])
 
   /**
-   * Handles the CSV download operation and subsequent reset
-   * @async
-   * @param {Array} results - The job listings to be downloaded
-   * @throws {Error} When download or reset operations fail
+   * Checks if any selected platform has finished successfully
    */
-  const handleDownloadCSV = async (results) => {
-    try {
-      await downloadCSV(results) 
-      
-      try {
-        await resetAll()
-        // Force a re-render if needed
-        setTimeout(() => {
-          reset()
-        }, 0);
-        ToasterManager.showToast('success', 'CSV file downloaded successfully')
-      } catch (resetError) {
-        console.error('Reset failed:', resetError)
-      }
-    } catch (error) {
-      console.error('Failed to download CSV:', error)
-      ToasterManager.showToast('error', 'Failed to download CSV file')
-    }
-  }
+  const hasSuccessfulPlatforms = useMemo(() => {
+    return selectedPlatforms.some(platformKey => 
+      platforms[platformKey]?.status === 'finished'
+    );
+  }, [platforms, selectedPlatforms]);
+
+  /**
+   * Checks if all selected platforms are in error state
+   */
+  const areAllSelectedPlatformsInError = useMemo(() => {
+    if (selectedPlatforms.length === 0) return false;
+    
+    return selectedPlatforms.every(platformKey => 
+      platforms[platformKey]?.status === 'error'
+    );
+  }, [platforms, selectedPlatforms]);
+
+  /**
+   * Checks if we should allow downloading results
+   */
+  const canDownloadResults = useMemo(() => {
+    return hasSuccessfulPlatforms || operationsStatus === OPERATION_STATUS.FINISHED;
+  }, [hasSuccessfulPlatforms, operationsStatus]);
 
   /**
    * Handles the main button click action
-   * Either initiates job scraping or downloads existing results
-   * @async
-   * @throws {Error} When operations fail
    */
   const handleButtonClick = async () => {
+    if (isProcessing.current) return;
+    isProcessing.current = true;
+
     try {
-      if (operationsStatus === OPERATION_STATUS.FINISHED) {
-        const fetchedListings = await fetchListings()
+      if (areAllSelectedPlatformsInError) {
+        await resetAll(reset);
+        ToasterManager.showToast('success', 'Platforms reset successfully. You can try again.');
+        return;
+      }
+
+      if (canDownloadResults) {
+        const fetchedListings = await fetchListings();
         if (!fetchedListings?.length) {
-          ToasterManager.showToast('error', 'No results available to download')
-          return
+          ToasterManager.showToast('error', 'No results available to download');
+          return;
         }
         
-        await handleDownloadCSV(fetchedListings)
+        await downloadCSV(fetchedListings);
+        await resetAll(reset);
       } else {
         if (selectedPlatforms.length === 0) {
-          ToasterManager.showToast('error', 'Please select at least one platform')
-          return
+          ToasterManager.showToast('error', 'Please select at least one platform');
+          return;
         }
         
-        await initiateJobScraping(selectedDate, selectedPlatforms)
+        await initiateJobScraping(selectedDate, selectedPlatforms);
       }
     } catch (error) {
-      console.error('Operation failed:', error)
-      ToasterManager.showToast('error', `Failed to ${operationsStatus === OPERATION_STATUS.FINISHED ? 'download results' : 'fetch listings'}`)
+      console.error('Operation failed:', error);
+      ToasterManager.showToast('error', `Failed to ${canDownloadResults ? 'download results' : 'fetch listings'}`);
+    } finally {
+      isProcessing.current = false;
     }
   }
 
   /**
    * Determines the button text based on connection and operation status
-   * @returns {string} The appropriate button text
    */
   const getButtonText = () => {
     if (!connection.isConnected) {
-      return 'Server unavailable'
+      return 'Server unavailable';
+    }
+
+    if (areAllSelectedPlatformsInError) {
+      return 'All platforms failed - Click to reset';
+    }
+
+    if (canDownloadResults) {
+      return 'Download available results';
     }
 
     switch (operationsStatus) {
       case OPERATION_STATUS.IDLE:
-        return 'Ready when you are!'
+        return 'Ready when you are!';
       case OPERATION_STATUS.PROCESSING:
-        return 'Processing your request'
+        return 'Processing your request';
       case OPERATION_STATUS.FINISHED:
-        return 'All done! View your results'
+        return 'All done! View your results';
       case OPERATION_STATUS.ERROR:
-        return 'Operation failed - Try again'
+        return 'Operation failed - Try again';
       default:
-        return 'Begin Job Search'
+        return 'Begin Job Search';
     }
-  }
+  };
 
   return (
     <div className="start-download-container">
@@ -120,14 +136,14 @@ export default function ButtonDownload({selectedDate}) {
         className="button download-button"
         onClick={handleButtonClick}
         disabled={
-          operationsStatus === OPERATION_STATUS.PROCESSING ||
-          !connection.isConnected
+          !connection.isConnected || 
+          (operationsStatus === OPERATION_STATUS.PROCESSING && !canDownloadResults && !areAllSelectedPlatformsInError)
         }
       >
         <span style={{letterSpacing:'0.08rem'}}>{getButtonText()}</span>
       </button>
     </div>
-  )
+  );
 }
 
 ButtonDownload.propTypes = {

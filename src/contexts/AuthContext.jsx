@@ -29,7 +29,6 @@ function AuthContextProvider({ children }) {
    * @param {boolean} isAuthenticated - New authentication state
    */
   const setAuth = useCallback((isAuthenticated) => {
-    console.log('Setting auth:', isAuthenticated)
     dispatch({ type: 'SET_AUTH', payload: isAuthenticated })
   }, [])
 
