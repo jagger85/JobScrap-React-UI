@@ -1,3 +1,22 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: node:18
+  script:
+    - npm ci
+    - npm run build
+    - echo "Build output contents:"
+    - ls -la dist
+  variables:
+    VITE_API_URL: ${VITE_API_URL}
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
 deploy:
   stage: deploy
   image: alpine:latest
@@ -21,6 +40,7 @@ deploy:
     - scp -r dist/* $SSH_USER@$SSH_HOST:/var/www/client/
   only:
     - staging
+
 
 
 
