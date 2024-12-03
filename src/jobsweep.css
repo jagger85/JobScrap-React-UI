@@ -39,7 +39,19 @@
 .react-select {
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-l);
+}
+.keywords-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: var(--spacing-l);
+}
+#keywordsInput {
+  width: 45ch;
 }
 .checkbox-container {
   display: flex;
