@@ -17,7 +17,7 @@ export default function Sweeper() {
    * @type {string}
    */
   const [selectedDate, setSelectedDate] = useState(DATE_RANGES.PAST_24_HOURS)
-
+  const [keywords, setKeywords] = useState('')
   /**
    * Handles changes to the date range selection
    * @param {string} dateRange - The newly selected date range
@@ -32,8 +32,12 @@ export default function Sweeper() {
           onDateChange={handleDateChange}
           selectedDate={selectedDate}
         />
+        <div className='keywords-container'>
+          <label htmlFor='keywordsInput' style={{fontSize: 'var(--m)'}}>Keywords</label>
+          <input id='keywordsInput' type='text' value={keywords} placeholder='Empty search for all IT Developer jobs' onChange={(e) => setKeywords(e.target.value)} />
+        </div>
         <PlatformButtons />
-        <ButtonDownload selectedDate={selectedDate} />
+        <ButtonDownload selectedDate={selectedDate} keywords={keywords} />
         <Console />
       </div>
   )

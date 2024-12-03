@@ -15,9 +15,10 @@ import useResetServer from '../hooks/useReset'
  * @component
  * @param {Object} props - Component props
  * @param {string} props.selectedDate - The selected date for job scraping
+ * @param {string} props.keywords - The keywords for job scraping
  * @returns {JSX.Element} A button that triggers download or scraping operations
  */
-export default function ButtonDownload({selectedDate}) {
+export default function ButtonDownload({selectedDate, keywords}) {
   const { initiateJobScraping } = useJobListings()
   const { connection } = useContext(ConnectionContext)
   const { platforms, operationsStatus, reset } = useContext(PlatformsContext)
@@ -30,6 +31,7 @@ export default function ButtonDownload({selectedDate}) {
    */
   const selectedPlatforms = useMemo(() => {
     return Object.entries(platforms)
+      // eslint-disable-next-line no-unused-vars
       .filter(([_, platform]) => platform.isSelected)
       .map(([platformKey]) => platformKey)
   }, [platforms])
@@ -90,7 +92,7 @@ export default function ButtonDownload({selectedDate}) {
           return;
         }
         
-        await initiateJobScraping(selectedDate, selectedPlatforms);
+        await initiateJobScraping(selectedDate, selectedPlatforms, keywords);
       }
     } catch (error) {
       console.error('Operation failed:', error);
@@ -148,4 +150,5 @@ export default function ButtonDownload({selectedDate}) {
 
 ButtonDownload.propTypes = {
   selectedDate: PropTypes.string.isRequired,
+  keywords: PropTypes.string,
 }
