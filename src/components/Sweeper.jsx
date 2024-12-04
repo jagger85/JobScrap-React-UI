@@ -4,6 +4,7 @@ import ButtonDownload from './ButtonDownload'
 import PlatformButtons from './Platforms/PlatformButtons'
 import Console from './Console'
 import { useState } from 'react'
+//import Modal from '../components/modal/Modal'
 
 /**
  * Main container component for the job sweeper application
@@ -18,6 +19,7 @@ export default function Sweeper() {
    */
   const [selectedDate, setSelectedDate] = useState(DATE_RANGES.PAST_24_HOURS)
   const [keywords, setKeywords] = useState('')
+  // const [isModalOpen, setIsModalOpen] = useState(false)
   /**
    * Handles changes to the date range selection
    * @param {string} dateRange - The newly selected date range
@@ -27,18 +29,27 @@ export default function Sweeper() {
   }
 
   return (
-      <div className="elevated jobsweeper-container">
-        <DateRange
-          onDateChange={handleDateChange}
-          selectedDate={selectedDate}
+    <div className="elevated jobsweeper-container">
+      {/* <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <button className="reset-btn">
+        <div className="reset-btn-icon" onClick={() => setIsModalOpen(true)}>&#x21bb;</div>
+      </button> */}
+      <DateRange onDateChange={handleDateChange} selectedDate={selectedDate} />
+      <div className="keywords-container">
+        <label htmlFor="keywordsInput" style={{ fontSize: 'var(--m)' }}>
+          Keywords
+        </label>
+        <input
+          id="keywordsInput"
+          type="text"
+          value={keywords}
+          placeholder="Empty search for all IT Developer jobs"
+          onChange={(e) => setKeywords(e.target.value)}
         />
-        <div className='keywords-container'>
-          <label htmlFor='keywordsInput' style={{fontSize: 'var(--m)'}}>Keywords</label>
-          <input id='keywordsInput' type='text' value={keywords} placeholder='Empty search for all IT Developer jobs' onChange={(e) => setKeywords(e.target.value)} />
-        </div>
-        <PlatformButtons />
-        <ButtonDownload selectedDate={selectedDate} keywords={keywords} />
-        <Console />
       </div>
+      <PlatformButtons />
+      <ButtonDownload selectedDate={selectedDate} keywords={keywords} />
+      <Console />
+    </div>
   )
 }
