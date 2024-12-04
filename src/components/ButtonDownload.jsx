@@ -73,7 +73,7 @@ export default function ButtonDownload({selectedDate, keywords}) {
     try {
       if (areAllSelectedPlatformsInError) {
         await resetAll(reset);
-        ToasterManager.showToast('success', 'Platforms reset successfully. You can try again.');
+        //ToasterManager.showToast('success', 'Platforms reset successfully. You can try again.');
         return;
       }
 

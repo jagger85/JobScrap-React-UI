@@ -2,9 +2,8 @@ import { useState } from 'react';
 
 import { StorageRepository } from '../utils/storageRepository';
 import { STORAGE_KEYS } from '../constants';
-import { useAppStatus } from './useAppStatus';
 import { API_BASE_URL } from './useApi'
-
+import { ToasterManager } from '../components/Toasters';
 
 /**
  * Custom hook to handle platform reset operations
@@ -46,6 +45,7 @@ const useResetServer = () => {
                 headers: {
                     'Authorization': token ? `Bearer ${token}` : '',
                 },
+
             });
             
             if (response.status === 200) {
@@ -71,6 +71,7 @@ const useResetServer = () => {
         try {
             reset();
             await resetPlatforms();
+            ToasterManager.showToast('success', 'Platforms reset successfully. You can try again.');
         } catch (error) {
             console.error('Reset all failed:', error);
             throw error;
