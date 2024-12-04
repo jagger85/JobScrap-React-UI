@@ -86,3 +86,37 @@
   position: absolute;
   width: 100%;
 }
+
+.reset-btn {
+  display: flex;
+  padding-bottom: var(--spacing-m);
+  border: 2px solid var(--grey3);
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  position: absolute; 
+  top: 10px;
+  right: 10px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.reset-btn:before {
+  content: "";
+  display: block;
+  background: var(--grey1);
+  border-top: 2px solid var(--grey2);
+  position: absolute;
+  top: -9px;
+  left: -9px;
+  bottom: -9px;
+  right: -9px;
+  z-index: -1;
+  border-radius: 50%;
+  box-shadow: var(--shadow-inner);
+}
+.reset-btn-icon {
+  rotate: 145deg;
+  padding: 0px 0px 8px 5px;
+}
