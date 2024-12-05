@@ -22,8 +22,7 @@ const PLATFORM_ICONS = {
  * @returns {JSX.Element} A list of platform selection buttons
  */
 export default function PlatformButtons() {
-
-  const { platforms, togglePlatform } = useContext(PlatformsContext)
+  const { platforms, togglePlatform, operationsStatus } = useContext(PlatformsContext)
 
   console.log('Current platforms state:', platforms)
 
@@ -35,28 +34,32 @@ export default function PlatformButtons() {
     return Object.values(PLATFORMS).map((platformName) => {
       const isSelected = platforms[platformName]?.isSelected || false
       const status = platforms[platformName]?.status || 'idle'
+      const isEnabled = operationsStatus === 'IDLE'
 
       return (
-        <li
-          key={platformName}
-          data-status={status}
-        >
+        <li key={platformName} data-status={status}>
           <button
-            onClick={() => togglePlatform(platformName)}
+            onClick={(e) => {
+              e.preventDefault();
+              if (isEnabled) {
+                togglePlatform(platformName);
+              }
+            }}
             className={isSelected ? 'selected' : ''}
             data-status={status}
             title={platformName}
             type="button"
           >
-            <img
-              src={PLATFORM_ICONS[platformName]}
-              alt={platformName}
+            <img 
+              src={PLATFORM_ICONS[platformName]} 
+              alt={platformName} 
+              style={{ opacity: isEnabled ? 1 : 0.5 }}
             />
           </button>
         </li>
       )
     })
-  }, [platforms, togglePlatform])
+  }, [platforms, togglePlatform, operationsStatus])
 
   return (
     <div className="platforms-container">
@@ -66,9 +69,7 @@ export default function PlatformButtons() {
       <div className="checkbox-container">
         <div className="buttons-wrapper">
           <nav>
-            <ul className="nav">
-              {platformButtons}
-            </ul>
+            <ul className="nav">{platformButtons}</ul>
           </nav>
         </div>
       </div>
