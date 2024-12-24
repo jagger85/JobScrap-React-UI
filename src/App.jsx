@@ -30,7 +30,7 @@ export default function App() {
                style={{ fontSize: 'var(--xl)', cursor: 'pointer' }}
               // onClick={() => setShowSettings(!showSettings)}
             >
-              Job Sweeper
+              Job Scraper
             </h2>
             <div className="separator" />
             <div className="transition-container">

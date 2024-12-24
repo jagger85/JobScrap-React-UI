@@ -31,7 +31,7 @@ export function useJobListings() {
    * @returns {Promise<boolean|string>} Success status or job ID
    * @throws {Error} When API request fails or backend URL is not configured
    */
-  const initiateJobScraping = async (selectedDate, selectedPlatforms) => {
+  const initiateJobScraping = async (selectedDate, selectedPlatforms, keywords) => {
     if (!API_BASE_URL) {
       throw new Error('Backend URL not configured in environment variables')
     }
@@ -40,6 +40,7 @@ export function useJobListings() {
     const requestBody = {
       platforms: selectedPlatforms,
       dateRange: selectedDate,
+      keywords: keywords,
     }
 
     const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY)

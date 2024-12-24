@@ -16,7 +16,7 @@ const customSelectStyle = {
     backgroundColor: state.isDisabled ? 'var(--grey1)' : 'var(--grey3)',
     color: 'var(--font)',
     borderRadius: 'var(--s-radius)',
-    minWidth: '45ch',
+    width: '45ch',
     borderColor: state.isFocused ? 'var(--primary)' : '#404040',       
     boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.2)',
     '&:hover': {
