@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { StorageRepository } from '../utils/storageRepository';
 import { STORAGE_KEYS } from '../constants';
 import { API_BASE_URL } from './useApi'
@@ -13,7 +12,7 @@ import { ToasterManager } from '../components/Toasters';
  *   error: string|null
  * }} Reset functions and status indicators
  */
-const useResetServer = () => {
+const useStopOperations = () => {
     /**
      * State for tracking reset operation status
      * @type {[boolean, Function]}
@@ -40,7 +39,7 @@ const useResetServer = () => {
         try {
             const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY);
 
-            const response = await fetch(`${API_BASE_URL}/reset`, {
+            const response = await fetch(`${API_BASE_URL}/stopOperations`, {
                 method: 'GET',
                 headers: {
                     'Authorization': token ? `Bearer ${token}` : '',
@@ -51,9 +50,9 @@ const useResetServer = () => {
             if (response.status === 200) {
                 return true;
             }
-            throw new Error('Reset failed');
+            throw new Error('Server operations reset failed');
         } catch (err) {
-            console.error('Server reset failed:', err);
+            console.error('Server operations reset failed:', err);
             setError(err.message);
             throw err;
         } finally {
@@ -71,7 +70,7 @@ const useResetServer = () => {
         try {
             reset();
             await resetPlatforms();
-            ToasterManager.showToast('success', 'Platforms reset successfully. You can try again.');
+            ToasterManager.showToast('success', 'Operations stopped and server resseted you can try again.');
         } catch (error) {
             console.error('Reset all failed:', error);
             throw error;
@@ -85,4 +84,4 @@ const useResetServer = () => {
     };
 };
 
-export default useResetServer;
+export default useStopOperations;
