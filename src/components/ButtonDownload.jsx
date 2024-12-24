@@ -31,7 +31,6 @@ export default function ButtonDownload({selectedDate, keywords}) {
    */
   const selectedPlatforms = useMemo(() => {
     return Object.entries(platforms)
-      // eslint-disable-next-line no-unused-vars
       .filter(([_, platform]) => platform.isSelected)
       .map(([platformKey]) => platformKey)
   }, [platforms])

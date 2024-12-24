@@ -26,6 +26,8 @@ export default function PlatformButtons() {
 
   console.log('Current platforms state:', platforms)
 
+  console.log('Current platforms state:', platforms)
+
   /**
    * Memoized list of platform buttons with handleClick inside the memo
    * @returns {JSX.Element[]} Array of platform button elements
