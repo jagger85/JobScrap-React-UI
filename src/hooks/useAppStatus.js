@@ -91,29 +91,56 @@ export function useAppStatus() {
         },
       };
 
-      // Check if any platform (selected or not) is in PROCESSING or WAITING state
-      const hasProcessingOrWaiting = Object.values(updatedPlatforms).some(p => 
+      // 1. Get Active Platforms (platforms with non-idle states)
+      const activePlatforms = Object.values(updatedPlatforms).filter(p => 
+        p.status.toLowerCase() !== PLATFORM_STATUS.IDLE.toLowerCase()
+      );
+
+      // 2. If no active platforms, keep or return to IDLE
+      if (activePlatforms.length === 0) {
+        return {
+          ...current,
+          platforms: updatedPlatforms,
+          operationsStatus: OPERATION_STATUS.IDLE
+        };
+      }
+
+      // 3. Check if any platform is in PROCESSING or WAITING state
+      const hasProcessingOrWaiting = activePlatforms.some(p => 
         [PLATFORM_STATUS.PROCESSING, PLATFORM_STATUS.WAITING].includes(p.status.toLowerCase())
       );
 
-      // If any platform is processing/waiting, operation must be PROCESSING
-      let newOperationStatus = hasProcessingOrWaiting 
-        ? OPERATION_STATUS.PROCESSING 
-        : current.operationsStatus;
+      // 4. Check if all active platforms are finished or error
+      const allActiveCompleted = activePlatforms.every(p => 
+        [PLATFORM_STATUS.FINISHED, PLATFORM_STATUS.ERROR].includes(p.status.toLowerCase())
+      );
+
+      // Determine the new operation status
+      let newOperationStatus;
+      if (hasProcessingOrWaiting) {
+        newOperationStatus = OPERATION_STATUS.PROCESSING;
+      } else if (allActiveCompleted) {
+        newOperationStatus = OPERATION_STATUS.FINISHED;
+        playSuccess();
+      } else {
+        newOperationStatus = current.operationsStatus;
+      }
 
       console.log('Current State:', {
-        platforms: Object.entries(updatedPlatforms).map(([key, value]) => ({
-          platform: key,
-          status: value.status
+        activePlatforms: activePlatforms.map(p => ({
+          platform: p.platform,
+          status: p.status
         })),
         hasProcessingOrWaiting,
+        allActiveCompleted,
         operationStatus: newOperationStatus
       });
 
       return {
         ...current,
         platforms: updatedPlatforms,
-        operationsStatus: newOperationStatus
+        operationsStatus: newOperationStatus,
+        hasProcessingOrWaiting
       };
     });
   }, [playSuccess]);

@@ -1,0 +1,116 @@
+.modal-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  width: 600px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-l);
+  align-items: center;
+  background-color: var(--grey4);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--grey2);
+  height: var(--xxxxl);
+  padding: 0 var(--spacing-l);
+  border-radius: var(--m-radius) var(--m-radius) 0 0;
+  border-bottom: 1px solid rgb(128,128,128, 0.5);
+}
+
+.modal-footer {
+  height: var(--xxxxl);
+  padding: 0 var(--spacing-l);
+  border-top: 3px solid rgb(var(--font), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--grey2);
+  border-radius: 0 0 var(--m-radius) var(--m-radius);
+  border-top: 1px solid rgb(128,128,128, 0.5);
+}
+
+.modal-title {
+  font-size: var(--m);
+  font-weight: 600;
+}
+
+.modal-message {
+  text-align: center;
+  font-size: var(--m);
+  font-weight: 600;
+  margin-bottom: var(--spacing-s);
+}
+
+.modal-subMessage {
+  text-align: center;
+  color: var(--font);
+  font-size: var(--s);
+  margin-bottom: var(--spacing-l);
+  letter-spacing: 0.08rem;
+}
+
+.modal-btn {
+  padding: var(--spacing-s) var(--spacing-l);
+  border: none;
+  border-radius: var(--s-radius);
+  font-size: var(--m);
+  color: var(--font);
+  background-color: var(--grey4);
+  height: fit-content;
+  width: fit-content;
+}
+.modal-btn:hover {
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--font);
+}
+.modal-btn:active {
+  opacity: 0.4;
+}
+
+.modal-btn-right {
+  clip-path: polygon(0% 0%, 90% 0%, 100% 30%, 100% 100%, 0% 100%);
+}
+.modal-btn-left {
+  clip-path: polygon(10% 0%, 100% 0, 100% 100%, 0 100%, 0% 30%);
+}
+
+.modal-icon-container {
+  border: 1px solid rgb(128,128,128, 0.2);
+  border-radius: 50px;
+  display: flex;
+  padding-bottom: var(--spacing-s);
+  margin-bottom: var(--spacing-m);
+  align-items: center;
+  justify-content: center;
+  rotate: 180deg;
+  width: 75px;
+  height: 75px;
+  font-size: var(--xl);
+  background-color: var(--grey4);
+}
