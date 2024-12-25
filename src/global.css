@@ -91,6 +91,11 @@
   /* Global panel witdth */
   --panel-width : 600px;
   --panel-height : 575px;
+
+  --header-height: 50px;
+  --footer-height: 50px;
+  --sidebar-width: 150px;
+  
 }
 
 
