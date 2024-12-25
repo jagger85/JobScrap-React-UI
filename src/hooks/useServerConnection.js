@@ -1,179 +1,67 @@
-import { useState, useCallback, useRef } from 'react'
+import { SOCKET_URL } from './useApi'
+import { useState, useCallback, useContext } from 'react'
 import { ConnectionContext } from '../contexts/ConnectionContext'
-import { PlatformsContext } from '../contexts/PlatformsContext'
-import { useContext } from 'react'
-import useMessageStore from '../utils/messageStore'
-import { ToasterManager } from '../components/Toasters'
-import { StorageRepository } from '../utils/storageRepository'
 import { STORAGE_KEYS } from '../constants'
-import { EventSourcePolyfill } from 'event-source-polyfill';
-import { API_BASE_URL } from './useApi'
+import { StorageRepository } from '../utils/storageRepository'
 
-/**
- * Maximum number of connection retry attempts
- * @type {number}
- */
-const MAX_RETRIES = 3
-
-/**
- * Custom hook for managing SSE server connections
- * Handles connection establishment, message processing, and error handling
- * @returns {{
- *   connect: Function,
- *   disconnect: Function
- * }} Connection management functions
- */
-export function useServerConnection() {
-
-  /**
-   * Message store function for notifications
-   * @type {Function}
-   */
-  const addMessage = useMessageStore((state) => state.addMessage);
-  const [eventSource, setEventSource] = useState(null)
-  const retryCount = useRef(0)
+const useServerConnection = () => {
+  const [socket, setSocket] = useState(null)
   const { setConnectionStatus } = useContext(ConnectionContext)
-  const { updatePlatformStatus, setPlatformsError } = useContext(PlatformsContext)
-  
-  /**
-   * Establishes SSE connection with the server
-   * Handles message processing and reconnection logic
-   * @function
-   */
+  const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY)
+
   const connect = useCallback(() => {
-    if (eventSource) {
-      console.log('Already connected, skipping new connection attempt.')
-      return
-    }
+    // Create WebSocket connection
+    const ws = new WebSocket(SOCKET_URL)
 
-    if (retryCount.current >= MAX_RETRIES) {
-       addMessage('Max connection attempts reached')
-       setTimeout(()=> addMessage('Failed to connect after 3 attempts'),2000)
-       setPlatformsError()
-       
-      return
-    }
-
-    const sseUrl = `${ API_BASE_URL }/jobsweep-sse`
-    console.log(`Connection attempt ${retryCount.current + 1} to:`, sseUrl)
-
-    try {
-      const token = StorageRepository.getItem(STORAGE_KEYS.BEARER_TOKEN_KEY)
-      const newEventSource = new EventSourcePolyfill(sseUrl, {
-        withCredentials: true,
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-
-      let reconnectTimeout = null
-
-      newEventSource.onopen = () => {
-       addMessage('Connected and ready to go!')
-        if (reconnectTimeout) {
-          clearTimeout(reconnectTimeout)
-          reconnectTimeout = null
-        }
-        retryCount.current = 0
-      }
-
-      newEventSource.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data)
-          switch (data.type) {
-            case 'platform_states':
-              console.log('%cReceived platform states:', 'color: blue; font-weight: bold;', data.platforms);
-              if (data.platforms && typeof data.platforms === 'object') {
-                Object.entries(data.platforms).forEach(([platform, status]) => {
-                  updatePlatformStatus(platform, status)
-                })
-              } else {
-                console.warn('Invalid platform_states data:', data)
-              }
-              break
-            case 'info':
-              addMessage(data.message)
-              break
-            case 'progress':
-            case 'warning':
-              if (data.message) {
-                ToasterManager.showToast('warning', data.message);
-              }
-              break
-            case 'error':
-              if (data.message) {
-                ToasterManager.showToast('error', data.message);
-              }
-              break
-            case 'debug':
-              if (data.message) {
-            //    setMessage({ type: data.type, content: data.message })
-              }
-              break
-            case 'heartbeat':
-              //TODO is neccesary the heartbeat?
-              console.log('heartbeat')
-              break
-            default:
-              console.warn('Unknown message type:', data.type)
-          }
-        } catch (error) {
-          console.error('Error processing message:', error)
-          setConnectionStatus(false)
-        //  setMessage({ type: 'error', content: 'Error processing message' })
-        }
-      }
-
-      newEventSource.onerror = (error) => {
-        setConnectionStatus(false)
-        addMessage('Connection interrupted')
-        
-        // Log the raw error details
-        console.error('SSE Connection Error:', {
-          error,
-          readyState: newEventSource.readyState,
-          responseText: error.target?.responseText
-        });
-
-        newEventSource.close()
-        setEventSource(null)
-
-        if (!reconnectTimeout && retryCount.current < MAX_RETRIES) {
-          retryCount.current += 1
-          console.log('conecting')
-          reconnectTimeout = setTimeout(connect, 5000)
-        }
-      }
-
-      setEventSource(newEventSource)
+    ws.addEventListener('open', () => {
       setConnectionStatus(true)
+      console.log('Connected to server')
 
-      return () => {
-        if (reconnectTimeout) {
-          clearTimeout(reconnectTimeout)
-        }
-        newEventSource.close()
+      // Send the token after the connection is established
+      ws.send(JSON.stringify({ "type": "login", "message": token}))
+
+    })
+
+    ws.addEventListener('message', (event) => {
+      const message = JSON.parse(event.data)
+      console.log('Message from server:', message);
+      
+      switch (message.type){
+        case 'login':
+          console.log("login message received: ", message)
+          break
+        
+        case 'echo':
+          console.log("echo message received: ", message)
+          break
+        
+        default:
+          console.warn('Unknown message type: ', message.type)
       }
-    } catch {
+    });
+
+    ws.addEventListener('close', () => {
       setConnectionStatus(false)
-      addMessage( 'Failed to connect to server')
-      retryCount.current += 1
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventSource, setConnectionStatus, updatePlatformStatus])
+      console.log('Disconnected from server')
+    })
 
-  /**
-   * Closes the SSE connection and resets retry counter
-   * @function
-   */
+    ws.addEventListener('error', (error) => {
+      console.error('WebSocket error:', error)
+      setConnectionStatus(false)
+    })
+
+    setSocket(ws)
+    return ws
+  }, [setConnectionStatus, token])
+
   const disconnect = useCallback(() => {
-    if (eventSource) {
-      eventSource.close()
-      setEventSource(null)
-   //   setMessage({ type: 'info', content: 'Disconnected from server' })
+    if (socket) {
+      socket.close()
+      setSocket(null)
     }
-    retryCount.current = 0
-  }, [eventSource])
+  }, [socket])
 
-  return { connect, disconnect }
+  return { connect, disconnect, socket }
 }
+
+export default useServerConnection
