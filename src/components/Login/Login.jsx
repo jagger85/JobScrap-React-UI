@@ -14,7 +14,7 @@ const TOKEN_KEY = 'sweeper_bearer';
  * @returns {JSX.Element} Rendered login form
  */
 export default function Login() {
-  const { login } = useAuth()
+  const { login, loginWithToken } = useAuth()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
@@ -29,7 +29,7 @@ export default function Login() {
     if (existingToken) {
       // Auto login if token exists
       try {
-        login(null, null, true, existingToken); // Pass existing token
+        loginWithToken(existingToken); // Pass existing token
       } catch (error) {
         console.error('Auto-login failed:', error);
         StorageRepository.removeItem(TOKEN_KEY);
