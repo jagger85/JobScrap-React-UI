@@ -1,0 +1,66 @@
+/* User Management Styles */
+.add-user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.add-user-form input {
+  width: 380px;
+}
+.user-form-input span{
+    display:none
+
+}
+.user-form-input input:invalid[focused='true'] ~ span{
+    display: block;    
+}
+
+
+h2 {
+  color: var(--font);
+  margin-bottom: var(--spacing-s);
+  align-self: flex-start;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-m);
+  box-shadow: var(--shadow);
+}
+
+th,
+td {
+  padding: var(--spacing-s);
+  text-align: left;
+  border-bottom: 1px solid var(--grey2);
+}
+
+th {
+  background-color: var(--grey1);
+  color: var(--font);
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: var(--grey3);
+}
+
+button {
+  background-color: var(--primary);
+  color: var(--font);
+  border: none;
+  border-radius: var(--s-radius);
+  padding: var(--spacing-xs) var(--spacing-s);
+  cursor: pointer;
+  transition: background-color var(--fast-transition);
+  min-width: 80px;
+  align-self: flex-start;
+}
+
+button:hover {
+  background-color: var(--secondary);
+}
