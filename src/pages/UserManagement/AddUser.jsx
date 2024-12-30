@@ -1,10 +1,10 @@
 import './userManagement.css'
 import { customSelectStyle } from '../../utils/reactCustomStyle'
 import { useState } from 'react'
-import FormInput from '../FormInput'
+import FormInput from '../../components/FormInput'
 import Select from 'react-select'
 import useApi from '../../hooks/useApi'
-import { ToasterManager } from '../Toasters/Toasters'
+import { ToasterManager } from '../../components/Toasters/Toasters'
 import { useQueryClient } from '@tanstack/react-query'
 
 const roleOptions = [

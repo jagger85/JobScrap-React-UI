@@ -1,11 +1,11 @@
 import './mainLayout.css'
 import Header from '../components/Header/Header'
 import SideBar from '../components/SideBar/SideBar'
-import Dashboard from '../components/Dashboard/Dashboard'
-import History from '../components/History/History'
-import UserManagement from '../components/UserManagement/UserManagement'
-import Settings from '../components/Settings/Settings'
-import Automation from '../components/Automation/Automation'
+import Dashboard from '../pages/Dashboard/Dashboard'
+import History from '../pages/History/History'
+import UserManagement from '../pages/UserManagement/UserManagement'
+import Settings from '../pages/Settings/Settings'
+import Automation from '../pages/Automation/Automation'
 import { Routes, Route } from 'react-router-dom'
 import ProtectedRoute from '../components/ProtectedRoute'
 
@@ -49,9 +49,11 @@ function MainLayout() {
                 />
               }
             />
-            <Route path="/automation" element={
-              <ProtectedRoute
-              element={<Automation />}
+            <Route
+              path="/automation"
+              element={
+                <ProtectedRoute
+                  element={<Automation />}
                   allowedRoles={['admin', 'user']}
                 />
               }

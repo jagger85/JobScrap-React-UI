@@ -1,0 +1,36 @@
+.squared {
+  box-shadow: var(--double-border);
+  background-color: var(--grey3);
+  color: var(--grey-icons);
+  border: 0px solid transparent;
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-xs);
+  border-radius: var(--s-radius);
+  margin: var(--spacing-xxs);
+}
+
+.squared:not(:disabled):hover {
+  box-shadow: var(--double-border-hover);
+  transition: box-shadow var(--fast-transition) ease;
+}
+
+.rounded {
+  border-radius: 50px;
+  border: none;
+  color: var(--grey-icons);
+  background-color: var(--grey4);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--grey1);
+  width: fit-content;
+  display: flex;
+  padding: var(--spacing-s);
+}
+.rounded:hover {
+  color: var(--primary);
+}
+
+.button:active {
+  opacity: 0.8;
+}
+

@@ -1,5 +1,8 @@
 import kalibrrIcon from '../../assets/platform-icons/kalibrr.svg'
-import PlatformCard from '../Platforms/PlatformCard'
+import PlatformCard from '../../components/Platforms/PlatformCard'
+import PageLayout from '../../Layout/PageLayout'
+import Section from '../../components/Section/Section'
+
 import './automation.css'
 
 function Automation() {
@@ -33,26 +36,26 @@ function Automation() {
         },
       ]
   return (
-    <>
-    <div className="automation-container">
-        <h2>Automation</h2>
-      <div className="automation-body">
+    <PageLayout title="Automation">
+      <Section title="Automatic Job Scraps">
+
         {platformCards.map((card) => {
           return (
             <PlatformCard
-              key={card.id}
-              platform={card.platform}
-              icon={card.icon}
-              createdAt={card.createdAt}
-              keywords={card.keywords}
-              dateRange={card.dateRange}
-              lastRun={card.lastRun}
+            key={card.id}
+            platform={card.platform}
+            icon={card.icon}
+            createdAt={card.createdAt}
+            keywords={card.keywords}
+            dateRange={card.dateRange}
+            lastRun={card.lastRun}
             />
           )
         })}
-      </div>
-    </div>
-  </>
+  
+ 
+        </Section>
+    </PageLayout>
   )
 }
 

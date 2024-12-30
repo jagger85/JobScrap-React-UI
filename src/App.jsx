@@ -1,4 +1,4 @@
-import Login from './components/Login/Login'
+import Login from './pages/Login/Login'
 import useAuth from './hooks/useAuth'
 import { useContext, useEffect } from 'react'
 import { AuthContext } from './contexts/AuthContext'

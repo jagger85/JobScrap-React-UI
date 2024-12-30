@@ -1,0 +1,15 @@
+.dashboard-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-m);
+}
+.dashboard-header-title{
+    font-size: var(--l);
+    font-weight: var(--font-weight-bold);
+}
+.dashboard-header-subtitle{
+    font-size: var(--s);
+    font-weight: var(--font-weight-medium);
+}

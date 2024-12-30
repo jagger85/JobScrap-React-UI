@@ -1,0 +1,97 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(var(--rgba-background), 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--grey1);
+  padding: var(--spacing-l);
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: var(--l);
+  color: var(--font);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--font-secondary);
+  font-size: var(--l);
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  max-width: none;
+  box-shadow: none;
+}
+
+.close-button:hover {
+  color: var(--font);
+  box-shadow: none;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.platform-select img {
+  width: 20px;
+  height: 20px;
+}
+
+.platform-select span {
+  color: var(--font);
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  color: var(--font-secondary);
+  font-size: var(--xs);
+}
+
+.save-button {
+  width: 100%;
+  max-width: none;
+  padding: var(--spacing-s);
+  margin-top: var(--spacing-m);
+}
+
+.platform-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.platform-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}

@@ -8,7 +8,7 @@
   --background: #1f1f1f;
   --grey1: #252525;
   --grey2: #404040;
-  --grey3: #1f1f1f;
+  --grey3: #2f2f2f;
   --grey4: #282828;
   --grey-icons: #a9a9a9;
   --font: #b7b7b7;
@@ -242,4 +242,3 @@ input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px var(--grey3) inset !important;
   -webkit-text-fill-color: var(--font) !important;
 }
-

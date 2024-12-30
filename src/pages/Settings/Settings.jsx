@@ -1,18 +1,21 @@
 import './Settings.css'
-import   {useState} from 'react' 
+import { useState } from 'react'
 import useApi from '../../hooks/useApi'
-import { ToasterManager } from '../Toasters/Toasters'
-import FormInput from '../FormInput'
+import { ToasterManager } from '../../components/Toasters/Toasters'
+import FormInput from '../../components/FormInput'
 import useAuth from '../../hooks/useAuth'
 import { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
+import PageLayout from '../../Layout/PageLayout'
+import Section from '../../components/Section/Section'
+
 const Settings = () => {
-  const {logOut} = useAuth()
-  const {changePassword} = useApi()
-  const {username} = useContext(AuthContext)
+  const { logOut } = useAuth()
+  const { changePassword } = useApi()
+  const { username } = useContext(AuthContext)
   const [values, setValues] = useState({
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
   })
 
   const inputs = [
@@ -38,41 +41,38 @@ const Settings = () => {
     },
   ]
 
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     const response = await changePassword(values.newPassword, username)
-    if(response.ok){
+    if (response.ok) {
       ToasterManager.showToast('success', 'Password changed successfully')
       setTimeout(() => {
         logOut()
-      }, 3000);
+      }, 3000)
     } else {
       ToasterManager.showToast('error', 'Failed to change password')
     }
   }
   return (
-    <div className="settings-container">
-      <h1>Settings</h1>
-      <div className="settings-content">
-        <div className="settings-section">
-          <h2>Change Password</h2>
-          <form className="settings-form" onSubmit={handleSubmit}>
-            {inputs.map((input) => {
-              return (
-                <FormInput
-                  key={input.id}
-                  {...input}
-                  value={values[input.name]}
-                  onChange={(e) => setValues({...values, [input.name]: e.target.value})}
-                />
-              )
-            })}
-            <button type="submit">Change Password</button>
-          </form>
-        </div>
-      </div>
-    </div>
+    <PageLayout title="Settings">
+      <Section title="Change Password">
+        <form className="password-form" onSubmit={handleSubmit}>
+          {inputs.map((input) => {
+            return (
+              <FormInput
+                key={input.id}
+                {...input}
+                value={values[input.name]}
+                onChange={(e) =>
+                  setValues({ ...values, [input.name]: e.target.value })
+                }
+              />
+            )
+          })}
+          <button type="submit">Change Password</button>
+        </form>
+      </Section>
+    </PageLayout>
   )
 }
 

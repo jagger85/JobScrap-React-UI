@@ -19,6 +19,7 @@ import {
   Download,
   History,
   ClipboardList,
+  Plus,
 } from 'lucide-react'
 // Icon configuration object
 const IconComponents = {
@@ -42,6 +43,7 @@ const IconComponents = {
   downloadIcon: (props) => <Download {...props} />,
   automationIcon: (props) => <History {...props} />,
   historyIcon: (props) => <ClipboardList {...props} />,
+  createIcon: (props) => <Plus {...props} />,
 }
 
 // Export individual components with default names for backward compatibility
@@ -62,3 +64,4 @@ export const TrashIcon = IconComponents.trash
 export const DownloadIcon = IconComponents.downloadIcon
 export const AutomationIcon = IconComponents.automationIcon
 export const HistoryIcon = IconComponents.historyIcon
+export const CreateIcon = IconComponents.createIcon
