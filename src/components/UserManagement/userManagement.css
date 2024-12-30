@@ -30,17 +30,31 @@ table {
   border-collapse: collapse;
   margin-top: var(--spacing-m);
   box-shadow: var(--shadow);
+  border-radius: var(--m-radius);
+}
+
+thead{
+  border-radius: var(--m-radius);
+  margin-bottom: var(--spacing-m);
+}
+
+.user-table-header-first{
+  border-top-left-radius: var(--s-radius); /* Add this */
+}
+
+.user-table-header-last{
+  border-top-right-radius: var(--m-radius); 
 }
 
 th,
 td {
   padding: var(--spacing-s);
+  background-color: var(--grey1);
   text-align: left;
-  border-bottom: 1px solid var(--grey2);
 }
 
 th {
-  background-color: var(--grey1);
+  background-color: var(--grey4);
   color: var(--font);
   font-weight: bold;
 }

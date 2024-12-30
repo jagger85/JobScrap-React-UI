@@ -18,7 +18,7 @@ const useServerConnection = () => {
       console.log('Connected to server')
 
       // Send the token after the connection is established
-      ws.send(JSON.stringify({ "type": "login", "message": token}))
+      ws.send(JSON.stringify({ "type": "login", "message": `Bearer ${token}`}))
 
     })
 

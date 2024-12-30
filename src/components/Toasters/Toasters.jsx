@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { DeleteIcon } from './Icons';
-import styles from './Toasters.module.css';
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { DeleteIcon } from '../Icons'
+import './Toaster.css'
 
 /** @type {Object} Styles configuration for notification components */
 const notificationStyles = {
@@ -27,7 +27,7 @@ const notificationStyles = {
   error: { borderLeft: '5px solid var(--error)' },
   info: { borderLeft: '5px solid var(--primary)' },
   warning: { borderLeft: '5px solid var(--warning)' },
-};
+}
 
 /**
  * Generates unique IDs for toast notifications
@@ -35,9 +35,9 @@ const notificationStyles = {
  * @returns {string} A unique identifier for a toast notification
  */
 const generateUniqueId = (() => {
-  let counter = 0;
-  return () => `toast_${Date.now()}_${counter++}`;
-})();
+  let counter = 0
+  return () => `toast_${Date.now()}_${counter++}`
+})()
 
 /**
  * Static manager class for handling toast notifications
@@ -46,7 +46,7 @@ const generateUniqueId = (() => {
  */
 export class ToasterManager {
   /** @type {{message: string, timestamp: number}} Tracks the last shown toast */
-  static lastToast = { message: '', timestamp: 0 };
+  static lastToast = { message: '', timestamp: 0 }
 
   /**
    * Shows a toast notification if it's not a duplicate
@@ -54,17 +54,17 @@ export class ToasterManager {
    * @param {string} message - The message to display
    */
   static showToast(type, message) {
-    const now = Date.now();
+    const now = Date.now()
     if (
       this.lastToast.message === message &&
       now - this.lastToast.timestamp < 100
     ) {
-      return;
+      return
     }
-    
-    this.lastToast = { message, timestamp: now };
+
+    this.lastToast = { message, timestamp: now }
     if (ToasterManager.instance) {
-      ToasterManager.instance(type, message);
+      ToasterManager.instance(type, message)
     }
   }
 }
@@ -77,46 +77,46 @@ export class ToasterManager {
  */
 const Toasters = () => {
   /** @type {[Array<{id: string, type: string, message: string}>, Function]} State for active notifications */
-  const [notifications, setNotifications] = useState([]);
-  
+  const [notifications, setNotifications] = useState([])
+
   /** @type {React.MutableRefObject<Object>} Ref to store timeout IDs */
-  const notificationTimeouts = useRef({});
-  
+  const notificationTimeouts = useRef({})
+
   /**
    * Adds a new notification if it's not a duplicate
    * @param {string} type - The type of notification
    * @param {string} message - The notification message
    */
   const addNotification = useCallback((type, message) => {
-    const id = generateUniqueId();
+    const id = generateUniqueId()
     setNotifications((prev) => {
       const isDuplicate = prev.some(
         (notif) => notif.message === message && notif.type === type
-      );
-      if (isDuplicate) return prev;
-      return [...prev, { id, type, message }];
-    });
-  }, []);
+      )
+      if (isDuplicate) return prev
+      return [...prev, { id, type, message }]
+    })
+  }, [])
 
   /**
    * Removes a notification and cleans up its timeout
    * @param {string} id - The ID of the notification to remove
    */
   const removeNotification = useCallback((id) => {
-    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
-    delete notificationTimeouts.current[id];
-  }, []);
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id))
+    delete notificationTimeouts.current[id]
+  }, [])
 
   /**
    * Sets up and cleans up the ToasterManager instance
    * @effect
    */
   useEffect(() => {
-    ToasterManager.instance = addNotification;
+    ToasterManager.instance = addNotification
     return () => {
-      ToasterManager.instance = null;
-    };
-  }, [addNotification]);
+      ToasterManager.instance = null
+    }
+  }, [addNotification])
 
   return (
     <div style={notificationStyles.container}>
@@ -131,17 +131,11 @@ const Toasters = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>{message}</span>
           </div>
-          <button
-            onClick={() => removeNotification(id)}
-            className={styles.closeButton}
-          >
-            <DeleteIcon size={12} />
-          </button>
+            <DeleteIcon className='deleteIcon' onClick={() => removeNotification(id)} size={20} />
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Toasters;
-
+export default Toasters

@@ -1,75 +1,79 @@
 import './Settings.css'
-import PropTypes from 'prop-types'
+import   {useState} from 'react' 
+import useApi from '../../hooks/useApi'
+import { ToasterManager } from '../Toasters/Toasters'
+import FormInput from '../FormInput'
+import useAuth from '../../hooks/useAuth'
+import { useContext } from 'react'
+import { AuthContext } from '../../contexts/AuthContext'
+const Settings = () => {
+  const {logOut} = useAuth()
+  const {changePassword} = useApi()
+  const {username} = useContext(AuthContext)
+  const [values, setValues] = useState({
+    newPassword: '',
+    confirmPassword: ''
+  })
 
-const Settings = ({ isOpen, onClose }) => {
+  const inputs = [
+    {
+      id: '0',
+      type: 'password',
+      name: 'newPassword',
+      label: 'New Password',
+      placeholder: 'Place a password here',
+      errorMessage: 'Password must have a minimum of 4 characters',
+      required: true,
+      pattern: `^[a-zA-Z0-9]{3,}$`,
+    },
+    {
+      id: '1',
+      type: 'password',
+      name: 'confirmPassword',
+      label: 'Confirm password',
+      placeholder: 'Confirm the password',
+      errorMessage: 'Passwords must match',
+      required: true,
+      pattern: values.newPassword,
+    },
+  ]
 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const response = await changePassword(values.newPassword, username)
+    if(response.ok){
+      ToasterManager.showToast('success', 'Password changed successfully')
+      setTimeout(() => {
+        logOut()
+      }, 3000);
+    } else {
+      ToasterManager.showToast('error', 'Failed to change password')
+    }
+  }
   return (
-    <div className={`settings-overlay ${isOpen ? 'show' : ''}`}>
-      <div className="settings-panel">
-        <div className="settings-header">
-          <h2>Settings</h2>
-          <button className="close-button" onClick={onClose}>
-            ×
-          </button>
-        </div>
-
-        <div className="settings-content">
-          {/* <div className="setting-item">
-            <span>
-              Server Connection{' '}
-              {connection.isConnected
-                ? '(Connected)'
-                : connection.enabled
-                ? '(Connecting...)'
-                : '(Disconnected)'}
-              {connection.lastHeartbeat &&
-                ` - Last heartbeat: ${new Date(
-                  connection.lastHeartbeat
-                ).toLocaleTimeString()}`}
-            </span>
-            <label className="toggle-switch">
-              <input
-                type="checkbox"
-                checked={connection.enabled}
-                onChange={handleConnectionToggle}
-                disabled={!isAuthenticated}
-              />
-              <span className="slider"></span>
-            </label>
-          </div> */}
-
-          <div className="setting-item">
-            <span>Dark Mode</span>
-            <label className="toggle-switch">
-              <input type="checkbox" />
-              <span className="slider"></span>
-            </label>
-          </div>
-
-          <div className="setting-item">
-            <span>Notifications</span>
-            <label className="toggle-switch">
-              <input type="checkbox" />
-              <span className="slider"></span>
-            </label>
-          </div>
-
-          <div className="setting-item">
-            <span>Auto Refresh</span>
-            <label className="toggle-switch">
-              <input type="checkbox" />
-              <span className="slider"></span>
-            </label>
-          </div>
+    <div className="settings-container">
+      <h1>Settings</h1>
+      <div className="settings-content">
+        <div className="settings-section">
+          <h2>Change Password</h2>
+          <form className="settings-form" onSubmit={handleSubmit}>
+            {inputs.map((input) => {
+              return (
+                <FormInput
+                  key={input.id}
+                  {...input}
+                  value={values[input.name]}
+                  onChange={(e) => setValues({...values, [input.name]: e.target.value})}
+                />
+              )
+            })}
+            <button type="submit">Change Password</button>
+          </form>
         </div>
       </div>
     </div>
   )
-}
-
-Settings.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
 }
 
 export default Settings

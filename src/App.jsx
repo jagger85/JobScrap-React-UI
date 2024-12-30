@@ -1,32 +1,28 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useContext, useRef } from 'react'
 import Login from './components/Login/Login'
-import MainLayout from './Layout/MainLayout'
-import Toasters from './components/Toasters'
+import useAuth from './hooks/useAuth'
+import { useContext, useEffect } from 'react'
 import { AuthContext } from './contexts/AuthContext'
-import { ConnectionContext } from './contexts/ConnectionContext'
-import useServerConnection from './hooks/useServerConnection'
-import './jobsweep.css'
-
+import useStorage from './hooks/useStorage'
+import MainLayout from './Layout/MainLayout'
+import  Toasters  from './components/Toasters/Toasters'
 export default function App() {
+  const { loginWithUsenamePassword, loginWithToken } = useAuth()
+  const { getToken } = useStorage()
   const { isAuthenticated } = useContext(AuthContext)
-  const { connect, disconnect } = useServerConnection()
-  const { connection } = useContext(ConnectionContext)
-  const hasConnectedRef = useRef(false)
+
   useEffect(() => {
-    if (
-      isAuthenticated &&
-      !hasConnectedRef.current &&
-      !connection.isConnected
-    ) {
-      connect()
-      hasConnectedRef.current = true
+    if (getToken() && !isAuthenticated) {
+      loginWithToken()
     }
-  }, [connect, isAuthenticated, connection.isConnected])
+  }, [getToken, isAuthenticated, loginWithToken])
+
+  function handleLogin(username, password, rememberMe) {
+    loginWithUsenamePassword(username, password, rememberMe)
+  }
 
   return (
-    <div className="App">
-      {!isAuthenticated ? <Login /> : <MainLayout />}
+    <div>
+      {isAuthenticated ? <MainLayout /> : <Login onLogin={handleLogin} />}
       <Toasters />
     </div>
   )

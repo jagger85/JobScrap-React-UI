@@ -1,130 +1,53 @@
-import { useContext } from 'react'
+import useApi from './useApi'
 import { AuthContext } from '../contexts/AuthContext'
-import useMessageStore from '../utils/messageStore'
-import { ToasterManager } from '../components/Toasters'
-import { useStorage } from '../hooks/useLocalStorage'
-import { STORAGE_KEYS } from '../constants'
-import { API_BASE_URL } from './useApi'
+import useStorage from './useStorage'
+import { useContext } from 'react'
+import { ToasterManager } from '../components/Toasters/Toasters'
 
-
-export function useAuth() {
+const useAuth = () => {
   const { setAuth, setUsername, setUserRole } = useContext(AuthContext)
-  const addMessage = useMessageStore((state) => state.addMessage)
-  const [token, setToken, clearToken] = useStorage(STORAGE_KEYS.BEARER_TOKEN_KEY, null)
-  const endpoint = `${API_BASE_URL}/login`
+  const { login, validateToken } = useApi()
+  const { removeToken, saveToken, getToken } = useStorage()
 
-
-  const loginWithToken = async (token) => {
-      const requestBody ={
-        token
-      }
-
-      try{
-        const response = await fetch(endpoint,{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: '*/*',
-          },
-          body: JSON.stringify(requestBody),
-        })
-
-        console.log('the server send this response to the login with token ',response)
-        const responseText = await response.text()
-        const data = responseText ? JSON.parse(responseText) : null
-        setUsername(data.username)
-        setUserRole(data.role)
-        setAuth(true)
-
-      } catch (error){
-        console.log(error)
-      }
+  const loginWithUsenamePassword = async (username, password, rememberMe) => {
+    const response = await login(username, password, rememberMe)
+    console.log(response)
+    if (response.status === 200) {
+      const data = await response.json()
+      setAuth(true)
+      setUsername(username)
+      setUserRole(data.role)
+      saveToken(data.token, rememberMe)
+    } else {
+      const data = await response.json()
+      setAuth(false)
+      ToasterManager.showToast('error', data.message)
+    }
   }
-  const login = async (username, password, rememberMe = false) => {
 
-    if (!username || !password) {
-      const errorMessage = 'Username and password are required';
-      ToasterManager.showToast('error', errorMessage);
-      throw new Error(errorMessage);
-    }
-
-    const requestBody = {
-      username,
-      password,
-    }
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: '*/*',
-        },
-        body: JSON.stringify(requestBody),
-      })
-
-      console.log('Response status:', response.status)
-
-      const responseText = await response.text()
-
-      if (!response.ok) {
-        let errorMsg = responseText;
-        try {
-          const errorData = JSON.parse(responseText);
-          errorMsg = errorData.msg || responseText; // Use msg if available
-        } catch (e) {
-          console.error('Error parsing responseText:', e);
-        }
-        ToasterManager.showToast('error', errorMsg);
-        throw new Error(errorMsg);
-      }
-
-      const data = responseText ? JSON.parse(responseText) : null
-
-      setToken(data.token, rememberMe)
+  const loginWithToken = async () => {
+    const token = getToken()
+    const response = await validateToken(token)
+    if (response.status === 200) {
+      const data = await response.json()
       setAuth(true)
       setUsername(data.username)
       setUserRole(data.role)
-      return data.access_token
-
-    } catch (error) {
-      let errorMessage = error.message
-      if (errorMessage.includes('HTTP error!')) {
-        try {
-          const errorResponse = JSON.parse(errorMessage.split('Response: ')[1])
-          errorMessage = errorResponse.error
-        } catch (e) {
-          console.log(e)
-        }
-      }
-
-      addMessage(errorMessage)
-      ToasterManager.showToast('error', errorMessage)
-      console.error('Network or parsing error:', error)
-      console.error('Error name:', error.name)
-      console.error('Error message:', error.message)
-      throw error
+    } else {
+      const data = await response.json()
+      ToasterManager.showToast('error', data.message)
+      logOut()
     }
   }
 
-  const logout = () => {
-    clearToken()
+  const logOut = () => {
+    removeToken()
     setAuth(false)
+    setUsername(null)
+    setUserRole(null)
   }
 
-  const getToken = () => {
-    return token
-  }
-
-  const isAuthenticated = () => {
-    return !!token
-  }
-
-  return { 
-    loginWithToken,
-    login,
-    logout,
-    getToken,
-    isAuthenticated 
-  }
+  return { loginWithUsenamePassword, logOut, loginWithToken }
 }
+
+export default useAuth

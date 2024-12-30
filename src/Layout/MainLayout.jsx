@@ -1,11 +1,11 @@
 import './mainLayout.css'
 import Header from '../components/Header/Header'
 import SideBar from '../components/SideBar/SideBar'
-import Dashboard from '../components/Dashboard'
-import History from '../components/History'
+import Dashboard from '../components/Dashboard/Dashboard'
+import History from '../components/History/History'
 import UserManagement from '../components/UserManagement/UserManagement'
-import Settings from '../components/Settings'
-
+import Settings from '../components/Settings/Settings'
+import Automation from '../components/Automation/Automation'
 import { Routes, Route } from 'react-router-dom'
 import ProtectedRoute from '../components/ProtectedRoute'
 
@@ -45,6 +45,13 @@ function MainLayout() {
               element={
                 <ProtectedRoute
                   element={<Settings />}
+                  allowedRoles={['admin', 'user']}
+                />
+              }
+            />
+            <Route path="/automation" element={
+              <ProtectedRoute
+              element={<Automation />}
                   allowedRoles={['admin', 'user']}
                 />
               }
