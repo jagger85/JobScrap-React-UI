@@ -8,6 +8,7 @@
   padding: var(--spacing-xs);
   border-radius: var(--s-radius);
   margin: var(--spacing-xxs);
+  width: fit-content;
 }
 
 .squared:not(:disabled):hover {
@@ -34,3 +35,17 @@
   opacity: 0.8;
 }
 
+.standard-button {
+  width: fit-content;
+  padding: var(--spacing-s);
+  margin-top: var(--spacing-m);
+  background-color: var(--primary);
+  color: var(--font);
+  border: 0px solid transparent;
+  box-shadow: var(--shadow);
+  border-radius: var(--s-radius);
+}
+
+.standard-button:hover {
+  color: white;
+}
