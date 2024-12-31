@@ -19,7 +19,7 @@ export default function CollapsablePanel(props) {
       >
 
         <div className='cp-panel-header-data'>
-        <img src={operation.icon}/>
+        <img src={operation.icon} style={{ width: '30px', height: '30px' }} />
         <div className="cp-panel-header-item"><span className="cp-panel-header-item-platform">{operation.platform}</span></div>
         <div className="cp-panel-header-item">Keywords: <span>{operation.keywords}</span></div>
         <div className="cp-panel-header-item">Date range: <span>{operation.dateRange}</span></div>
