@@ -9,6 +9,7 @@
   align-items: flex-start;
   gap: var(--spacing-m);
   padding: var(--spacing-m);
+  padding-left: var(--spacing-xl);
   padding-top: 0;
 }
 
