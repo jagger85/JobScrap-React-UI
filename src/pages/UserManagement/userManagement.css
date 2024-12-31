@@ -18,6 +18,9 @@
     display:none
 
 }
+.user-table{
+  width: 500px;
+}
 .user-form-input input:invalid[focused='true'] ~ span{
     display: block;    
 }

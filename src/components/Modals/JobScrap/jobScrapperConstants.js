@@ -1,7 +1,7 @@
-import linkedinIcon from '../../assets/platform-icons/linkedin.svg'
-import indeedIcon from '../../assets/platform-icons/indeed.svg'
-import kalibrrIcon from '../../assets/platform-icons/kalibrr.svg'
-import jobstreetIcon from '../../assets/platform-icons/jobstreet.svg'
+import linkedinIcon from '@platform-icons/linkedin.svg'
+import indeedIcon from '@platform-icons/indeed.svg'
+import kalibrrIcon from '@platform-icons/kalibrr.svg'
+import jobstreetIcon from '@platform-icons/jobstreet.svg'
 
 export const scrapperPlatforms = [
     {

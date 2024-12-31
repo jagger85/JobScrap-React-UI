@@ -1,0 +1,22 @@
+.add-user-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+  }
+  .user-header{
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-s);
+  }
+  .add-user-form input {
+    width: 380px;
+  }
+  .user-form-input span{
+      display:none
+  
+  }
+  .user-form-input input:invalid[focused='true'] ~ span{
+      display: block;    
+  }

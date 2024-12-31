@@ -1,0 +1,45 @@
+.user-table {
+  width: 500px;
+}
+.history-table {
+  width: 500px;
+}
+
+.table-title {
+  font-size: var(--s);
+  align-self: flex-start;
+  margin-top: var(--spacing-s);
+}
+
+table {
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: var(--grey3);
+}
+
+th,
+td {
+  background-color: transparent;
+  text-align: left;
+}
+
+th {
+  color: var(--font);
+}
+
+tr:hover {
+  background-color: var(--grey2);
+}
+
+.table-delete-button:hover{
+    color: var(--error)
+}
+.table-download-button:hover{
+    color: var(--success)
+}
+.table-actions{
+    display: flex;
+    gap: var(--spacing-s);
+}

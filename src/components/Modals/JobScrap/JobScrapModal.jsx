@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Select, { components } from 'react-select'
 import './jobScrapModal.css'
 import { scrapperPlatforms } from './jobScrapperConstants'
-import { customSelectStyle } from '../../utils/reactCustomStyle'
+import { customSelectStyle } from '../../../utils/reactCustomStyle'
 import PropTypes from 'prop-types'
 
 function JobScrapModal({ onClose, addOperation }) {
