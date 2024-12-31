@@ -2,23 +2,21 @@ import './tables.css'
 import PropTypes from 'prop-types'
 import IconButton from '../Buttons/IconButton'
 import { DownloadIcon, TrashIcon } from '../Icons'
-
+import Badge from '@badges/Badge'
 const HistoricTable = (props) => {
-  
-    const { data, handleDownload, handleDelete } = props
-  
-    return (
+  const { data, handleDownload, handleDelete } = props
+  return (
     <div className="elevated">
       <div className="table-title">Historical operations</div>
       <table className="history-table">
         <thead>
-          <tr>
+          <tr className="table-header">
             <th>User</th>
             <th>Platform</th>
             <th>Keywords</th>
-            <th>Listings</th>
-            <th>Date</th>
-            <th>Actions</th>
+            <th className="table-listings-cell">Listings</th>
+            <th className="table-date-cell">Date</th>
+            <th className="table-actions-cell">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -29,11 +27,11 @@ const HistoricTable = (props) => {
             }/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`
             return (
               <tr key={index}>
-                <td>{operation.user}</td>
-                <td>{operation.platform}</td>
-                <td>{operation.keywords}</td>
-                <td>{operation.listings.length}</td>
-                <td>{formattedDate}</td>
+                <td className="table-user-cell">{operation.user}</td>
+                <td><Badge text={operation.platform} className="background-badge" /></td>
+                <td><Badge text={operation.keywords} className="primary-badge" /></td>
+                <td className="table-listings-cell">{operation.listings.length}</td>
+                <td className="table-date-cell">{formattedDate}</td>
                 <td className="table-actions">
                   <IconButton
                     icon={DownloadIcon}

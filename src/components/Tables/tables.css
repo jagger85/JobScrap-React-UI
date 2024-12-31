@@ -1,45 +1,71 @@
 .user-table {
   width: 500px;
 }
-.history-table {
-  width: 500px;
-}
 
 .table-title {
+  color: var(--font);
   font-size: var(--s);
-  align-self: flex-start;
+  font-weight: bold;
+  letter-spacing: 0.05rem;
   margin-top: var(--spacing-s);
+  align-self: flex-start;
+  padding: var(--spacing-s);
+  padding-bottom: var(--spacing-m);
+  border-bottom: 1px solid var(--grey3);
+}
+.table-actions {
+  display: flex;
+  gap: var(--spacing-s);
+  align-items: flex-end;
+}
+
+.table-delete-button:hover {
+  color: var(--error);
+}
+.table-download-button:hover {
+  color: var(--success);
+}
+.table-user-cell {
+  color: white;
+}
+.table-actions-cell {
+  text-align: end;
+  display: flex;
+  justify-content: flex-end;
+}
+.table-listings-cell {
+  text-align: end;
+  width: 100px;
+}
+.table-date-cell {
+  width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 table {
+  width: 100%;
   border-collapse: collapse;
 }
 
-thead {
-  background-color: var(--grey3);
+.table-header:hover {
+  background-color: transparent;
 }
 
 th,
 td {
+  padding: var(--spacing-s);
   background-color: transparent;
   text-align: left;
+  border-bottom: 1px solid var(--grey3);
 }
 
 th {
   color: var(--font);
+  font-weight: normal;
 }
 
 tr:hover {
   background-color: var(--grey2);
-}
-
-.table-delete-button:hover{
-    color: var(--error)
-}
-.table-download-button:hover{
-    color: var(--success)
-}
-.table-actions{
-    display: flex;
-    gap: var(--spacing-s);
 }

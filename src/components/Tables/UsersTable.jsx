@@ -2,39 +2,39 @@ import './tables.css'
 import PropTypes from 'prop-types'
 import IconButton from '../Buttons/IconButton'
 import { TrashIcon } from '../Icons'
-
+import Badge from '@badges/Badge'
 function UsersTable(props) {
   const { data, handleDelete } = props
   return (
-    <div className="user-table-container elevated" >
-    <div className="table-title">Current users</div>
-   <table className="user-table">
-     <thead>
-       <tr>
-         <th>User</th>
-         <th>Role</th>
-         <th>Actions</th>
-       </tr>
-     </thead>
-     <tbody>
-       {data.map((user, index) => {
-         return (
-           <tr key={index}>
-             <td>{user.username}</td>
-             <td>{user.role}</td>
-             <td className="table-actions">
-               <IconButton
-                 icon={TrashIcon}
-                 type="table-delete-button squared"
-                 onClick={() => handleDelete(user.username)}
-                 />
-             </td>
-           </tr>
-         )
-       })}
-     </tbody>
-   </table>
-   </div>
+    <div className="elevated">
+      <div className="table-title">Current users</div>
+      <table className="user-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th className="table-actions-cell">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((user, index) => {
+            return (
+              <tr key={index}>
+                <td>{user.username}</td>
+                <td><Badge text={user.role} className="background-badge" /></td>
+                <td className="table-actions-cell">
+                  <IconButton
+                    icon={TrashIcon}
+                    type="table-delete-button squared"
+                    onClick={() => handleDelete(user.username)}
+                  />
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
   )
 }
 
