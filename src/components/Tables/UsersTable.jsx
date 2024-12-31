@@ -6,11 +6,11 @@ import Badge from '@badges/Badge'
 function UsersTable(props) {
   const { data, handleDelete } = props
   return (
-    <div className="elevated">
+    <div className="elevated table-container">
       <div className="table-title">Current users</div>
       <table className="user-table">
         <thead>
-          <tr>
+          <tr className="table-header">
             <th>User</th>
             <th>Role</th>
             <th className="table-actions-cell">Actions</th>

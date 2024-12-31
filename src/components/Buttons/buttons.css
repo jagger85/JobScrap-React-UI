@@ -41,11 +41,12 @@
   margin-top: var(--spacing-m);
   background-color: var(--primary);
   color: var(--font);
-  border: 0px solid transparent;
   box-shadow: var(--shadow);
+  border: 1px solid transparent;
   border-radius: var(--s-radius);
 }
 
 .standard-button:hover {
+  border: 1px solid var(--secondary);
   color: white;
 }

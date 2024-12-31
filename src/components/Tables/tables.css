@@ -1,3 +1,10 @@
+table{
+  box-shadow: var(--double-border);
+}
+.table-container {
+  padding: var(--spacing-m);
+}
+
 .user-table {
   width: 500px;
 }
@@ -7,10 +14,8 @@
   font-size: var(--s);
   font-weight: bold;
   letter-spacing: 0.05rem;
-  margin-top: var(--spacing-s);
   align-self: flex-start;
-  padding: var(--spacing-s);
-  padding-bottom: var(--spacing-m);
+  padding: 0 0 var(--spacing-m) 0;
   border-bottom: 1px solid var(--grey3);
 }
 .table-actions {
@@ -48,7 +53,9 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
-
+.table-header {
+  box-shadow: var(--shadow-up);
+}
 .table-header:hover {
   background-color: transparent;
 }

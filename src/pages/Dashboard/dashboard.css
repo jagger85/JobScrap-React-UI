@@ -13,3 +13,8 @@
     font-size: var(--s);
     font-weight: var(--font-weight-medium);
 }
+.dashboard-operations-panels{
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}

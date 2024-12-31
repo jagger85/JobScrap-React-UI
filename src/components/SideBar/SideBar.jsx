@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import { sidebarLinks } from './constants'
 import SideBarElement from './SideBarElement'
-
+import uplift from '../../assets/platform-icons/Uplift.png'
 import './sideBar.css'
 
 function SideBar() {
@@ -11,7 +11,10 @@ function SideBar() {
 
   return (
     <div className="sidebar-container">
-      <div className="sidebar-header">sidebar header</div>
+      <div className="sidebar-header">
+        <img src={uplift} style={{ width: '75px', height: '75px' }} />
+        <div className="sidebar-header-text">Job Scraper</div>
+      </div>
       <div className="sidebar-content">
         {filteredLinks.map((element) => (
           <SideBarElement

@@ -6,6 +6,9 @@ import { scrapperPlatforms } from './jobScrapperConstants'
 import { customSelectStyle } from '../../../utils/reactCustomStyle'
 import StandardButton from '@buttons/StandardButton'
 import PropTypes from 'prop-types'
+import { OPERATION_STATUS } from '@constants'
+import {CloseIcon} from '@icons'
+import IconButton from '@buttons/IconButton'
 
 function JobScrapModal({ onClose, addOperation }) {
   // Transform scrapperPlatforms into the format React Select expects
@@ -67,6 +70,10 @@ function JobScrapModal({ onClose, addOperation }) {
       icon: selectedPlatform.icon,
       keywords: keywords,
       dateRange: selectedDateRange,
+      status: OPERATION_STATUS.IDLE,
+      numberOfListings: 0,
+      listings: [],
+      taskId: null
     }
     addOperation(newOperation)
     onClose()
@@ -77,9 +84,7 @@ function JobScrapModal({ onClose, addOperation }) {
       <div className="modal-content elevated">
         <div className="modal-header">
           <div className="modal-title">Add New Job Search</div>
-          <button className="close-button" onClick={onClose}>
-            ×
-          </button>
+          <IconButton icon={CloseIcon} onClick={onClose}  type='squared'/>
         </div>
 
         <form className="job-scrap-form">

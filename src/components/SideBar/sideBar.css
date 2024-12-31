@@ -7,10 +7,12 @@
 }
 
 .sidebar-header {
-  height: var(--header-height);
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: var(--spacing-s);
 }
 
 .sidebar-content {
@@ -27,6 +29,7 @@
 }
 
 .sidebar-element-container {
+  border: 1px solid transparent;
   display: flex;
   align-items: center;
   height: 25px;
@@ -34,6 +37,10 @@
   margin: 0px var(--spacing-s) 10px var(--spacing-s);
   border-radius: var(--m-radius);
   text-decoration: none;
+}
+
+.sidebar-element-container:hover {
+  border: 1px solid var(--primary);
 }
 
 .sidebar-element-container.active {

@@ -1,13 +1,4 @@
-.automation-container {
+.automation-cards {
   display: flex;
-  flex-direction: column;
-  width: 100%;
-
-}
-.automation-body {
-    display: flex;
-    flex-direction: row;
-    gap: var(--spacing-m);
-    max-width: 100%;
-    flex-wrap: wrap;
+  gap: var(--spacing-m);
 }

@@ -1,13 +1,14 @@
 import './dashboard.css'
 import { useState } from 'react'
 import JobScrapModal from '@modals/JobScrap/JobScrapModal'
-import Operation from '../../components/OperationCard/Operation'
 import { useOperations } from '@hooks/useOperations'
 import useApi from '@hooks/useApi'
 import PageLayout from '../../Layout/PageLayout'
 import IconButton from '../../components/Buttons/IconButton'
 import { CreateIcon } from '../../components/Icons'
 import StandardButton from '@buttons/StandardButton'
+import CollapsablePanel from '@panels/CollapsablePanel'
+
 function Dashboard() {
   const { fetchOperationsByDateRange } = useApi()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -40,13 +41,14 @@ function Dashboard() {
           Create an instant job scrap
         </div>
       </div>
-      <div className="dashboard-body">
+      <div className="dashboard-operations-panels">
         {operations.map((operation) => (
-          <Operation
-            key={operation.id}
-            operation={operation}
-            onDelete={deleteOperation}
-          />
+        <CollapsablePanel 
+        key={operation.id}
+        operation={operation}
+        onDelete={deleteOperation}
+        >
+        </CollapsablePanel>
         ))}
       </div>
       {isModalOpen && (

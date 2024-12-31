@@ -8,6 +8,9 @@ import Select from 'react-select'
 import useApi from '@hooks/useApi'
 import { ToasterManager } from '@toasters/Toasters'
 import { useQueryClient } from '@tanstack/react-query'
+import IconButton from '@buttons/IconButton'
+import {CloseIcon} from '@icons'
+import StandardButton from '@buttons/StandardButton'
 
 const roleOptions = [
   { value: 'admin', label: 'Admin' },
@@ -93,9 +96,7 @@ function AddUserModal({ onClose }) {
       <div className="modal-content elevated">
         <div className="modal-header">
           <div className="modal-title">Add user</div>
-          <button className="close-button" onClick={onClose}>
-            ×
-          </button> 
+          <IconButton icon={CloseIcon} onClick={onClose}  type='squared'/>
         </div>
         <form onSubmit={handleSubmit} className="add-user-form">
           {inputs.map((input) => {
@@ -119,7 +120,7 @@ function AddUserModal({ onClose }) {
               value={roleOptions.find((option) => option.value == values.role)}
             />
           </div>
-          <button type="submit">Add user</button>
+          <StandardButton type="submit" text='Add user' className='standard-button'/>
         </form>
         </div>
       </div>

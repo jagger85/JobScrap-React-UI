@@ -39,12 +39,10 @@ function UserManagement() {
 
   return (
     <PageLayout title="User Management">
-      <Section>
         <div className="dashboard-header">
           <IconButton icon={CreateIcon} onClick={handleOpen} type="rounded" />
           <div className="dashboard-header-subtitle">Create a new user</div>
         </div>
-      </Section>
         <UsersTable data={data} handleDelete={handleDelete} />
       {isModalOpen && <AddUserModal onClose={handleClose} />}
     </PageLayout>

@@ -30,6 +30,8 @@ export default defineConfig({
       '@platform-icons': '/src/assets/platform-icons',
       '@components': '/src/components',
       '@badges': '/src/components/Badges',
+      '@panels': '/src/components/Panels',
+      '@constants': '/src/constants',
     },
   },
 })

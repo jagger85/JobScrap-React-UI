@@ -6,7 +6,7 @@ import Badge from '@badges/Badge'
 const HistoricTable = (props) => {
   const { data, handleDownload, handleDelete } = props
   return (
-    <div className="elevated">
+    <div className="elevated table-container">
       <div className="table-title">Historical operations</div>
       <table className="history-table">
         <thead>

@@ -60,7 +60,7 @@ function MainLayout() {
             />
           </Routes>
         </div>
-        <div className="footer-container">Footer</div>
+        <div className="footer-container"></div>
       </div>
     </div>
   )
