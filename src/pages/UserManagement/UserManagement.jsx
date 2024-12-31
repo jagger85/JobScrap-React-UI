@@ -1,4 +1,4 @@
-import AddUser from './AddUser'
+import AddUserModal from '@modals/AddUser/AddUserModal'
 import PageLayout from '../../Layout/PageLayout'
 import Section from '../../components/Section/Section'
 import { CreateIcon } from '../../components/Icons'
@@ -9,14 +9,13 @@ import { ToasterManager } from '../../components/Toasters/Toasters'
 import UsersTable from '../../components/Tables/UsersTable'
 import { useState } from 'react'
 function UserManagement() {
+
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const handleCreate = () => {
-    console.log('create')
-  }
-
   const handleClose = () => {
+    console.log('close')
     setIsModalOpen(false)
+    refetch()
   }
   const handleOpen = () => {
     setIsModalOpen(true)
@@ -42,14 +41,12 @@ function UserManagement() {
     <PageLayout title="User Management">
       <Section>
         <div className="dashboard-header">
-          <IconButton icon={CreateIcon} onClick={handleCreate} type="rounded" />
+          <IconButton icon={CreateIcon} onClick={handleOpen} type="rounded" />
           <div className="dashboard-header-subtitle">Create a new user</div>
         </div>
       </Section>
-      <Section>
         <UsersTable data={data} handleDelete={handleDelete} />
-      </Section>
-      <AddUser />
+      {isModalOpen && <AddUserModal onClose={handleClose} />}
     </PageLayout>
   )
 }
