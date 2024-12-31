@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import Select, { components } from 'react-select'
 import './jobScrapModal.css'
+import '../overlay.css'
 import { scrapperPlatforms } from './jobScrapperConstants'
 import { customSelectStyle } from '../../../utils/reactCustomStyle'
+import StandardButton from '@buttons/StandardButton'
 import PropTypes from 'prop-types'
 
 function JobScrapModal({ onClose, addOperation }) {
@@ -74,15 +76,16 @@ function JobScrapModal({ onClose, addOperation }) {
     <div className="modal-overlay">
       <div className="modal-content elevated">
         <div className="modal-header">
-          <div>Add New Job Search</div>
+          <div className="modal-title">Add New Job Search</div>
           <button className="close-button" onClick={onClose}>
             ×
           </button>
         </div>
 
-        <div className="modal-body">
-          <label>Platform</label>
+        <form className="job-scrap-form">
+          <label>Platform          
           <Select
+            className="job-scrap-select"
             options={platformOptions}
             value={selectedPlatform}
             onChange={handlePlatformChange}
@@ -90,33 +93,34 @@ function JobScrapModal({ onClose, addOperation }) {
             components={{ Option: IconOption }}
             isSearchable={false}
           />
-
-          <label>Keywords</label>
-          <input
-            type="text"
-            placeholder="Enter keywords"
-            value={keywords}
-            onChange={(e) => setKeywords(e.target.value)}
-          />
-
-          <label>Date Range</label>
-          <Select
-            options={dateRangeOptions}
-            value={dateRangeOptions.find(
-              (option) => option.value === selectedDateRange
-            )}
-            onChange={handleDateRangeChange}
-            styles={customSelectStyle}
-            isSearchable={false}
-            className="date-range-select"
-          />
-        </div>
-
-        <div className="modal-footer">
-          <button className="save-button" onClick={handleSave}>
-            Save Configuration
-          </button>
-        </div>
+          </label>
+          <label>
+            Keywords
+            <input
+              className="job-scrap-input"
+              type="text"
+              placeholder="Enter keywords"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+            />
+          </label>
+          <label>
+            Date Range
+            <Select
+              className="job-scrap-select date-range-select"
+              options={dateRangeOptions}
+              value={dateRangeOptions.find(
+                (option) => option.value === selectedDateRange
+              )}
+              onChange={handleDateRangeChange}
+              styles={customSelectStyle}
+              isSearchable={false}
+            />
+          </label>
+          <div className="modal-footer">
+            <StandardButton text="Save Configuration" onClick={handleSave} className="standard-button" />
+          </div>
+        </form>
       </div>
     </div>
   )

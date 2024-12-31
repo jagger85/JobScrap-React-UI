@@ -1,10 +1,12 @@
-import './userManagement.css'
-import { customSelectStyle } from '../../utils/reactCustomStyle'
+import '../overlay.css'
+import './addUserModal.css'
+import PropTypes from 'prop-types'
+import { customSelectStyle } from '@utils/reactCustomStyle'
 import { useState } from 'react'
-import FormInput from '../../components/FormInput'
+import FormInput from '@components/FormInput'
 import Select from 'react-select'
-import useApi from '../../hooks/useApi'
-import { ToasterManager } from '../../components/Toasters/Toasters'
+import useApi from '@hooks/useApi'
+import { ToasterManager } from '@toasters/Toasters'
 import { useQueryClient } from '@tanstack/react-query'
 
 const roleOptions = [
@@ -13,7 +15,7 @@ const roleOptions = [
   { value: 'guest', label: 'Guest' },
 ]
 
-function AddUserModal() {
+function AddUserModal({ onClose }) {
   const queryClient = useQueryClient()
   const { addUser } = useApi()
 
@@ -68,8 +70,10 @@ function AddUserModal() {
     if (response.ok) {
       ToasterManager.showToast('success', 'User added successfully')
       queryClient.refetchQueries(['users'])
+      onClose()
     } else {
       ToasterManager.showToast('error', 'Failed to add user')
+      onClose()
     }
   }
 
@@ -85,33 +89,45 @@ function AddUserModal() {
   }
 
   return (
-    <div className='elevated'>
-      <h2>Add user</h2>
-      <form onSubmit={handleSubmit} className="add-user-form">
-        {inputs.map((input) => {
-          return (
-            <FormInput
-              key={input.id}
-              {...input}
-              value={values[input.name]}
-              onChange={onChange}
-            />
-          )
-        })}
-        <div style={{ width: '395px' }}>
-          <Select
-            styles={customSelectStyle}
-            placeholder="Select role..."
-            isSearchable={false}
-            options={roleOptions}
-            onChange={handleRoleChange}
-            value={roleOptions.find((option) => option.value == values.role)}
-          />
+    <div className="modal-overlay">
+      <div className="modal-content elevated">
+        <div className="modal-header">
+          <div className="modal-title">Add user</div>
+          <button className="close-button" onClick={onClose}>
+            ×
+          </button> 
         </div>
-        <button type="submit">Add user</button>
-      </form>
-    </div>
+        <form onSubmit={handleSubmit} className="add-user-form">
+          {inputs.map((input) => {
+            return (
+              <FormInput
+                key={input.id}
+                {...input}
+                value={values[input.name]}
+                onChange={onChange}
+              />
+            )
+          })}
+          <div style={{ width: '395px' }}>
+            <label>Role</label>
+            <Select
+              styles={customSelectStyle}
+              placeholder="Select role..."
+              isSearchable={false}
+              options={roleOptions}
+              onChange={handleRoleChange}
+              value={roleOptions.find((option) => option.value == values.role)}
+            />
+          </div>
+          <button type="submit">Add user</button>
+        </form>
+        </div>
+      </div>
   )
+}
+
+AddUserModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
 }
 
 export default AddUserModal
