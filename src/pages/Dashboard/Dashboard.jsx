@@ -7,7 +7,7 @@ import useApi from '@hooks/useApi'
 import PageLayout from '../../Layout/PageLayout'
 import IconButton from '../../components/Buttons/IconButton'
 import { CreateIcon } from '../../components/Icons'
-
+import StandardButton from '@buttons/StandardButton'
 function Dashboard() {
   const { fetchOperationsByDateRange } = useApi()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -52,7 +52,7 @@ function Dashboard() {
       {isModalOpen && (
         <JobScrapModal addOperation={addOperation} onClose={handleClose} />
       )}
-      {operations.length != 0 && <button onClick={handleStart}>Start</button>}
+      {operations.length != 0 && <StandardButton className='standard-button' text='Start operations' onClick={handleStart}/>}
     </PageLayout>
   )
 }

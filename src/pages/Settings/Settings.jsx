@@ -8,6 +8,7 @@ import { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import PageLayout from '../../Layout/PageLayout'
 import Section from '../../components/Section/Section'
+import StandardButton from '../../components/Buttons/StandardButton'
 
 const Settings = () => {
   const { logOut } = useAuth()
@@ -69,7 +70,7 @@ const Settings = () => {
               />
             )
           })}
-          <button type="submit">Change Password</button>
+          <StandardButton type="submit" text="Change Password" className="standard-button" />
         </form>
       </Section>
     </PageLayout>
