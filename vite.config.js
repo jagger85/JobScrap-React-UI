@@ -28,6 +28,8 @@ export default defineConfig({
       '@hooks': '/src/hooks',
       '@utils': '/src/utils',
       '@platform-icons': '/src/assets/platform-icons',
+      '@components': '/src/components',
+      '@badges': '/src/components/Badges',
     },
   },
 })
