@@ -1,5 +1,5 @@
 import { useState } from "react"
-
+import PropTypes from 'prop-types'
 function CreateUserInput(props) {
     
     const [focused, setFocused] = useState(false)
@@ -16,6 +16,13 @@ function CreateUserInput(props) {
         <span>{errorMessage}</span>
     </div>
   )
+}
+
+CreateUserInput.propTypes = {
+    label: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
 }
 
 export default CreateUserInput
