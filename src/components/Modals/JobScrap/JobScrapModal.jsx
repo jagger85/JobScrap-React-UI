@@ -6,7 +6,6 @@ import { scrapperPlatforms } from './jobScrapperConstants'
 import { customSelectStyle } from '../../../utils/reactCustomStyle'
 import StandardButton from '@buttons/StandardButton'
 import PropTypes from 'prop-types'
-import { OPERATION_STATUS } from '@constants'
 import {CloseIcon} from '@icons'
 import IconButton from '@buttons/IconButton'
 
@@ -70,10 +69,11 @@ function JobScrapModal({ onClose, addOperation }) {
       icon: selectedPlatform.icon,
       keywords: keywords,
       dateRange: selectedDateRange,
-      status: OPERATION_STATUS.IDLE,
+      status: 'Idle',
       numberOfListings: 0,
       listings: [],
-      taskId: null
+      taskId: null,
+      message: 'Awaiting operation launch'
     }
     addOperation(newOperation)
     onClose()

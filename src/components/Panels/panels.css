@@ -46,6 +46,19 @@
   display: flex;
   align-items: center;
 }
+.cp-content-row-items {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  gap: var(--spacing-m);
+}
+.cp-content-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
 
 .cp-icon-closed {
   transform: rotate(0deg);
@@ -60,6 +73,7 @@
   box-shadow: var(--double-border);
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
 }
 
 .cp-content-collapsable {
@@ -75,7 +89,11 @@
   padding: var(--spacing-m);
 
 }
-
+.cp-panel-header-item-message {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
 .cp-content-closed {
   max-height: 0;
   opacity: 0;

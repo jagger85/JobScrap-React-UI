@@ -10,9 +10,10 @@ import StandardButton from '@buttons/StandardButton'
 import CollapsablePanel from '@panels/CollapsablePanel'
 
 function Dashboard() {
-  const { fetchOperationsByDateRange } = useApi()
+  const { scrapOperationsByDateRange } = useApi()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { operations, addOperation, deleteOperation } = useOperations()
+  const { operations, addOperation, deleteOperation, setOperationTaskId } =
+    useOperations()
 
   const handleCreate = () => {
     setIsModalOpen(true)
@@ -23,13 +24,14 @@ function Dashboard() {
   }
 
   const handleStart = async () => {
+    console.log('starting operations')
     operations.forEach(async (operation) => {
-      const data = await fetchOperationsByDateRange(
+      const data = await scrapOperationsByDateRange(
         operation.keywords,
         operation.dateRange,
         operation.platform
       )
-      console.log(data)
+      setOperationTaskId(operation.id, data.task_id)
     })
   }
 
@@ -43,18 +45,23 @@ function Dashboard() {
       </div>
       <div className="dashboard-operations-panels">
         {operations.map((operation) => (
-        <CollapsablePanel 
-        key={operation.id}
-        operation={operation}
-        onDelete={deleteOperation}
-        >
-        </CollapsablePanel>
+          <CollapsablePanel
+            key={operation.id}
+            operation={operation}
+            onDelete={deleteOperation}
+          ></CollapsablePanel>
         ))}
       </div>
       {isModalOpen && (
         <JobScrapModal addOperation={addOperation} onClose={handleClose} />
       )}
-      {operations.length != 0 && <StandardButton className='standard-button' text='Start operations' onClick={handleStart}/>}
+      {operations.length != 0 && (
+        <StandardButton
+          className="standard-button"
+          text="Start operations"
+          onClick={handleStart}
+        />
+      )}
     </PageLayout>
   )
 }

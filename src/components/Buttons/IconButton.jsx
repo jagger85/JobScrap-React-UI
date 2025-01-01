@@ -1,9 +1,26 @@
 import './buttons.css'
 import PropTypes from 'prop-types'
 
-const IconButton = ({ icon: Icon, onClick, size = 25,type, ...props }) => {
+const IconButton = ({
+  icon: Icon,
+  onClick,
+  size = 25,
+  type,
+  disabled,
+  ...props
+}) => {
+  const handleClick = (e) => {
+    if (!disabled && onClick) {
+      onClick(e)
+    }
+  }
+
   return (
-    <div className={`${type} button`} onClick={onClick} {...props}>
+    <div
+      className={`${type} button ${disabled ? 'disabled' : ''}`}
+      onClick={handleClick}
+      {...props}
+    >
       {Icon && <Icon size={size} />}
     </div>
   )
@@ -16,6 +33,7 @@ IconButton.propTypes = {
   status: PropTypes.string,
   className: PropTypes.string,
   type: PropTypes.string,
+  disabled: PropTypes.bool,
 }
 
 export default IconButton

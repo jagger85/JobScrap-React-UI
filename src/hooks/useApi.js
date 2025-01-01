@@ -107,7 +107,7 @@ const { getToken } = useStorage()
     return data
     }
 
-  async function fetchOperationsByDateRange(keywords, dateRange, platform){
+  async function scrapOperationsByDateRange(keywords, dateRange, platform){
     const response = await fetch(`${BASE_URL}/${platform}`, {
       method: 'POST',
       headers: {
@@ -135,9 +135,19 @@ const { getToken } = useStorage()
     return response
   }
 
-
+  async function fetchOperationByTaskId(taskId){
+    const response = await fetch(`${BASE_URL}/operations/task/${taskId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getToken()}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  }
     
-  return {fetchUsers, login, validateToken, addUser, deleteUser, changePassword, fetchOperations, fetchOperationsByDateRange, deleteOperation}  
+  return {fetchUsers, login, validateToken, addUser, deleteUser, changePassword, fetchOperations, scrapOperationsByDateRange, deleteOperation, fetchOperationByTaskId}  
 }
 
 export const API_BASE_URL = getBaseUrl()

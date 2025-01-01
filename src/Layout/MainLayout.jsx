@@ -10,6 +10,9 @@ import { Routes, Route } from 'react-router-dom'
 import ProtectedRoute from '../components/ProtectedRoute'
 
 function MainLayout() {
+
+  
+
   return (
     <div className="main-container">
       <div className="sidebar-container">

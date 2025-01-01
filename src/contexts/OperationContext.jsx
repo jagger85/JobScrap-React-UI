@@ -28,9 +28,73 @@ export function OperationContextProvider({ children }) {
     })
   }
 
+  const setOperationTaskId = (id, taskId) => {
+    setOperations((prevOperations) => {
+      const updatedOperations = prevOperations.map((op) =>
+        op.id === id ? { ...op, taskId } : op
+      )
+      localStorage.setItem('operations', JSON.stringify(updatedOperations))
+      return updatedOperations
+    })
+  }
+
+  const updateOperation = (taskId, operationStatus) => {
+    setOperations((prevOperations) => {
+      const updatedOperations = prevOperations.map((op) =>
+        op.taskId === taskId ? { ...op, status: operationStatus } : op
+      )
+      localStorage.setItem('operations', JSON.stringify(updatedOperations))
+      return updatedOperations
+    })
+  }
+
+  const updateOperationListingsCount = (taskId, listingsCount) => {
+    setOperations((prevOperations) => {
+      const updatedOperations = prevOperations.map((op) =>
+        op.taskId === taskId ? { ...op, numberOfListings: listingsCount } : op
+      )
+      localStorage.setItem('operations', JSON.stringify(updatedOperations))
+      return updatedOperations
+    })
+  }
+  const updateOperationMessage = (taskId, message) => {
+    setOperations((prevOperations) => {
+      const updatedOperations = prevOperations.map((op) =>
+        op.taskId === taskId ? { ...op, message } : op
+      )
+      localStorage.setItem('operations', JSON.stringify(updatedOperations))
+      return updatedOperations
+    })
+  }
+
+  const resetOperations = () => {
+    setOperations((prevOperations) => {
+      const resetOps = prevOperations.map((op) => ({
+        ...op,
+        listings: [],
+        taskId: null,
+        numberOfListings: 0,
+        status: 'Idle',
+        message: 'Awaiting operation launch',
+
+      }))
+      localStorage.setItem('operations', JSON.stringify(resetOps))
+      return resetOps
+    })
+  }
+
   return (
     <OperationContext.Provider
-      value={{ operations, addOperation, deleteOperation }}
+      value={{
+        operations,
+        addOperation,
+        deleteOperation,
+        setOperationTaskId,
+        updateOperation,
+        resetOperations,
+        updateOperationListingsCount,
+        updateOperationMessage,
+      }}
     >
       {children}
     </OperationContext.Provider>

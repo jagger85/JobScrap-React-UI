@@ -1,10 +1,32 @@
 import './tables.css'
 import PropTypes from 'prop-types'
 import IconButton from '../Buttons/IconButton'
-import { DownloadIcon, TrashIcon } from '../Icons'
+import { DownloadIcon, TrashIcon, CollapseIcon } from '../Icons'
+import { useState } from 'react'
+
 import Badge from '@badges/Badge'
 const HistoricTable = (props) => {
   const { data, handleDownload, handleDelete } = props
+  const [page, setPage] = useState(1)
+  const itemsPerPage = 10
+  const totalPages = Math.ceil(data.length / itemsPerPage)
+
+  function nextPage() {
+    if (page < totalPages) {
+      setPage(page + 1)
+    }
+  }
+
+  function previousPage() {
+    if (page > 1) {
+      setPage(page - 1)
+    }
+  }
+
+  const startIndex = (page - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentPageData = data.slice(startIndex, endIndex)
+
   return (
     <div className="elevated table-container">
       <div className="table-title">Historical operations</div>
@@ -20,7 +42,7 @@ const HistoricTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((operation, index) => {
+          {currentPageData.map((operation, index) => {
             const date = new Date(operation.created_at)
             const formattedDate = `${
               date.getMonth() + 1
@@ -28,9 +50,18 @@ const HistoricTable = (props) => {
             return (
               <tr key={index}>
                 <td className="table-user-cell">{operation.user}</td>
-                <td><Badge text={operation.platform} className="background-badge" /></td>
-                <td><Badge text={operation.keywords} className="primary-badge" /></td>
-                <td className="table-listings-cell">{operation.listings.length}</td>
+                <td>
+                  <Badge
+                    text={operation.platform}
+                    className="background-badge"
+                  />
+                </td>
+                <td>
+                  <Badge text={operation.keywords} className="primary-badge" />
+                </td>
+                <td className="table-listings-cell">
+                  {operation.listings.length}
+                </td>
                 <td className="table-date-cell">{formattedDate}</td>
                 <td className="table-actions">
                   <IconButton
@@ -49,6 +80,23 @@ const HistoricTable = (props) => {
           })}
         </tbody>
       </table>
+      <div className="history-table-footer">
+        <IconButton
+          className="squared"
+          icon={CollapseIcon}
+          onClick={previousPage}
+          disabled={page === 1}
+        />
+        <div className="history-table-footer-page">
+          {page} / {totalPages}
+        </div>
+        <IconButton
+          className="squared history-table-footer-button-right"
+          icon={CollapseIcon}
+          onClick={nextPage}
+          disabled={page === totalPages}
+        />
+      </div>
     </div>
   )
 }

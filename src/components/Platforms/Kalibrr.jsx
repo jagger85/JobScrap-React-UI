@@ -4,7 +4,7 @@ import { useState } from 'react'
 import './platforms.css'
 
 const Kalibrr = () => {
-  const { fetchOperationsByDateRange } = useApi()
+  const { scrapOperationsByDateRange } = useApi()
   const inputs = [
     {
       id: 1,
@@ -38,7 +38,7 @@ const Kalibrr = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetchOperationsByDateRange(
+    const response = await scrapOperationsByDateRange(
       values.keywords,
       values.dateRange,
       'kalibrr'

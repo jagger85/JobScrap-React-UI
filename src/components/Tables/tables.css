@@ -1,4 +1,4 @@
-table{
+table {
   box-shadow: var(--double-border);
 }
 .table-container {
@@ -47,6 +47,17 @@ table{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.history-table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-s);
+  padding: var(--spacing-s);
+}
+
+.history-table-footer-button-right {
+  rotate: 180deg;
 }
 
 table {

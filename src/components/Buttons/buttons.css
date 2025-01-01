@@ -15,7 +15,10 @@
   box-shadow: var(--double-border-hover);
   transition: box-shadow var(--fast-transition) ease;
 }
-
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .rounded {
   border-radius: 50px;
   border: none;
@@ -49,4 +52,18 @@
 .standard-button:hover {
   border: 1px solid var(--secondary);
   color: white;
+}
+
+.download:hover {
+  color: var(--success);
+}
+
+.delete:hover {
+  color: var(--error);
+}
+
+.button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
