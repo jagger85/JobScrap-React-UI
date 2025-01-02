@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import Select, { components } from 'react-select'
-import './jobScrapModal.css'
 import '../overlay.css'
 import { scrapperPlatforms } from '../jobScrapperConstants'
 import { customSelectStyle } from '../../../utils/reactCustomStyle'
 import StandardButton from '@buttons/StandardButton'
 import PropTypes from 'prop-types'
-import {CloseIcon} from '@icons'
+import { CloseIcon } from '@icons'
 import IconButton from '@buttons/IconButton'
 
-function JobScrapModal({ onClose, addOperation }) {
-  // Transform scrapperPlatforms into the format React Select expects
+function AutomateScrapModal({ onClose, addAutomatedOperation }) {
+  // State variables
   const platformOptions = scrapperPlatforms.map((platform) => ({
     value: platform.name,
     label: platform.name,
@@ -23,8 +22,21 @@ function JobScrapModal({ onClose, addOperation }) {
   const [selectedDateRange, setSelectedDateRange] = useState(
     selectedPlatform.dateRange[0]
   )
+  const [selectedFrequency, setSelectedFrequency] = useState(1)
 
-  // Custom Option component using react-select's components
+  // Frequency options
+  const frequencyOptions = Array.from({ length: 30 }, (_, index) => ({
+    value: index + 1,
+    label: `Every ${index + 1} day${index === 0 ? '' : 's'}`,
+  }))
+
+  // Date range options
+  const dateRangeOptions = selectedPlatform.dateRange.map((range) => ({
+    value: range,
+    label: range,
+  }))
+
+  // Custom option component for Select
   const { Option } = components
   const IconOption = (props) => (
     <Option {...props}>
@@ -39,7 +51,6 @@ function JobScrapModal({ onClose, addOperation }) {
     </Option>
   )
 
-  // Add PropTypes validation
   IconOption.propTypes = {
     data: PropTypes.shape({
       icon: PropTypes.string.isRequired,
@@ -47,7 +58,7 @@ function JobScrapModal({ onClose, addOperation }) {
     }).isRequired,
   }
 
-  // Handle platform change
+  // Handlers
   const handlePlatformChange = (option) => {
     setSelectedPlatform(option)
     setSelectedDateRange(option.dateRange[0])
@@ -57,11 +68,13 @@ function JobScrapModal({ onClose, addOperation }) {
     setSelectedDateRange(option.value)
   }
 
-  // Create options for date range
-  const dateRangeOptions = selectedPlatform.dateRange.map((range) => ({
-    value: range,
-    label: range,
-  }))
+  const handleFrequencyChange = (option) => {
+    setSelectedFrequency(option.value)
+  }
+
+  const handleKeywordsChange = (e) => {
+    setKeywords(e.target.value)
+  }
 
   const handleSave = () => {
     const newOperation = {
@@ -69,50 +82,48 @@ function JobScrapModal({ onClose, addOperation }) {
       icon: selectedPlatform.icon,
       keywords: keywords,
       dateRange: selectedDateRange,
-      status: 'Idle',
-      numberOfListings: 0,
-      listings: [],
-      taskId: null,
-      message: 'Awaiting operation launch'
+      active: false,
+      frequency: selectedFrequency,
     }
-    addOperation(newOperation)
+    addAutomatedOperation(newOperation)
     onClose()
   }
 
+  // Render
   return (
     <div className="modal-overlay">
       <div className="modal-content elevated">
         <div className="modal-header">
-          <div className="modal-title">Add New Job Search</div>
-          <IconButton icon={CloseIcon} onClick={onClose}  type='squared'/>
+          <div className="modal-title">Add New Automated Scrap</div>
+          <IconButton icon={CloseIcon} onClick={onClose} type="squared" />
         </div>
-
-        <form className="job-scrap-form">
-          <label>Platform          
-          <Select
-            className="job-scrap-select"
-            options={platformOptions}
-            value={selectedPlatform}
-            onChange={handlePlatformChange}
-            styles={customSelectStyle}
-            components={{ Option: IconOption }}
-            isSearchable={false}
-          />
+        <form className="automate-scrap-form">
+          <label>
+            Platform
+            <Select
+              className="automate-scrap-select"
+              options={platformOptions}
+              value={selectedPlatform}
+              onChange={handlePlatformChange}
+              styles={customSelectStyle}
+              components={{ Option: IconOption }}
+              isSearchable={false}
+            />
           </label>
           <label>
             Keywords
             <input
-              className="job-scrap-input"
+              className="automate-scrap-input"
               type="text"
               placeholder="Enter keywords"
               value={keywords}
-              onChange={(e) => setKeywords(e.target.value)}
+              onChange={handleKeywordsChange}
             />
           </label>
           <label>
             Date Range
             <Select
-              className="job-scrap-select date-range-select"
+              className="automate-scrap-select date-range-select"
               options={dateRangeOptions}
               value={dateRangeOptions.find(
                 (option) => option.value === selectedDateRange
@@ -122,18 +133,34 @@ function JobScrapModal({ onClose, addOperation }) {
               isSearchable={false}
             />
           </label>
-          <div className="modal-footer">
-            <StandardButton text="Save Configuration" onClick={handleSave} className="standard-button" />
-          </div>
+          <label>
+            Frequency
+            <Select
+              className="automate-scrap-select date-range-select"
+              options={frequencyOptions}
+              value={frequencyOptions.find(
+                (option) => option.value === selectedFrequency
+              )}
+              onChange={handleFrequencyChange}
+              styles={customSelectStyle}
+              isSearchable={false}
+            />
+          </label>
+          <StandardButton
+            width="180px"
+            className="standard-button"
+            text="Create"
+            onClick={handleSave}
+          />
         </form>
       </div>
     </div>
   )
 }
 
-JobScrapModal.propTypes = {
+AutomateScrapModal.propTypes = {
   onClose: PropTypes.func.isRequired,
-  addOperation: PropTypes.func.isRequired,
+  addAutomatedOperation: PropTypes.func.isRequired,
 }
 
-export default JobScrapModal
+export default AutomateScrapModal
