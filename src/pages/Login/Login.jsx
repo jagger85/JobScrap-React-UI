@@ -20,7 +20,7 @@ export default function Login({ onLogin }) {
         <div className="logo-text-container">
           <img className="uplift-logo" src={uplift} alt="Uplift Logo" />
         </div>
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className="login-form" >
             <label htmlFor="username">
               Username
               <input
@@ -63,7 +63,7 @@ export default function Login({ onLogin }) {
               </label>
             </div>
         
-          <StandardButton width='150px'text="Login" id="login-button" className="standard-button login-button" type="submit"/>
+          <StandardButton width='150px'text="Login" id="login-button" className="standard-button login-button" onClick={handleSubmit}/>
             
 
         </form>
