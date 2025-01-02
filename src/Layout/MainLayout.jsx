@@ -8,7 +8,7 @@ import Settings from '../pages/Settings/Settings'
 import Automation from '../pages/Automation/Automation'
 import { Routes, Route } from 'react-router-dom'
 import ProtectedRoute from '../components/ProtectedRoute'
-
+import Listings from '../pages/Listings/Listings'
 function MainLayout() {
 
   
@@ -61,6 +61,7 @@ function MainLayout() {
                 />
               }
             />
+            <Route path="/listings" element={<Listings />} />
           </Routes>
         </div>
         <div className="footer-container"></div>

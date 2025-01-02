@@ -1,11 +1,13 @@
 import './tables.css'
 import PropTypes from 'prop-types'
 import IconButton from '../Buttons/IconButton'
-import { DownloadIcon, TrashIcon, CollapseIcon } from '../Icons'
+import { DownloadIcon, TrashIcon, CollapseIcon, FileTextIcon } from '../Icons'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Badge from '@badges/Badge'
 const HistoricTable = (props) => {
+  const navigate = useNavigate()
   const { data, handleDownload, handleDelete } = props
   const [page, setPage] = useState(1)
   const itemsPerPage = 10
@@ -21,6 +23,10 @@ const HistoricTable = (props) => {
     if (page > 1) {
       setPage(page - 1)
     }
+  }
+
+  function openDetails(listings) {
+    navigate('/listings', { state: { listings } })
   }
 
   const startIndex = (page - 1) * itemsPerPage
@@ -64,6 +70,11 @@ const HistoricTable = (props) => {
                 </td>
                 <td className="table-date-cell">{formattedDate}</td>
                 <td className="table-actions">
+                  <IconButton
+                    icon={FileTextIcon}
+                    type="table-download-button squared"
+                    onClick={() => openDetails(operation.listings)}
+                  />
                   <IconButton
                     icon={DownloadIcon}
                     onClick={() => handleDownload(operation.listings)}
