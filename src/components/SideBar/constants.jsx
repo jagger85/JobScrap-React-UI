@@ -1,4 +1,4 @@
-import { HomeIcon, SettingsIcon, UserIcon, HistoryIcon, AutomationIcon } from '../Icons'
+import { HomeIcon, SettingsIcon, UserIcon, HistoryIcon, AutomationIcon, ScrapIcon } from '../Icons'
 
 export const sidebarLinks = [
   {
@@ -6,6 +6,12 @@ export const sidebarLinks = [
     path: '/',
     icon: <HomeIcon />,
     roles: ['admin', 'user', 'guest'],
+  },
+  {
+    label: 'Scrap',
+    path: '/scrap',
+    icon: <ScrapIcon />,
+    roles: ['admin', 'user'],
   },
   {
     label: 'History',
