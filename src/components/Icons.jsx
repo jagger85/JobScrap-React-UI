@@ -24,7 +24,8 @@ import {
   X,
   FileText,
   Link,
-  ReceiptText
+  ReceiptText,
+  SatelliteDish
 } from 'lucide-react'
 // Icon configuration object
 const IconComponents = {
@@ -54,6 +55,7 @@ const IconComponents = {
   fileText: (props) => <FileText {...props} />,
   linkIcon: (props) => <Link {...props} />,
   receiptText: (props) => <ReceiptText {...props} />,
+  scrapIcon: (props) => <SatelliteDish {...props} />,
 }
 
 // Export individual components with default names for backward compatibility
@@ -80,3 +82,4 @@ export const CloseIcon = IconComponents.closeIcon
 export const FileTextIcon = IconComponents.fileText
 export const LinkIcon = IconComponents.linkIcon
 export const ReceiptTextIcon = IconComponents.receiptText
+export const ScrapIcon = IconComponents.scrapIcon
