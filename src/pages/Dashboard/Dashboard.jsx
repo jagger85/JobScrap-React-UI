@@ -1,67 +1,148 @@
 import './dashboard.css'
-import { useState } from 'react'
-import JobScrapModal from '@modals/JobScrap/JobScrapModal'
-import { useOperations } from '@hooks/useOperations'
-import useApi from '@hooks/useApi'
 import PageLayout from '../../Layout/PageLayout'
-import IconButton from '../../components/Buttons/IconButton'
-import { CreateIcon } from '../../components/Icons'
-import StandardButton from '@buttons/StandardButton'
-import CollapsablePanel from '@panels/CollapsablePanel'
+import UserChart from '@components/Charts/UserChart'
+import PlatformChart from '@components/Charts/PlatformChart'
+import ListingsChart from '@components/Charts/ListingsChart'
+import DailyChart from '@components/Charts/DailyChart'
+import useApi from '@hooks/useApi'
+import { useQuery } from '@tanstack/react-query'
 
 function Dashboard() {
-  const { scrapOperationsByDateRange } = useApi()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const { operations, addOperation, deleteOperation, setOperationTaskId } =
-    useOperations()
+  const { fetchOperations } = useApi()
+  const { data, isError, error, isLoading } = useQuery({
+    queryKey: ['operations'],
+    queryFn: fetchOperations,
+  })
 
-  const handleCreate = () => {
-    setIsModalOpen(true)
-  }
+  if (isLoading) return <h2>Loading...</h2>
+  if (isError) return <h2>Oooops something went wrong {error}</h2>
 
-  const handleClose = () => {
-    setIsModalOpen(false)
-  }
+  // Process data for UserChart
+  const userOperations = data.reduce((acc, operation) => {
+    acc[operation.user] = (acc[operation.user] || 0) + 1
+    return acc
+  }, {})
 
-  const handleStart = async () => {
-    console.log('starting operations')
-    operations.forEach(async (operation) => {
-      const data = await scrapOperationsByDateRange(
-        operation.keywords,
-        operation.dateRange,
-        operation.platform
+  const userData = Object.entries(userOperations).map(([name, value]) => ({
+    name,
+    value,
+  }))
+
+  // Process data for PlatformChart
+  const platformCounts = data.reduce((acc, operation) => {
+    acc[operation.platform] = (acc[operation.platform] || 0) + 1
+    return acc
+  }, {})
+
+  const platformData = Object.entries(platformCounts).map(([name, value]) => ({
+    name,
+    value,
+  }))
+
+  // Process data for ListingsChart
+  const listingsData = data.reduce(
+    (acc, operation) => {
+      const date = new Date(operation.created_at)
+      const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
+
+      // Add date to xAxis if not exists
+      if (!acc.xAxisData.includes(formattedDate)) {
+        acc.xAxisData.push(formattedDate)
+      }
+
+      // Add keyword to legend if not exists
+      if (!acc.legendData.includes(operation.keywords)) {
+        acc.legendData.push(operation.keywords)
+        acc.series.push({
+          name: operation.keywords,
+          data: new Array(acc.xAxisData.length).fill(0),
+        })
+      }
+
+      // Update the count for this keyword on this date
+      const seriesIndex = acc.series.findIndex(
+        (s) => s.name === operation.keywords
       )
-      setOperationTaskId(operation.id, data.task_id)
+      const dateIndex = acc.xAxisData.indexOf(formattedDate)
+      acc.series[seriesIndex].data[dateIndex] = operation.listings.length
+
+      return acc
+    },
+    {
+      legendData: [],
+      xAxisData: [],
+      series: [],
+    }
+  )
+
+  // Process data for DailyChart
+  const dailyData = data.reduce(
+    (acc, operation) => {
+      const date = new Date(operation.created_at)
+      const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
+
+      // Add date to xAxis if not exists
+      if (!acc.xAxisData.includes(formattedDate)) {
+        acc.xAxisData.push(formattedDate)
+      }
+
+      // Find or create the series for daily listings count
+      if (acc.series.length === 0) {
+        acc.series.push({
+          name: 'Daily Listings',
+          data: new Array(acc.xAxisData.length).fill(0),
+        })
+      }
+
+      // Update the count for this date
+      const dateIndex = acc.xAxisData.indexOf(formattedDate)
+      acc.series[0].data[dateIndex] = operation.listings.length
+
+      return acc
+    },
+    {
+      xAxisData: [],
+      series: [],
+    }
+  )
+
+  // Sort dates chronologically
+  const sortedIndices = dailyData.xAxisData
+    .map((date, index) => ({ date, index }))
+    .sort((a, b) => {
+      const [aMonth, aDay] = a.date.split('/').map(Number)
+      const [bMonth, bDay] = b.date.split('/').map(Number)
+      return aMonth === bMonth ? aDay - bDay : aMonth - bMonth
     })
+    .map((item) => item.index)
+
+  // Reorder both xAxisData and series data
+  dailyData.xAxisData = sortedIndices.map((i) => dailyData.xAxisData[i])
+  dailyData.series[0].data = sortedIndices.map(
+    (i) => dailyData.series[0].data[i]
+  )
+
+  // Get only the last 7 days
+  const last7Days = {
+    xAxisData: dailyData.xAxisData.slice(-7),
+    series: [
+      {
+        name: 'Daily Listings',
+        data: dailyData.series[0].data.slice(-7),
+      },
+    ],
   }
 
   return (
     <PageLayout title="Dashboard">
-      <div className="dashboard-header">
-        <IconButton icon={CreateIcon} onClick={handleCreate} type="rounded" />
-        <div className="dashboard-header-subtitle">
-          Create an instant job scrap
-        </div>
+      <div className="dashboard-row">
+        <UserChart data={userData} title="Operations by User" />
+        <ListingsChart data={listingsData} title="Listings by Keyword" />
       </div>
-      <div className="dashboard-operations-panels">
-        {operations.map((operation) => (
-          <CollapsablePanel
-            key={operation.id}
-            operation={operation}
-            onDelete={deleteOperation}
-          ></CollapsablePanel>
-        ))}
+      <div className="dashboard-row">
+        <PlatformChart data={platformData} title="Operations by Platform" />
+        <DailyChart data={last7Days} title="Daily Listings Count" />
       </div>
-      {isModalOpen && (
-        <JobScrapModal addOperation={addOperation} onClose={handleClose} />
-      )}
-      {operations.length != 0 && (
-        <StandardButton
-          className="standard-button"
-          text="Start operations"
-          onClick={handleStart}
-        />
-      )}
     </PageLayout>
   )
 }

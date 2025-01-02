@@ -1,20 +1,22 @@
-.dashboard-header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--spacing-m);
-}
-.dashboard-header-title{
-    font-size: var(--l);
-    font-weight: var(--font-weight-bold);
-}
-.dashboard-header-subtitle{
-    font-size: var(--s);
-    font-weight: var(--font-weight-medium);
-}
-.dashboard-operations-panels{
+.dashboard-header {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: var(--spacing-m);
+}
+.dashboard-header-title {
+  font-size: var(--l);
+  font-weight: var(--font-weight-bold);
+}
+.dashboard-header-subtitle {
+  font-size: var(--s);
+  font-weight: var(--font-weight-medium);
+}
+
+.dashboard-row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-m);
+  justify-content: flex-start;
+  width: 100%;
 }
