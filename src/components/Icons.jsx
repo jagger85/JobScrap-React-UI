@@ -21,7 +21,10 @@ import {
   ClipboardList,
   Plus,
   ChevronLeft,
-  X
+  X,
+  FileText,
+  Link,
+  ReceiptText
 } from 'lucide-react'
 // Icon configuration object
 const IconComponents = {
@@ -48,6 +51,9 @@ const IconComponents = {
   createIcon: (props) => <Plus {...props} />,
   collapseIcon: (props) => <ChevronLeft {...props} />,
   closeIcon: (props) => <X {...props} />,
+  fileText: (props) => <FileText {...props} />,
+  linkIcon: (props) => <Link {...props} />,
+  receiptText: (props) => <ReceiptText {...props} />,
 }
 
 // Export individual components with default names for backward compatibility
@@ -71,3 +77,6 @@ export const HistoryIcon = IconComponents.historyIcon
 export const CreateIcon = IconComponents.createIcon
 export const CollapseIcon = IconComponents.collapseIcon
 export const CloseIcon = IconComponents.closeIcon
+export const FileTextIcon = IconComponents.fileText
+export const LinkIcon = IconComponents.linkIcon
+export const ReceiptTextIcon = IconComponents.receiptText
