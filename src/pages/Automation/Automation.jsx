@@ -22,6 +22,8 @@ function Automation() {
     queryFn: fetchAutomatedScrapOperations,
   })
 
+  console.log('data:', data)
+
   const handleCreate = () => {
     setIsModalOpen(true)
   }
@@ -58,7 +60,7 @@ function Automation() {
       {data.map((operation) => {
         return (
           <AutomaticOperationPanel
-            key={operation._id}
+            key={operation.id}
             operation={operation}
             onDelete={handleDelete}
             onActivate={handleActivate}

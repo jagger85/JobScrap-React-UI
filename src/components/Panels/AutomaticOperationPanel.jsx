@@ -46,13 +46,13 @@ function AutomaticOperationPanel(props) {
           </div>
         </div>
         <div className="cp-panel-header-item-actions">
-          {operation.active ? (
+          {operation.enabled ? (
             <IconButton
               type="squared success-icon"
               icon={PlayIcon}
               onClick={(e) => {
                 e.stopPropagation()
-                handleDeactivate(operation._id)
+                handleDeactivate(operation.id)
               }}
             />
           ) : (
@@ -61,7 +61,7 @@ function AutomaticOperationPanel(props) {
               icon={PauseIcon}
               onClick={(e) => {
                 e.stopPropagation()
-                handleActivate(operation._id)
+                handleActivate(operation.id)
               }}
             />
           )}
@@ -70,7 +70,7 @@ function AutomaticOperationPanel(props) {
             icon={TrashIcon}
             onClick={(e) => {
               e.stopPropagation()
-              handleDelete(operation._id)
+              handleDelete(operation.id)
             }}
           />
           <div className={isOpen ? 'cp-icon-open' : 'cp-icon-closed'}>
@@ -86,8 +86,8 @@ function AutomaticOperationPanel(props) {
         <div className="cp-content-row">
           <div className="cp-content-row-items">
             <div>User: {operation.username}</div>
-            <div>Last run: {operation.last_scraped_at}</div>
-            <div>Count: {operation.count}</div>
+            <div>Last run: {operation.last_run_at}</div>
+            <div>Count: {operation.total_run_count}</div>
           </div>
         </div>
       </div>
