@@ -1,38 +1,46 @@
-import { HomeIcon, SettingsIcon, UserIcon, HistoryIcon, AutomationIcon, ScrapIcon } from '../Icons'
+import {
+  HomeIcon,
+  SettingsIcon,
+  UserIcon,
+  HistoryIcon,
+  AutomationIcon,
+  ScrapIcon,
+} from '../Icons'
 
 export const sidebarLinks = [
   {
-    label: 'Dashboard',
+    label: 'Overview',
     path: '/',
     icon: <HomeIcon />,
     roles: ['admin', 'user', 'guest'],
   },
   {
-    label: 'Scrap',
+    label: 'Run Scraper',
     path: '/scrap',
     icon: <ScrapIcon />,
     roles: ['admin', 'user'],
   },
   {
-    label: 'History',
-    path: '/history',
-    icon: <HistoryIcon />,
-    roles: ['admin', 'user'],
-  },
-  {
-    label: 'Automation',
+    label: 'Scheduled Tasks',
     path: '/automation',
     icon: <AutomationIcon />,
     roles: ['admin', 'user'],
   },
   {
-    label: 'User management',
+    label: 'Scraping History',
+    path: '/history',
+    icon: <HistoryIcon />,
+    roles: ['admin', 'user'],
+  },
+
+  {
+    label: 'Manage Users',
     path: '/user-management',
     icon: <UserIcon />,
     roles: ['admin'],
   },
   {
-    label: 'Settings',
+    label: 'Preferences',
     path: '/settings',
     icon: <SettingsIcon />,
     roles: ['admin', 'user'],

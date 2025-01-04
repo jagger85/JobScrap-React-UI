@@ -1,7 +1,7 @@
 import './mainLayout.css'
 import Header from '../components/Header/Header'
 import SideBar from '../components/SideBar/SideBar'
-import Dashboard from '../pages/Dashboard/Dashboard'
+import Overview from '../pages/Dashboard/Overview'
 import History from '../pages/History/History'
 import UserManagement from '../pages/UserManagement/UserManagement'
 import Settings from '../pages/Settings/Settings'
@@ -25,7 +25,7 @@ function MainLayout() {
         </div>
         <div className="body-container">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Overview />} />
             <Route
               path="/history"
               element={

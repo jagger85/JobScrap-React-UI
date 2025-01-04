@@ -1,4 +1,4 @@
-import './dashboard.css'
+import './overview.css'
 import PageLayout from '../../Layout/PageLayout'
 import UserChart from '@components/Charts/UserChart'
 import PlatformChart from '@components/Charts/PlatformChart'
@@ -7,7 +7,7 @@ import DailyChart from '@components/Charts/DailyChart'
 import useApi from '@hooks/useApi'
 import { useQuery } from '@tanstack/react-query'
 
-function Dashboard() {
+function Overview() {
   const { fetchOperations } = useApi()
   const { data, isError, error, isLoading } = useQuery({
     queryKey: ['operations'],
@@ -17,9 +17,29 @@ function Dashboard() {
   if (isLoading) return <h2>Loading...</h2>
   if (isError) return <h2>Oooops something went wrong {error}</h2>
 
-  // Process data for UserChart
-  const userOperations = data.reduce((acc, operation) => {
-    acc[operation.user] = (acc[operation.user] || 0) + 1
+  // More detailed logging
+  console.log('Fetched data:', data)
+  console.log('First item in data:', data?.[0])
+  console.log('Data type:', typeof data)
+  console.log('Is Array?', Array.isArray(data))
+
+  // Default data to an empty array if undefined
+  const operationsData =
+    data?.filter(
+      (operation) =>
+        operation && typeof operation === 'object' && operation.user // only include items that have a user property
+    ) || []
+
+  // Check if operationsData is empty
+  if (operationsData.length === 0) {
+    return <h2>No valid operations data available</h2>
+  }
+
+  // Process data for UserChart with safety checks
+  const userOperations = operationsData.reduce((acc, operation) => {
+    if (operation && operation.user) {
+      acc[operation.user] = (acc[operation.user] || 0) + 1
+    }
     return acc
   }, {})
 
@@ -29,7 +49,7 @@ function Dashboard() {
   }))
 
   // Process data for PlatformChart
-  const platformCounts = data.reduce((acc, operation) => {
+  const platformCounts = operationsData.reduce((acc, operation) => {
     acc[operation.platform] = (acc[operation.platform] || 0) + 1
     return acc
   }, {})
@@ -40,8 +60,10 @@ function Dashboard() {
   }))
 
   // Process data for ListingsChart
-  const listingsData = data.reduce(
+  const listingsData = operationsData.reduce(
     (acc, operation) => {
+      if (!operation.created_at || !operation.keywords) return acc
+
       const date = new Date(operation.created_at)
       const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
 
@@ -64,7 +86,13 @@ function Dashboard() {
         (s) => s.name === operation.keywords
       )
       const dateIndex = acc.xAxisData.indexOf(formattedDate)
-      acc.series[seriesIndex].data[dateIndex] = operation.listings.length
+
+      // Safely get listings length, default to 0 if listings is invalid
+      const listingsLength = Array.isArray(operation.listings)
+        ? operation.listings.filter((item) => item !== undefined).length
+        : 0
+
+      acc.series[seriesIndex].data[dateIndex] = listingsLength
 
       return acc
     },
@@ -76,8 +104,10 @@ function Dashboard() {
   )
 
   // Process data for DailyChart
-  const dailyData = data.reduce(
+  const dailyData = operationsData.reduce(
     (acc, operation) => {
+      if (!operation.created_at) return acc
+
       const date = new Date(operation.created_at)
       const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
 
@@ -94,9 +124,14 @@ function Dashboard() {
         })
       }
 
+      // Safely get listings length, default to 0 if listings is invalid
+      const listingsLength = Array.isArray(operation.listings)
+        ? operation.listings.filter((item) => item !== undefined).length
+        : 0
+
       // Update the count for this date
       const dateIndex = acc.xAxisData.indexOf(formattedDate)
-      acc.series[0].data[dateIndex] = operation.listings.length
+      acc.series[0].data[dateIndex] = listingsLength
 
       return acc
     },
@@ -147,4 +182,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default Overview

@@ -3,7 +3,7 @@ import ListingsTable from '@components/Tables/ListingsTable'
 import { useLocation, useNavigate } from 'react-router-dom'
 import IconButton from '@buttons/IconButton'
 import { CollapseIcon } from '@icons'
-import '../Dashboard/dashboard.css'
+import '../Dashboard/overview.css'
 function Listings() {
   const location = useLocation()
   const navigate = useNavigate()
