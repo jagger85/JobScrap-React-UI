@@ -52,10 +52,10 @@ function Automation() {
 
 
   return (
-    <PageLayout title="Automation">
+    <PageLayout title="Scheduled Tasks">
       <div className="scrap-header">
         <IconButton icon={CreateIcon} onClick={handleCreate} type="rounded" />
-        <div className="scrap-header-subtitle">Create an automated scrap operation</div>
+        <div className="scrap-header-subtitle">Set Up a New Schedule</div>
       </div>
       {data.map((operation) => {
         return (

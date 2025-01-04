@@ -35,14 +35,14 @@ const HistoricTable = (props) => {
 
   return (
     <div className="elevated table-container">
-      <div className="table-title">Historical operations</div>
+      <div className="table-title">Scraping History</div>
       <table className="history-table">
         <thead>
           <tr className="table-header">
             <th>User</th>
-            <th>Platform</th>
+            <th>Source</th>
             <th>Keywords</th>
-            <th className="table-listings-cell">Listings</th>
+            <th className="table-listings-cell">Results</th>
             <th className="table-date-cell">Date</th>
             <th className="table-actions-cell">Actions</th>
           </tr>
