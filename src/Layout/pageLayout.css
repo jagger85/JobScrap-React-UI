@@ -1,0 +1,28 @@
+.page-layout-title {
+  font-size: var(--l);
+  font-weight: var(--font-weight-bold);
+}
+
+.page-layout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-m);
+  padding: var(--spacing-m);
+  padding-left: var(--spacing-xl);
+  padding-top: 0;
+}
+
+.page-layout-title-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.separator-right {
+  height: 2px;
+  width: 130%; /* Just a bit wider than the title */
+  background: linear-gradient(to right, var(--primary), transparent);
+  border-radius: var(--s-radius);
+  margin: -0.2rem 0 var(--spacing-s) 0; /* Removed the negative left margin */
+  transition: background-color var(--fast-transition) ease;
+}

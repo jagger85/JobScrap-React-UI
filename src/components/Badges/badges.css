@@ -1,0 +1,19 @@
+.background-badge {
+  background-color: var(--grey2);
+  border: 1px solid var(--grey3);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.primary-badge {
+  border: 1px solid var(--secondary);
+  color: var(--primary);
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  display: inline-block;
+}
