@@ -1,6 +1,5 @@
-const BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${
-  import.meta.env.VITE_BACKEND_PORT
-}/api`
+const BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT
+  }/api`
 
 import useStorage from './useStorage'
 
@@ -12,9 +11,8 @@ const getBaseUrl = () => {
 const getSocketUrl = () => {
   if (import.meta.env.PROD) import.meta.env.VITE_API_SOCKET
   else
-    return `ws://${import.meta.env.VITE_BACKEND_HOST}:${
-      import.meta.env.VITE_BACKEND_PORT
-    }/api/socket`
+    return `ws://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT
+      }/api/socket`
 }
 
 const useApi = () => {
@@ -92,7 +90,7 @@ const useApi = () => {
 
   async function validateToken(token) {
     const response = await fetch(`${BASE_URL}/auth/validate-token`, {
-      mehtod: 'GET',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -101,8 +99,26 @@ const useApi = () => {
     return response
   }
 
-  async function fetchOperations() {
-    const response = await fetch(`${BASE_URL}/operations`, {
+  async function fetchOperations(cursor = null) {
+    const url = new URL(`${BASE_URL}/operations`)
+    if (cursor) url.searchParams.append('cursor', cursor)
+    url.searchParams.append('limit', '10')
+    
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`
+        }
+    })
+    
+    if (!response.ok) throw new Error('Network response was not ok')
+    return response.json()
+  }
+
+  async function fetchAllOperations() {
+    console.log('Fetching all operations')
+    const response = await fetch(`${BASE_URL}/operations/all`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -226,6 +242,7 @@ const useApi = () => {
     deleteUser,
     changePassword,
     fetchOperations,
+    fetchAllOperations,
     scrapOperationsByDateRange,
     deleteOperation,
     fetchOperationByTaskId,
