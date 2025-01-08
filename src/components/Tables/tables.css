@@ -1,8 +1,37 @@
 table {
   box-shadow: var(--double-border);
 }
+.historic-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
 .table-container {
   padding: var(--spacing-m);
+}
+.table-filter-container {
+  padding: var(--spacing-m);
+}
+.table-filter-container{
+  display: flex;
+  gap: var(--spacing-s);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.table-container-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  padding: 0 0 var(--spacing-m) 0;
+}
+
+.table-buttons {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+  
 }
 
 .user-table {
@@ -14,10 +43,8 @@ table {
   font-size: var(--s);
   font-weight: bold;
   letter-spacing: 0.05rem;
-  align-self: flex-start;
-  padding: 0 0 var(--spacing-m) 0;
-  border-bottom: 1px solid var(--grey3);
 }
+
 .table-actions {
   display: flex;
   gap: var(--spacing-s);
@@ -27,27 +54,33 @@ table {
 .table-delete-button:hover {
   color: var(--error);
 }
+
 .table-download-button:hover {
   color: var(--success);
 }
+
 .table-user-cell {
   color: white;
 }
+
 .table-actions-cell {
   text-align: end;
   display: flex;
   justify-content: flex-end;
 }
+
 .table-listings-cell {
   text-align: end;
   width: 100px;
 }
+
 .table-date-cell {
   width: 175px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .history-table-footer {
   display: flex;
   align-items: center;
@@ -64,9 +97,11 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
+
 .table-header {
   box-shadow: var(--shadow-up);
 }
+
 .table-header:hover {
   background-color: transparent;
 }
