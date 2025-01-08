@@ -12,10 +12,12 @@ export const customSelectStyle = {
       boxShadow:
         'inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.2)',
     },
+    height: '38px',
   }),
   singleValue: (provided) => ({
     ...provided,
     color: 'var(--font)',
+
   }),
   input: (provided) => ({
     ...provided,
@@ -25,7 +27,7 @@ export const customSelectStyle = {
 
   indicatorSeparator: (provided) => ({
     ...provided,
-    backgroundColor: 'var(--font)',
+    backgroundColor: 'var(--font-secondary)',
   }),
 
   dropdownIndicator: (provided) => ({
@@ -55,5 +57,9 @@ export const customSelectStyle = {
     borderColor: state.isFocused ? 'var(--primary)' : '#404040',
     boxShadow:
       'inset 0 2px 4px rgba(0, 0, 0, 0.5),0 1px 3px rgba(0, 0, 0, 0.2)',
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    padding: '0 8px',
   }),
 }
