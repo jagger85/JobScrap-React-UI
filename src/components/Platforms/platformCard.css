@@ -1,0 +1,62 @@
+.platform-card-container {
+  width: 270px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-m);
+  gap: var(--spacing-s);
+}
+.platform-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.platform-card-icon-name {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-m);
+}
+.platform-card-title-created {
+  display: flex;
+  flex-direction: column;
+}
+.platform-card-keywords-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.platform-card-subtitle {
+  font-weight: lighter;
+  color: var(--font-secondary);
+  font-size: var(--xs);
+}
+.platform-card-dots-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.platform-card-dots-icon:hover{
+    color: var(--primary);
+}
+.platform-card-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--grey4);
+  padding: var(--spacing-xxs);
+  border-radius: var(--m-radius);
+  box-shadow: var(--double-border);
+  z-index: 1000;
+  min-width: 120px;
+  cursor: pointer;
+}
+.platform-card-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  padding: var(--spacing-s);
+  transition: color 0.2s ease;
+}
+.platform-card-dropdown-item:hover {
+  color: var(--error);
+}

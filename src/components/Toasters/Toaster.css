@@ -1,0 +1,11 @@
+
+
+.deleteIcon:hover {
+  opacity: 0.8;
+  box-shadow: none;
+  color: var(--primary)
+}
+
+.deleteIcon:active {
+  opacity: 0.4;
+} 

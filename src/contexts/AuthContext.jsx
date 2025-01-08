@@ -32,14 +32,25 @@ function AuthContextProvider({ children }) {
     dispatch({ type: 'SET_AUTH', payload: isAuthenticated })
   }, [])
 
-  /**
-   * Memoized context value to prevent unnecessary re-renders
-   * @type {{isAuthenticated: boolean, setAuth: Function}}
-   */
-  const value = useMemo(() => ({
-    isAuthenticated: state.isAuthenticated,
-    setAuth
-  }), [state.isAuthenticated, setAuth])
+  const setUsername = useCallback((username) => {
+    dispatch({ type: 'SET_USER', payload: username })
+  }, [])
+
+  const setUserRole = useCallback((role) => {
+    dispatch({ type: 'SET_ROLE', payload: role })
+  }, [])
+
+  const value = useMemo(
+    () => ({
+      isAuthenticated: state.isAuthenticated,
+      username: state.username,
+      role: state.role,
+      setAuth,
+      setUsername,
+      setUserRole,
+    }),
+    [state.isAuthenticated, setAuth, setUsername, setUserRole, state.username, state.role]
+  )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

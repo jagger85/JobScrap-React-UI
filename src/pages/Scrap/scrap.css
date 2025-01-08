@@ -1,0 +1,20 @@
+.scrap-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-m);
+}
+.scrap-header-title{
+    font-size: var(--l);
+    font-weight: var(--font-weight-bold);
+}
+.scrap-header-subtitle{
+    font-size: var(--s);
+    font-weight: var(--font-weight-medium);
+}
+.scrap-operations-panels{
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}

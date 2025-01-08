@@ -1,0 +1,75 @@
+import './mainLayout.css'
+import Header from '../components/Header/Header'
+import SideBar from '../components/SideBar/SideBar'
+import Overview from '../pages/Dashboard/Overview'
+import History from '../pages/History/History'
+import UserManagement from '../pages/UserManagement/UserManagement'
+import Settings from '../pages/Settings/Settings'
+import Automation from '../pages/Automation/Automation'
+import { Routes, Route } from 'react-router-dom'
+import ProtectedRoute from '../components/ProtectedRoute'
+import Listings from '../pages/Listings/Listings'
+import Scrap from '../pages/Scrap/Scrap'
+function MainLayout() {
+
+  
+
+  return (
+    <div className="main-container">
+      <div className="sidebar-container">
+        <SideBar />
+      </div>
+      <div className="content-container">
+        <div className="header-container">
+          <Header />
+        </div>
+        <div className="body-container">
+          <Routes>
+            <Route path="/" element={<Overview />} />
+            <Route
+              path="/history"
+              element={
+                <ProtectedRoute
+                  element={<History />}
+                  allowedRoles={['admin', 'user']}
+                />
+              }
+            />
+            <Route
+              path="/user-management"
+              element={
+                <ProtectedRoute
+                  element={<UserManagement />}
+                  allowedRoles={['admin']}
+                />
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute
+                  element={<Settings />}
+                  allowedRoles={['admin', 'user']}
+                />
+              }
+            />
+            <Route
+              path="/automation"
+              element={
+                <ProtectedRoute
+                  element={<Automation />}
+                  allowedRoles={['admin', 'user']}
+                />
+              }
+            />
+            <Route path="/listings" element={<Listings />} />
+            <Route path="/scrap" element={<Scrap />} />
+          </Routes>
+        </div>
+        <div className="footer-container"></div>
+      </div>
+    </div>
+  )
+}
+
+export default MainLayout

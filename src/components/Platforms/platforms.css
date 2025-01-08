@@ -1,0 +1,38 @@
+/* Add styles for the form container */
+.dashboard-form {
+  padding: var(--spacing-m); /* Spacing around the form */
+}
+
+/* Style for the form title */
+.dashboard-form h2 {
+  color: var(--primary); /* Primary color for the title */
+  margin-bottom: var(--spacing-m); /* Space below the title */
+}
+
+/* Style for the input fields */
+.dashboard-form input {
+  margin-bottom: var(--spacing-s); /* Space between inputs */
+}
+
+/* Style for the submit button */
+.dashboard-form button {
+  background-color: var(--primary); /* Primary color for the button */
+  color: var(--font); /* Font color */
+  transition: background-color var(--fast-transition); /* Smooth transition */
+}
+
+.dashboard-form button:hover {
+  background-color: var(--secondary); /* Change color on hover */
+}
+.platform-inputs{
+  display: flex;
+  gap: 10px;
+}
+
+.platform-button{
+    align-self: flex-end;
+}
+
+.platform-input{
+    align-self: flex-end;
+}

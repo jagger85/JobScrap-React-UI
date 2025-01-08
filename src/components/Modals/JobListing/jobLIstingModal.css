@@ -1,0 +1,92 @@
+.job-listing-modal .modal-content {
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: var(--grey1);
+}
+
+.job-listing-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
+}
+
+.job-listing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-m);
+  padding-bottom: var(--spacing-m);
+  border-bottom: 1px solid var(--font-secondary);
+}
+
+.company-info {
+  flex: 1;
+}
+
+.company-info h3 {
+  margin: 0 0 var(--spacing-m) 0;
+  font-size: var(--font-size-l);
+  color: var(--text-color);
+}
+
+.badges-container {
+  display: flex;
+  gap: var(--spacing-s);
+  flex-wrap: wrap;
+}
+
+.job-meta {
+  text-align: right;
+}
+
+.job-listing-body {
+  flex: 1;
+}
+
+.job-listing-body h4 {
+  margin: 0 0 var(--spacing-m);
+  font-size: var(--font-size-m);
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.about-section {
+  color: var(--text-color-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-l);
+}
+
+.description {
+  color: var(--text-color-secondary);
+  line-height: 1.6;
+}
+
+.description p {
+  margin: 0 0 var(--spacing-s);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--spacing-m);
+  border-top: 1px solid var(--font-secondary);
+}
+
+/* Scrollbar styling */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-color-secondary);
+}
