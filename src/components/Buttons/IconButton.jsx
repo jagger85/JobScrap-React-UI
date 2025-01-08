@@ -7,6 +7,8 @@ const IconButton = ({
   size = 25,
   type,
   disabled,
+  children,
+  style,
   ...props
 }) => {
   const handleClick = (e) => {
@@ -17,11 +19,13 @@ const IconButton = ({
 
   return (
     <div
+      style={style}
       className={`${type} button ${disabled ? 'disabled' : ''}`}
       onClick={handleClick}
       {...props}
     >
       {Icon && <Icon size={size} />}
+      {children}
     </div>
   )
 }
