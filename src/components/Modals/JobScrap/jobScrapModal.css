@@ -1,0 +1,72 @@
+.close-button {
+  background: none;
+  border: none;
+  color: var(--font-secondary);
+  font-size: var(--l);
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  max-width: none;
+  box-shadow: none;
+}
+
+.close-button:hover {
+  color: var(--font);
+  box-shadow: none;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: var(--spacing-s);
+}
+
+.platform-select img {
+  width: 20px;
+  height: 20px;
+}
+
+.platform-select span {
+  color: var(--font);
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  color: var(--font-secondary);
+  font-size: var(--xs);
+}
+
+.save-button {
+  width: 100%;
+  max-width: none;
+  padding: var(--spacing-s);
+  margin-top: var(--spacing-m);
+}
+
+.platform-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.platform-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.add-user-form , .job-scrap-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.job-scrap-select {
+  width: 30ch;
+  font-weight: normal;
+}
+
+.job-scrap-input {
+  width: 29ch;
+}

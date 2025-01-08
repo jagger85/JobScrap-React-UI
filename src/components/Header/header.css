@@ -1,0 +1,11 @@
+.user-container{
+    display: flex;
+    gap: var(--spacing-m)
+}
+
+.user-icon{
+    color: var(--font)
+}
+.user-icon :hover{
+    color: var(--primary)
+}

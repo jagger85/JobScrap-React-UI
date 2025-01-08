@@ -1,54 +1,38 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useContext, useRef } from 'react'
-import Sweeper from './components/Sweeper'
-import Login from './components/Login/Login'
-import Settings from './components/Settings/Settings'
-import Toasters from './components/Toasters'
+import Login from './pages/Login/Login'
+import useAuth from './hooks/useAuth'
+import { useContext, useEffect } from 'react'
 import { AuthContext } from './contexts/AuthContext'
-import { ConnectionContext } from './contexts/ConnectionContext'
-import { useServerConnection } from './hooks/useServerConnection'
-import './jobsweep.css'
-
+import useStorage from './hooks/useStorage'
+import MainLayout from './Layout/MainLayout'
+import Toasters from './components/Toasters/Toasters'
+import useServerConnection from './hooks/useServerConnection'
+import OperationContext  from './contexts/OperationContext'
 export default function App() {
+  const { connect } = useServerConnection()
+  const { loginWithUsenamePassword, loginWithToken } = useAuth()
+  const { getToken } = useStorage()
   const { isAuthenticated } = useContext(AuthContext)
-  const { connect, disconnect } = useServerConnection()
-  const { connection } = useContext(ConnectionContext)
-  const hasConnectedRef = useRef(false);
+  const { resetOperations } = useContext(OperationContext)
   useEffect(() => {
-    if (isAuthenticated && !hasConnectedRef.current && !connection.isConnected) {
-      connect()
-      hasConnectedRef.current = true
+    connect()
+    resetOperations()
+  }, []) // Empty dependency array, so it only runs on mount
+
+  useEffect(() => {
+    if (getToken() && !isAuthenticated) {
+      loginWithToken()
     }
-  }, [connect, isAuthenticated, connection.isConnected])
+  }, [getToken, isAuthenticated, loginWithToken])
+
+  function handleLogin(username, password, rememberMe) {
+    connect()
+    loginWithUsenamePassword(username, password, rememberMe)
+  }
 
   return (
-    <div className="App">
-      <div className="main">
-        <div className="page-container">
-          <div className="page-title">
-            <h2
-               style={{ fontSize: 'var(--xl)', cursor: 'pointer' }}
-              // onClick={() => setShowSettings(!showSettings)}
-            >
-              Job Scraper
-            </h2>
-            <div className="separator" />
-            <div className="transition-container">
-              {!isAuthenticated ? <Login /> : <Sweeper />}
-            </div>
-          </div>
-        </div>
-      </div>
+    <div>
+      {isAuthenticated ? <MainLayout /> : <Login onLogin={handleLogin} />}
       <Toasters />
-        {/* 
-      {showSettings && (
-        <Settings
-          isOpen={showSettings}
-          onClose={() => setShowSettings(false)}
-        />
-      )} */}
     </div>
   )
 }
-
-

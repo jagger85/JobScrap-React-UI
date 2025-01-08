@@ -1,0 +1,4 @@
+.automation-cards {
+  display: flex;
+  gap: var(--spacing-m);
+}

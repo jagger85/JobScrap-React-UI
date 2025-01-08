@@ -1,0 +1,121 @@
+.cp-panel-header-collapsable {
+  padding: var(--spacing-m);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--xs);
+  gap: var(--spacing-m);
+  color: var(--font);
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  width: 700px;
+  cursor: pointer;
+}
+.cp-panel-header-data {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-m);
+  justify-content: flex-start;
+}
+
+.cp-panel-header-item span {
+  color: var(--font-secondary);
+  font-weight: normal;
+  letter-spacing: normal;
+}
+.cp-panel-header-item-platform {
+  color: var(--font) !important;
+  font-size: var(--s);
+  font-weight: normal;
+  letter-spacing: normal;
+}
+
+.cp-panel-header-item img {
+  width: 20px;
+  height: 20px;
+}
+
+.cp-icon-open {
+  transform: rotate(-90deg);
+  transition: transform var(--fast-transition);
+  display: flex;
+  align-items: center;
+}
+.cp-content-row-items {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  gap: var(--spacing-m);
+}
+.cp-content-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.cp-icon-closed {
+  transform: rotate(0deg);
+  transition: transform var(--fast-transition);
+  display: flex;
+  align-items: center;
+}
+
+.cp-content {
+  display: flex;
+  gap: var(--spacing-m);
+  box-shadow: var(--double-border);
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.cp-content-collapsable {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.cp-content-open {
+  max-height: 1000px;
+  opacity: 1;
+  margin: var(--spacing-l);
+  padding: var(--spacing-m);
+}
+.cp-panel-header-item-message {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+.cp-content-closed {
+  max-height: 0;
+  opacity: 0;
+}
+
+.cp-panel-header-item-actions {
+  display: flex;
+  gap: var(--spacing-m);
+}
+
+.success-icon {
+  color: var(--success) !important;
+}
+
+.error-icon {
+  color: var(--error) !important;
+}
+
+.cp-panel-header-collapsable:hover .cp-icon-open svg,
+.cp-panel-header-collapsable:hover .cp-icon-closed svg {
+  color: var(--primary);
+}
+
+.success-icon svg {
+  color: var(--success) !important;
+}
+
+
+.delete:hover svg {
+  color: var(--error) !important;
+}

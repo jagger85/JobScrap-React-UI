@@ -1,0 +1,23 @@
+.user-chart {
+  width: 300px;
+  height: 400px;
+  padding: var(--spacing-m);
+}
+
+.platform-chart {
+  width: 300px;
+  height: 400px;
+  padding: var(--spacing-m);
+}
+
+.listings-chart {
+  max-width: 600px;
+  height: 400px;
+  padding: var(--spacing-m);
+}
+
+.daily-chart {
+  max-width: 600px;
+  height: 400px;
+  padding: var(--spacing-m);
+}

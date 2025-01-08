@@ -1,0 +1,11 @@
+.add-user-form input {
+  width: 380px;
+}
+
+.user-form-input span {
+  display: none;
+}
+
+.user-form-input input:invalid[focused='true'] ~ span {
+  display: block;
+}
