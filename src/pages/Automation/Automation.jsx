@@ -1,9 +1,9 @@
 import PageLayout from '../../Layout/PageLayout'
 import IconButton from '../../components/Buttons/IconButton'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import AutomateScrapModal from '@components/Modals/AutomateScrap/AutomateScrapModal'
 import { CreateIcon } from '../../components/Icons'
-import AutomaticOperationPanel from '@components/Panels/AutomaticOperationPanel'
+import SqueduledOperationPanel from '@components/Panels/SqueduledOperationPanel'
 import './automation.css'
 
 import { useSqueduledOperations } from '../../hooks/useSqueduledOperations'
@@ -21,8 +21,21 @@ function Automation() {
     setIsModalOpen(false)
   }
 
-  if (isFetching) return <h2>Is Fetching...</h2>
-  if (isLoading) return <h2>Loading...</h2>
+  
+  const memoizedHandleDelete = useCallback((id) => {
+    handleDelete(id)
+  }, [handleDelete])
+
+  const memoizedActivateOperation = useCallback((id) => {
+    activateOperation(id)
+  }, [activateOperation])
+
+  const memoizedDeactivateOperation = useCallback((id) => {
+    deactivateOperation(id)
+  }, [deactivateOperation])
+
+
+  if (isLoading || isFetching) return <h2>Loading...</h2>
   if (isError) return <h2>Oooops something went wrong {error}</h2>
 
 
@@ -34,12 +47,12 @@ function Automation() {
       </div>
       {operations.map((operation) => {
         return (
-          <AutomaticOperationPanel
+          <SqueduledOperationPanel
             key={operation.id}
             operation={operation}
-            onDelete={handleDelete}
-            onActivate={activateOperation}
-            onDeactivate={deactivateOperation}
+            onDelete={memoizedHandleDelete}
+            onActivate={memoizedActivateOperation}
+            onDeactivate={memoizedDeactivateOperation}
           />
         )
       })}
@@ -52,5 +65,5 @@ function Automation() {
     </PageLayout>
   )
 }
-
+  
 export default Automation
