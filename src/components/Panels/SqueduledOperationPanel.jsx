@@ -1,10 +1,11 @@
 import './panels.css'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { CollapseIcon, PlayIcon, PauseIcon, TrashIcon } from '@icons'
 import IconButton from '@components/Buttons/IconButton'
 import PropTypes from 'prop-types'
+import { PLATFORM_ICONS } from '@constants'
 
-function AutomaticOperationPanel(props) {
+const SqueduledOperationPanel = memo(function SqueduledPanel(props) {
   const [isOpen, setIsOpen] = useState(false)
   const { operation, onDelete, onActivate, onDeactivate } = props
 
@@ -13,7 +14,6 @@ function AutomaticOperationPanel(props) {
   }
 
   async function handleDelete(id) {
-    console.log(operation)
     onDelete(id)
   }
 
@@ -29,7 +29,7 @@ function AutomaticOperationPanel(props) {
     <div className="elevated">
       <div className="cp-panel-header-collapsable" onClick={togglePanel}>
         <div className="cp-panel-header-data">
-          <img src={operation.icon} style={{ width: '30px', height: '30px' }} />
+          <img src={PLATFORM_ICONS[operation.platform.toUpperCase()]} style={{ width: '30px', height: '30px' }} />
           <div className="cp-panel-header-item">
             <span className="cp-panel-header-item-platform">
               {operation.platform}
@@ -94,12 +94,23 @@ function AutomaticOperationPanel(props) {
     </div>
   )
 }
+)
 
-AutomaticOperationPanel.propTypes = {
-  operation: PropTypes.object.isRequired,
+SqueduledOperationPanel.propTypes = {
+  operation: PropTypes.shape({
+    platform: PropTypes.string.isRequired,
+    keywords: PropTypes.string.isRequired,
+    dateRange: PropTypes.string.isRequired,
+    frequency: PropTypes.string.isRequired,
+    enabled: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    last_run_at: PropTypes.string,
+    total_run_count: PropTypes.number.isRequired
+  }).isRequired,
   onDelete: PropTypes.func.isRequired,
   onActivate: PropTypes.func.isRequired,
-  onDeactivate: PropTypes.func.isRequired,
+  onDeactivate: PropTypes.func.isRequired
 }
 
-export default AutomaticOperationPanel
+export default SqueduledOperationPanel
