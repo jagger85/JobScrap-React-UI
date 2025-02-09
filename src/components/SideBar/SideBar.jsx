@@ -25,7 +25,8 @@ function SideBar() {
           />
         ))}
       </div>
-      <div className="sidebar-footer">sidebar footer</div>
+      <div className="sidebar-footer">
+      </div>
     </div>
   )
 }
