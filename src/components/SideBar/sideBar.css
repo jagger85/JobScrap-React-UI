@@ -26,6 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--spacing-m)
 }
 
 .sidebar-element-container {
@@ -33,7 +34,8 @@
   display: flex;
   align-items: center;
   height: 25px;
-  padding: var(--spacing-xs);
+  gap: var(--spacing-s);
+  padding: var(--spacing-s);
   margin: 0px var(--spacing-s) 10px var(--spacing-s);
   border-radius: var(--m-radius);
   text-decoration: none;
@@ -45,6 +47,10 @@
 
 .sidebar-element-container.active {
   background-color: var(--grey2);
+}
+
+.sidebar-element-container.active .sidebar-icon {
+  color: var(--primary);
 }
 
 .sidebar-element-text {

@@ -5,6 +5,7 @@ import IconButton from '@buttons/IconButton'
 import PropTypes from 'prop-types'
 import {downloadCSV} from '@utils/csvManager'
 import useApi from '@hooks/useApi'
+import OperationStatusBadge from '../Badges/OperationStatusBadge/OperationStatusBadge'
 
 export default function CollapsablePanel(props) {
   const { fetchOperationByTaskId } = useApi()
@@ -21,11 +22,7 @@ export default function CollapsablePanel(props) {
 
   return (
     <div className='elevated'>
-      <div
-        className="cp-panel-header-collapsable"
-        onClick={togglePanel}
-      >
-
+      <div className="cp-panel-header-collapsable" onClick={togglePanel}>
         <div className='cp-panel-header-data'>
         <img src={operation.icon} style={{ width: '30px', height: '30px' }} />
         <div className="cp-panel-header-item"><span className="cp-panel-header-item-platform">{operation.platform}</span></div>
@@ -42,12 +39,9 @@ export default function CollapsablePanel(props) {
         }`}
       >
         {children}
-
-
-
         <div className='cp-content-row'>
         <div className='cp-content-row-items'>
-        <div>Status: {operation.status}</div>
+        <OperationStatusBadge status={operation.status}/>
         <div>Listings: {operation.numberOfListings}</div>
         </div>
         <div className='cp-panel-header-item-actions'>
