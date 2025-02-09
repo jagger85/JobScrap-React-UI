@@ -1,5 +1,5 @@
 import './panels.css'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { CollapseIcon, TrashIcon, DownloadIcon} from '@icons'
 import IconButton from '@buttons/IconButton'
 import PropTypes from 'prop-types'
@@ -8,7 +8,7 @@ import useApi from '@hooks/useApi'
 import OperationStatusBadge from '../Badges/OperationStatusBadge/OperationStatusBadge'
 import { PLATFORM_ICONS } from '@constants'
 
-export default function CollapsablePanel(props) {
+const TriggeredOperationPanel = memo(function TriggeredPanel(props) {
   const { fetchOperationByTaskId } = useApi()
   const { operation, children, onDelete} = props
   const [isOpen, setIsOpen] = useState(false)
@@ -57,8 +57,11 @@ export default function CollapsablePanel(props) {
   )
 }
 
-CollapsablePanel.propTypes = {
+
+)
+TriggeredOperationPanel.propTypes = {
   operation: PropTypes.object.isRequired,
   children: PropTypes.node,
   onDelete: PropTypes.func.isRequired,
 }
+  export default TriggeredOperationPanel

@@ -7,7 +7,8 @@ import PageLayout from '../../Layout/PageLayout'
 import IconButton from '../../components/Buttons/IconButton'
 import { CreateIcon } from '../../components/Icons'
 import StandardButton from '@buttons/StandardButton'
-import CollapsablePanel from '@panels/CollapsablePanel'
+import TriggeredOperationPanel from '@panels/TriggeredOperationPanel'
+
 function Scrap() {
   const { scrapOperationsByDateRange } = useApi()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -43,11 +44,11 @@ function Scrap() {
       </div>
       <div className="scrap-operations-panels">
         {operations.map((operation) => (
-          <CollapsablePanel
+          <TriggeredOperationPanel
             key={operation.id}
             operation={operation}
             onDelete={deleteOperation}
-          ></CollapsablePanel>
+          />
         ))}
       </div>
       {isModalOpen && (
