@@ -5,6 +5,17 @@ export const PLATFORMS = {
   INDEED: 'Indeed'
 }
 
+import linkedInIcon from '@assets/platform-icons/linkedIn.svg'
+import jobstreetIcon from '@assets/platform-icons/jobstreet.svg'
+import kalibrrIcon from '@assets/platform-icons/kalibrr.svg'
+import indeedIcon from '@assets/platform-icons/indeed.svg'
+
+export const PLATFORM_ICONS = {
+  LINKEDIN: linkedInIcon,
+  JOBSTREET: jobstreetIcon,
+  KALIBRR: kalibrrIcon,
+  INDEED: indeedIcon
+}
 export const OPERATION_STATUS = {
   IDLE: 'IDLE',
   PROCESSING: 'PROCESSING',

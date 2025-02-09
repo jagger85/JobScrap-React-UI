@@ -32,6 +32,7 @@ export default defineConfig({
       '@badges': '/src/components/Badges',
       '@panels': '/src/components/Panels',
       '@constants': '/src/constants',
+      '@assets': '/src/assets',
     },
   },
 })
