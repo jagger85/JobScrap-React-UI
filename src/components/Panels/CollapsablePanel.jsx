@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import {downloadCSV} from '@utils/csvManager'
 import useApi from '@hooks/useApi'
 import OperationStatusBadge from '../Badges/OperationStatusBadge/OperationStatusBadge'
+import { PLATFORM_ICONS } from '@constants'
 
 export default function CollapsablePanel(props) {
   const { fetchOperationByTaskId } = useApi()
@@ -24,7 +25,7 @@ export default function CollapsablePanel(props) {
     <div className='elevated'>
       <div className="cp-panel-header-collapsable" onClick={togglePanel}>
         <div className='cp-panel-header-data'>
-        <img src={operation.icon} style={{ width: '30px', height: '30px' }} />
+        <img src={PLATFORM_ICONS[operation.platform.toUpperCase()]} style={{ width: '30px', height: '30px' }} />
         <div className="cp-panel-header-item"><span className="cp-panel-header-item-platform">{operation.platform}</span></div>
         <div className="cp-panel-header-item">Keywords: <span>{operation.keywords}</span></div>
         <div className="cp-panel-header-item">Date range: <span>{operation.dateRange}</span></div>
