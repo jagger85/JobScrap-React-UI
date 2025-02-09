@@ -7,7 +7,9 @@ function UsersTable(props) {
   const { data, handleDelete } = props
   return (
     <div className="elevated table-container">
+      <div className='table-container-header'>
       <div className="table-title">Current users</div>
+      </div>
       <table className="user-table">
         <thead>
           <tr className="table-header">
