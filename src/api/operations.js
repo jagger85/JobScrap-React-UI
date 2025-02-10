@@ -1,11 +1,23 @@
 import { API_CONFIG } from "./config"
 
 export class OperationsService {
-    constructor(axiosInstance){
+    constructor(axiosInstance) {
         this.client = axiosInstance
+        
+        // Bind all methods to preserve 'this' context
+        this.fetchAllOperations = this.fetchAllOperations.bind(this)
+        this.fetchOperations = this.fetchOperations.bind(this)
+        this.scrapOperationsByDateRange = this.scrapOperationsByDateRange.bind(this)
+        this.deleteOperation = this.deleteOperation.bind(this)
+        this.fetchOperationByTaskId = this.fetchOperationByTaskId.bind(this)
+        this.fetchAutomatedScrapOperations = this.fetchAutomatedScrapOperations.bind(this)
+        this.createAutomatedScrapOperation = this.createAutomatedScrapOperation.bind(this)
+        this.deleteAutomatedScrapOperation = this.deleteAutomatedScrapOperation.bind(this)
+        this.activateAutomatedScrapOperation = this.activateAutomatedScrapOperation.bind(this)
+        this.deactivateAutomatedScrapOperation = this.deactivateAutomatedScrapOperation.bind(this)
     }
 
-    async fetchAllOperations(){
+    async fetchAllOperations() {
         return this.client.get(API_CONFIG.ENDPOINTS.OPERATIONS)
     }
 

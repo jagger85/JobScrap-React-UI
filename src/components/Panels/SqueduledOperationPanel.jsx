@@ -13,16 +13,16 @@ const SqueduledOperationPanel = memo(function SqueduledPanel(props) {
     setIsOpen(!isOpen)
   }
 
-  async function handleDelete(id) {
-    onDelete(id)
+  async function handleDelete() {
+    onDelete(operation)
   }
 
-  async function handleActivate(id) {
-    onActivate(id)
+  async function handleActivate() {
+    onActivate(operation)
   }
 
-  async function handleDeactivate(id) {
-    onDeactivate(id)  
+  async function handleDeactivate() {
+    onDeactivate(operation)  
   }
 
   return (
@@ -52,7 +52,7 @@ const SqueduledOperationPanel = memo(function SqueduledPanel(props) {
               icon={PlayIcon}
               onClick={(e) => {
                 e.stopPropagation()
-                handleDeactivate(operation.id)
+                handleDeactivate()
               }}
             />
           ) : (
@@ -61,7 +61,7 @@ const SqueduledOperationPanel = memo(function SqueduledPanel(props) {
               icon={PauseIcon}
               onClick={(e) => {
                 e.stopPropagation()
-                handleActivate(operation.id)
+                handleActivate()
               }}
             />
           )}
@@ -70,7 +70,7 @@ const SqueduledOperationPanel = memo(function SqueduledPanel(props) {
             icon={TrashIcon}
             onClick={(e) => {
               e.stopPropagation()
-              handleDelete(operation.id)
+              handleDelete()
             }}
           />
           <div className={isOpen ? 'cp-icon-open' : 'cp-icon-closed'}>

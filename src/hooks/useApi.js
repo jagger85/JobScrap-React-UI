@@ -76,83 +76,12 @@ const useApi = () => {
     return data
   }
 
-  async function fetchAutomatedScrapOperations() {
-    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`,
-      },
-    })
-    const data = await response.json()
-    return data
-  }
-
-  async function createAutomatedScrapOperation(data) {
-    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`,
-      },
-      body: JSON.stringify(data),
-    })
-    return response
-  }
-
-  async function deleteAutomatedScrapOperation(id) {
-    const response = await fetch(
-      `${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-        },
-      }
-    )
-    return response
-  }
-
-  async function activateAutomatedScrapOperation(id) {
-    const response = await fetch(
-      `${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}/${id}/activate`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-        },
-      }
-    )
-    return response
-  }
-
-  async function deactivateAutomatedScrapOperation(id) {
-    const response = await fetch(
-      `${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}/${id}/deactivate`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-        },
-      }
-    )
-    return response
-  }
-
   return {
     api,
     login,
     validateToken,
     scrapOperationsByDateRange,
     fetchOperationByTaskId,
-    fetchAutomatedScrapOperations,
-    createAutomatedScrapOperation,
-    deleteAutomatedScrapOperation,
-    activateAutomatedScrapOperation,
-    deactivateAutomatedScrapOperation,
   }
 }
 
