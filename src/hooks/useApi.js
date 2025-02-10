@@ -1,11 +1,23 @@
 import { API_CONFIG } from '../api/config'
-
+import { createAxiosInstance } from '../api/axiosInstance'
+import { UserService } from '../api/users'
+import { useMemo } from 'react'
 const { BASE_URL, SOCKET_URL } = API_CONFIG
 
 import useStorage from './useStorage'
 
 const useApi = () => {
   const { getToken } = useStorage()
+
+  const services = useMemo(() =>{
+
+    const axiosInstance = createAxiosInstance(getToken)
+    return {
+      users: new UserService(axiosInstance)
+    }
+  },[getToken])
+
+
 
   async function fetchUsers() {
     const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.USERS}`, {
@@ -225,6 +237,7 @@ const useApi = () => {
   }
 
   return {
+    services,
     fetchUsers,
     login,
     validateToken,

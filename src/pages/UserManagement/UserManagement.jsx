@@ -1,6 +1,5 @@
 import AddUserModal from '@modals/AddUser/AddUserModal'
 import PageLayout from '../../Layout/PageLayout'
-import Section from '../../components/Section/Section'
 import { CreateIcon } from '../../components/Icons'
 import IconButton from '../../components/Buttons/IconButton'
 import { useQuery } from '@tanstack/react-query'
@@ -21,17 +20,19 @@ function UserManagement() {
     setIsModalOpen(true)
   }
 
-  const { fetchUsers, deleteUser } = useApi()
+  const { services } = useApi()
   const { data, isError, error, isLoading, refetch } = useQuery({
     queryKey: ['users'],
-    queryFn: fetchUsers,
+    queryFn: () => services.users.fetchUsers(),
   })
 
   const handleDelete = async (username) => {
-    const response = await deleteUser(username)
-    if (response.ok) {
+    try {
+      await services.users.deleteUser(username)
       ToasterManager.showToast('success', 'User deleted successfully')
-      refetch()
+      await refetch()
+    } catch (error) {
+      ToasterManager.showToast('error', error.response?.data?.message || 'Failed to delete user')
     }
   }
     if (isLoading) return <h2>Loading...</h2>

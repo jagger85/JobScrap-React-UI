@@ -20,7 +20,7 @@ const roleOptions = [
 
 function AddUserModal({ onClose }) {
   const queryClient = useQueryClient()
-  const { addUser } = useApi()
+  const { services } = useApi()
 
   const [values, setValues] = useState({
     username: '',
@@ -64,18 +64,17 @@ function AddUserModal({ onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    const response = await addUser(
-      values.username,
-      values.password,
-      values.role
-    )
-    if (response.ok) {
+    try {
+      await services.users.addUser(
+        values.username,
+        values.password,
+        values.role
+      )
       ToasterManager.showToast('success', 'User added successfully')
       queryClient.refetchQueries(['users'])
       onClose()
-    } else {
-      ToasterManager.showToast('error', 'Failed to add user')
+    } catch (error) {
+      ToasterManager.showToast('error', error.response?.data?.message || 'Failed to add user')
       onClose()
     }
   }
