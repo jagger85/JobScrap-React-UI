@@ -1,25 +1,14 @@
-const BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT
-  }/api`
+import { API_CONFIG } from '../api/config'
+
+const { BASE_URL, SOCKET_URL } = API_CONFIG
 
 import useStorage from './useStorage'
-
-const getBaseUrl = () => {
-  if (import.meta.env.PROD) import.meta.env.VITE_API_URL
-  else return BASE_URL
-}
-
-const getSocketUrl = () => {
-  if (import.meta.env.PROD) import.meta.env.VITE_API_SOCKET
-  else
-    return `ws://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT
-      }/api/socket`
-}
 
 const useApi = () => {
   const { getToken } = useStorage()
 
   async function fetchUsers() {
-    const response = await fetch(`${BASE_URL}/users`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.USERS}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +20,7 @@ const useApi = () => {
   }
 
   async function addUser(username, password, role) {
-    const response = await fetch(`${BASE_URL}/users`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.USERS}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +36,7 @@ const useApi = () => {
   }
 
   async function deleteUser(username) {
-    const response = await fetch(`${BASE_URL}/users/${username}`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.USERS}/${username}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +47,7 @@ const useApi = () => {
   }
 
   async function login(username, password, rememberMe) {
-    const response = await fetch(`${BASE_URL}/auth/login`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.AUTH}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,9 +60,10 @@ const useApi = () => {
     })
     return response
   }
+
   async function changePassword(newPassword, username) {
     const response = await fetch(
-      `${BASE_URL}/users/${username}/change-password`,
+      `${BASE_URL}${API_CONFIG.ENDPOINTS.USERS}/${username}/change-password`,
       {
         method: 'PUT',
         headers: {
@@ -89,7 +79,7 @@ const useApi = () => {
   }
 
   async function validateToken(token) {
-    const response = await fetch(`${BASE_URL}/auth/validate-token`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.AUTH}/validate-token`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -100,7 +90,7 @@ const useApi = () => {
   }
 
   async function fetchOperations(cursor = null) {
-    const url = new URL(`${BASE_URL}/operations`)
+    const url = new URL(`${BASE_URL}${API_CONFIG.ENDPOINTS.OPERATIONS}`)
     if (cursor) url.searchParams.append('cursor', cursor)
     url.searchParams.append('limit', '10')
     
@@ -118,7 +108,7 @@ const useApi = () => {
 
   async function fetchAllOperations() {
     console.log('Fetching all operations')
-    const response = await fetch(`${BASE_URL}/operations/all`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.OPERATIONS}/all`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +120,7 @@ const useApi = () => {
   }
 
   async function scrapOperationsByDateRange(keywords, dateRange, platform) {
-    const response = await fetch(`${BASE_URL}/${platform}`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.PLATFORM}/${platform}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -146,7 +136,7 @@ const useApi = () => {
   }
 
   async function deleteOperation(id) {
-    const response = await fetch(`${BASE_URL}/operations/${id}`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.OPERATIONS}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -157,7 +147,7 @@ const useApi = () => {
   }
 
   async function fetchOperationByTaskId(taskId) {
-    const response = await fetch(`${BASE_URL}/operations/task/${taskId}`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.OPERATIONS}/task/${taskId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -169,7 +159,7 @@ const useApi = () => {
   }
 
   async function fetchAutomatedScrapOperations() {
-    const response = await fetch(`${BASE_URL}/automated_scrap_operations`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -181,7 +171,7 @@ const useApi = () => {
   }
 
   async function createAutomatedScrapOperation(data) {
-    const response = await fetch(`${BASE_URL}/automated_scrap_operations`, {
+    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -194,7 +184,7 @@ const useApi = () => {
 
   async function deleteAutomatedScrapOperation(id) {
     const response = await fetch(
-      `${BASE_URL}/automated_scrap_operations/${id}`,
+      `${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -208,7 +198,7 @@ const useApi = () => {
 
   async function activateAutomatedScrapOperation(id) {
     const response = await fetch(
-      `${BASE_URL}/automated_scrap_operations/${id}/activate`,
+      `${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}/${id}/activate`,
       {
         method: 'PUT',
         headers: {
@@ -222,7 +212,7 @@ const useApi = () => {
 
   async function deactivateAutomatedScrapOperation(id) {
     const response = await fetch(
-      `${BASE_URL}/automated_scrap_operations/${id}/deactivate`,
+      `${BASE_URL}${API_CONFIG.ENDPOINTS.AUTOMATED_SCRAP}/${id}/deactivate`,
       {
         method: 'PUT',
         headers: {
@@ -254,7 +244,6 @@ const useApi = () => {
   }
 }
 
-export const API_BASE_URL = getBaseUrl()
-export const SOCKET_URL = getSocketUrl()
+export { BASE_URL as API_BASE_URL, SOCKET_URL }
 
 export default useApi
