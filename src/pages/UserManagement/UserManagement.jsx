@@ -20,15 +20,15 @@ function UserManagement() {
     setIsModalOpen(true)
   }
 
-  const { services } = useApi()
+  const { api } = useApi()
   const { data, isError, error, isLoading, refetch } = useQuery({
     queryKey: ['users'],
-    queryFn: () => services.users.fetchUsers(),
+    queryFn: () => api.users.fetchUsers(),
   })
 
   const handleDelete = async (username) => {
     try {
-      await services.users.deleteUser(username)
+      await api.users.deleteUser(username)
       ToasterManager.showToast('success', 'User deleted successfully')
       await refetch()
     } catch (error) {

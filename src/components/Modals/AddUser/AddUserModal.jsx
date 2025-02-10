@@ -20,7 +20,7 @@ const roleOptions = [
 
 function AddUserModal({ onClose }) {
   const queryClient = useQueryClient()
-  const { services } = useApi()
+  const { api } = useApi()
 
   const [values, setValues] = useState({
     username: '',
@@ -65,7 +65,7 @@ function AddUserModal({ onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await services.users.addUser(
+      await api.users.addUser(
         values.username,
         values.password,
         values.role

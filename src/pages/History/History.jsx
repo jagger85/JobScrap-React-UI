@@ -7,14 +7,14 @@ import HistoricTable from '../../components/Tables/HistoricTable'
 import { useState, useEffect } from 'react'
 
 function History() {
-  const { fetchOperations, deleteOperation } = useApi()
+  const { api } = useApi()
   const [cursor, setCursor] = useState(null)
   const [cursorStack, setCursorStack] = useState([])
   const queryClient = useQueryClient()
 
   const { data, isError, error, isLoading, refetch } = useQuery({
     queryKey: ['operations', cursor],
-    queryFn: () => fetchOperations(cursor),
+    queryFn: () => api.operations.fetchOperations(cursor),
     keepPreviousData: true
   })
 
@@ -23,7 +23,7 @@ function History() {
     if (data?.nextCursor) {
       queryClient.prefetchQuery({
         queryKey: ['operations', data.nextCursor],
-        queryFn: () => fetchOperations(data.nextCursor)
+        queryFn: () => api.operations.fetchOperations(data.nextCursor)
       })
     }
   }, [data, queryClient])
@@ -46,15 +46,15 @@ function History() {
   }
 
   const handleDelete = async (id) => {
-    const response = await deleteOperation(id)
-    if (response.status === 200) {
-      ToasterManager.showToast('success', 'Operation deleted')
-      refetch()
-    } else {
-      ToasterManager.error('Failed to delete operation')
+    try{
+      await api.operations.deleteOperation(id)
+        ToasterManager.showToast('success', 'Operation deleted')
+        refetch()
+      } catch (error){
+        ToasterManager.showToast('error', error.response?.data?.message || 'Failed to delete user')
+      }
     }
-  }
-
+    
   if (isLoading) return <h2>Loading...</h2>
   if (isError) return <h2>Oooops something went wrong {error}</h2>
 
