@@ -122,7 +122,7 @@ function JobScrapModal({ onClose, addOperation }) {
               isSearchable={false}
             />
           </label>
-          <div className="modal-footer">
+          <div>
             <StandardButton text="Save Configuration" onClick={handleSave} className="standard-button" />
           </div>
         </form>
