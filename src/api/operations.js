@@ -30,7 +30,7 @@ export class OperationsService {
     }
 
     async scrapOperationsByDateRange(keywords, dateRange, platform) {
-        return this.client.post(`${API_CONFIG.ENDPOINTS.PLATFORM}/${platform}`, {
+        return this.client.post(`${platform}`, {
             keywords,
             days: dateRange
         })
