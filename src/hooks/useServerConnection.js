@@ -10,7 +10,8 @@ const useServerConnection = () => {
   const { getToken } = useStorage()
 
   const connect = useCallback(() => {
-    if (!socket) {
+    const token = getToken()
+    if (!socket && token) {  // Only connect if we have a token
       const ws = new WebSocket(SOCKET_URL)
 
       ws.addEventListener('open', () => {
@@ -19,7 +20,7 @@ const useServerConnection = () => {
 
         // Send the token after the connection is established
         ws.send(
-          JSON.stringify({ type: 'login', message: `Bearer ${getToken()}` })
+          JSON.stringify({ type: 'login', message: `Bearer ${token}` })
         )
       })
 
@@ -49,6 +50,10 @@ const useServerConnection = () => {
 
           case 'echo':
             console.log('echo message received: ', message)
+            break
+
+          case 'error':
+            console.error('Server error:', message.message)
             break
 
           default:
