@@ -47,41 +47,10 @@ const useApi = () => {
     return response
   }
 
-  async function scrapOperationsByDateRange(keywords, dateRange, platform) {
-    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.PLATFORM}/${platform}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`,
-      },
-      body: JSON.stringify({
-        keywords: keywords,
-        days: dateRange,
-      }),
-    })
-    const data = await response.json()
-    return data
-  }
-
-
-  async function fetchOperationByTaskId(taskId) {
-    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.OPERATIONS}/task/${taskId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`,
-      },
-    })
-    const data = await response.json()
-    return data
-  }
-
   return {
     api,
     login,
     validateToken,
-    scrapOperationsByDateRange,
-    fetchOperationByTaskId,
   }
 }
 
