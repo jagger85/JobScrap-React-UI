@@ -11,6 +11,6 @@ export const API_CONFIG = {
       USERS: '/users',
       AUTH: '/auth',
       OPERATIONS: '/operations',
-      AUTOMATED_SCRAP: '/automated_scrap_operations',
+      SCHEDULED_SCRAP: '/scheduled_scrap_operations',
     }
   }

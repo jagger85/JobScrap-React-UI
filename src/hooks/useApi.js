@@ -2,6 +2,7 @@ import { API_CONFIG } from '../api/config'
 import { createAxiosInstance } from '../api/axiosInstance'
 import { UserService } from '../api/users'
 import { OperationsService } from '../api/operations'
+import { ScheduledOperationsService } from '../api/scheduledOperations'
 import { useMemo } from 'react'
 import { AuthService } from '../api/auth'
 const { BASE_URL, SOCKET_URL } = API_CONFIG
@@ -17,6 +18,7 @@ const useApi = () => {
     return {
       users: new UserService(axiosInstance),
       operations: new OperationsService(axiosInstance),
+      scheduledOperations: new ScheduledOperationsService(axiosInstance),
       auth: new AuthService(axiosInstance)
     }
   }, [getToken])
