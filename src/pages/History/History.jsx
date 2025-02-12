@@ -1,73 +1,67 @@
 import useApi from '../../hooks/useApi'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { downloadCSV } from '../../utils/csvManager'
 import { ToasterManager } from '../../components/Toasters/Toasters'
 import PageLayout from '../../Layout/PageLayout'
 import HistoricTable from '../../components/Tables/HistoricTable'
-import { useState, useEffect } from 'react'
+import HistoricTableFilter from '../../components/Tables/HistoricTableFilter'
+import { useHistoryData } from '../../hooks/useHistoryData'
 
 function History() {
+  const {
+    operations,
+    pagination,
+    filters,
+    isLoading,
+    isError,
+    error,
+    refetchOperations,
+    updateFilter,
+  } = useHistoryData()
   const { api } = useApi()
-  const [cursor, setCursor] = useState(null)
-  const [cursorStack, setCursorStack] = useState([])
-  const queryClient = useQueryClient()
-
-  const { data, isError, error, isLoading, refetch } = useQuery({
-    queryKey: ['operations', cursor],
-    queryFn: () => api.operations.fetchOperations(cursor),
-    keepPreviousData: true
-  })
-
-  // Prefetch next page
-  useEffect(() => {
-    if (data?.nextCursor) {
-      queryClient.prefetchQuery({
-        queryKey: ['operations', data.nextCursor],
-        queryFn: () => api.operations.fetchOperations(data.nextCursor)
-      })
-    }
-  }, [data, queryClient])
-
-  const handleNextPage = () => {
-    if (data?.nextCursor) {
-      setCursorStack(prev => [...prev, cursor])
-      setCursor(data.nextCursor)
-    }
-  }
-
-  const handlePreviousPage = () => {
-    const previousCursor = cursorStack[cursorStack.length - 1]
-    setCursorStack(prev => prev.slice(0, -1))
-    setCursor(previousCursor)
-  }
 
   const handleDownload = (data) => {
     downloadCSV(data)
   }
 
   const handleDelete = async (id) => {
-    try{
+    try {
       await api.operations.deleteOperation(id)
-        ToasterManager.showToast('success', 'Operation deleted')
-        refetch()
-      } catch (error){
-        ToasterManager.showToast('error', error.response?.data?.message || 'Failed to delete user')
-      }
+      ToasterManager.showToast('success', 'Operation deleted')
+      refetchOperations()
+    } catch (error) {
+      ToasterManager.showToast(
+        'error',
+        error.response?.data?.message || 'Failed to delete user'
+      )
     }
-    
+  }
+
+  const handlePlatformChange = (selectedOption) => {
+    updateFilter('platform', selectedOption)
+  }
+
+  const handleUserChange = (selectedOption) => {
+    updateFilter('user', selectedOption)
+  }
+
   if (isLoading) return <h2>Loading...</h2>
   if (isError) return <h2>Oooops something went wrong {error}</h2>
 
   return (
     <PageLayout title="History">
+      <HistoricTableFilter
+        handlePlatformChange={handlePlatformChange}
+        handleUserChange={handleUserChange}
+        selectedPlatform={filters.selectedPlatform}
+        selectedUser={filters.selectedUser}
+        platformOptions={filters.platformOptions}
+        userOptions={filters.userOptions}
+      />
       <HistoricTable
-        data={data?.operations || []}
+        operations={operations}
         handleDownload={handleDownload}
         handleDelete={handleDelete}
-        onNextPage={handleNextPage}
-        onPreviousPage={handlePreviousPage}
-        hasNextPage={!!data?.nextCursor}
-        hasPreviousPage={cursorStack.length > 0}
+        pagination={pagination}
       />
     </PageLayout>
   )

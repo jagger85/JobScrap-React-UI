@@ -1,71 +1,71 @@
 import './tables.css'
 import PropTypes from 'prop-types'
 import IconButton from '../Buttons/IconButton'
-import { DownloadIcon, TrashIcon, CollapseIcon, FileTextIcon, SortAscIcon, SortDescIcon } from '../Icons'
+import {
+  DownloadIcon,
+  TrashIcon,
+  CollapseIcon,
+  FileTextIcon,
+  SortAscIcon,
+  SortDescIcon,
+} from '../Icons'
 import { useNavigate } from 'react-router-dom'
-import Select from 'react-select'
-import {customSelectStyle} from '@utils/reactCustomStyle'
-import SearchInput from '../SearchInput'
-
 import Badge from '@badges/Badge'
 const HistoricTable = (props) => {
   const navigate = useNavigate()
   const {
-    data,
+    operations,
     handleDownload,
     handleDelete,
-    onNextPage,
-    onPreviousPage,
-    hasNextPage,
-    hasPreviousPage
+    pagination,
   } = props
 
   function openDetails(listings) {
-    if (!listings || !Array.isArray(listings)) return;
+    if (!listings || !Array.isArray(listings)) return
     navigate('/listings', { state: { listings } })
   }
 
-  if (!data || !Array.isArray(data)) {
+  if (!operations || !Array.isArray(operations)) {
     return <div>No data available</div>
   }
 
   return (
-    <div className="historic-table-container">
-      <div className="table-filter-container elevated">
-        <SearchInput placeholder="Search" />
-        <div style={{display: 'flex', gap: 'var(--spacing-xs)'}}>
-        <Select
-          placeholder="Source"
-          styles={customSelectStyle}
-          isSearchable={false}
-        />       
-         <Select
-          placeholder="Select User"
-          styles={customSelectStyle}
-          isSearchable={false}
-        />
-        </div>
-      </div>
-      <div className="elevated table-container">
-        <div className="table-container-header">
+    <div className="elevated table-container">
+      <div className="table-container-header">
         <div className="table-title">Scraping History</div>
         <div className="table-buttons">
-        <IconButton type="squared" icon={SortAscIcon} style={{display: 'flex', alignItems: 'center', gap: 'var(--spacing-xs)',padding: '0,0,0,0'}}/>
+          <IconButton
+            type="squared"
+            icon={SortAscIcon}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--spacing-xs)',
+              padding: '0,0,0,0',
+            }}
+          />
 
-        <div style={{borderRight: '1px solid var(--font-secondary)', marginRight: 'var(--spacing-xs)'}}>  &nbsp; </div>
+          <div
+            style={{
+              borderRight: '1px solid var(--font-secondary)',
+              marginRight: 'var(--spacing-xs)',
+            }}
+          >
+            {' '}
+            &nbsp;{' '}
+          </div>
           <IconButton
             className="squared"
             icon={CollapseIcon}
-            onClick={onPreviousPage}
-            disabled={!hasPreviousPage}
+            onClick={pagination.previousPage}
+            disabled={!pagination.hasPreviousPage}
           />
           <IconButton
             className="squared history-table-footer-button-right"
             icon={CollapseIcon}
-            onClick={onNextPage}
-            disabled={!hasNextPage}
+            onClick={pagination.nextPage}
+            disabled={!pagination.hasNextPage}
           />
-
         </div>
       </div>
       <table className="history-table">
@@ -80,12 +80,13 @@ const HistoricTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((operation, index) => {
-            if (!operation) return null;
+          {operations.map((operation, index) => {
+            if (!operation) return null
 
             const date = new Date(operation.created_at)
-            const formattedDate = `${date.getMonth() + 1
-              }/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`
+            const formattedDate = `${
+              date.getMonth() + 1
+            }/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`
 
             return (
               <tr key={operation._id || index}>
@@ -128,18 +129,15 @@ const HistoricTable = (props) => {
         </tbody>
       </table>
     </div>
-    </div>
   )
 }
 
 HistoricTable.propTypes = {
-  data: PropTypes.array.isRequired,
+  operations: PropTypes.array.isRequired,
   handleDownload: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
-  onNextPage: PropTypes.func.isRequired,
-  onPreviousPage: PropTypes.func.isRequired,
-  hasNextPage: PropTypes.bool.isRequired,
-  hasPreviousPage: PropTypes.bool.isRequired,
+  pagination: PropTypes.object.isRequired,
+
 }
 
 export default HistoricTable
