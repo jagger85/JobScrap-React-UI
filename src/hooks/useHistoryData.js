@@ -51,8 +51,27 @@ export const useHistoryData = () => {
     isLoading: isOperationsLoading,
     refetch,
   } = useQuery({
-    queryKey: ['operations', cursor],
-    queryFn: () => api.operations.fetchOperations(cursor),
+    queryKey: [
+      'operations',
+      cursor,
+      filters.selectedPlatform.value,
+      filters.selectedUser.value,
+    ],
+    queryFn: async () => {
+      const queryParams = new URLSearchParams()
+      queryParams.append('limit', '10')
+
+      if (cursor) queryParams.append('cursor', cursor)
+      if (filters.selectedPlatform.value !== 'all') {
+        queryParams.append('platform', filters.selectedPlatform.value.toLowerCase())
+      }
+      if (filters.selectedUser.value !== 'all') {
+        queryParams.append('user', filters.selectedUser.value)
+      }
+
+      // Remove the leading '?' as the API client should handle this
+      return api.operations.fetchOperations(queryParams.toString())
+    },
     keepPreviousData: true,
   })
 

@@ -16,14 +16,12 @@ export class OperationsService {
     return await this.client.get(`${API_CONFIG.ENDPOINTS.OPERATIONS}/all`)
   }
 
-  async fetchOperations(cursor = null, limit = 10) {
-    const params = new URLSearchParams()
-    if (cursor) params.append('cursor', cursor)
-    params.append('limit', limit)
+  async fetchOperations(queryParams) {
+    const url = queryParams
+      ? `${API_CONFIG.ENDPOINTS.OPERATIONS}?${queryParams}`
+      : API_CONFIG.ENDPOINTS.OPERATIONS
 
-    return this.client.get(
-      `${API_CONFIG.ENDPOINTS.OPERATIONS}?${params.toString()}`
-    )
+    return this.client.get(url)
   }
 
   async scrapOperationsByDateRange(keywords, dateRange, platform) {
