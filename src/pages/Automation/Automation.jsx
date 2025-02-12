@@ -6,11 +6,11 @@ import { CreateIcon } from '../../components/Icons'
 import SqueduledOperationPanel from '@components/Panels/SqueduledOperationPanel'
 import './automation.css'
 
-import { useSqueduledOperations } from '../../hooks/useSqueduledOperations'
+import { useScheduledOperations } from '../../hooks/useScheduledOperations'
 
 function Automation() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { operations, isError, error, isFetching, isLoading, handleDelete, createOperation, activateOperation, deactivateOperation } = useSqueduledOperations()
+  const { operations, isError, error, isFetching, isLoading, handleDelete, createOperation, activateOperation, deactivateOperation } = useScheduledOperations()
 
   console.log('data:', operations)
 

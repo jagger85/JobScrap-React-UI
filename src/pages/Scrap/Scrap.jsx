@@ -10,7 +10,7 @@ import StandardButton from '@buttons/StandardButton'
 import TriggeredOperationPanel from '@panels/TriggeredOperationPanel'
 
 function Scrap() {
-  const { scrapOperationsByDateRange } = useApi()
+  const { api } = useApi()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { operations, addOperation, deleteOperation, setOperationTaskId } =
     useOperations()
@@ -25,14 +25,14 @@ function Scrap() {
 
   const handleStart = async () => {
     console.log('starting operations')
-    operations.forEach(async (operation) => {
-      const data = await scrapOperationsByDateRange(
+    await Promise.all(operations.map(async (operation) => {
+      const data = await api.operations.scrapOperationsByDateRange(
         operation.keywords,
         operation.dateRange,
         operation.platform
       )
       setOperationTaskId(operation.id, data.task_id)
-    })
+    }))
   }
   return (
     <PageLayout title="Scrap">

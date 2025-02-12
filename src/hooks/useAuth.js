@@ -6,36 +6,33 @@ import { ToasterManager } from '../components/Toasters/Toasters'
 
 const useAuth = () => {
   const { setAuth, setUsername, setUserRole } = useContext(AuthContext)
-  const { login, validateToken } = useApi()
+  const { api } = useApi()
   const { removeToken, saveToken, getToken } = useStorage()
 
   const loginWithUsenamePassword = async (username, password, rememberMe) => {
-    const response = await login(username, password, rememberMe)
-    console.log(response)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await api.auth.login(username, password, rememberMe)
       setAuth(true)
-      setUsername(username)
+      setUsername(data.username)
       setUserRole(data.role)
       saveToken(data.token, rememberMe)
-    } else {
-      const data = await response.json()
+    } catch (error) {
       setAuth(false)
-      ToasterManager.showToast('error', data.message)
+      ToasterManager.showToast('error', error.response?.data?.message || 'Login failed')
     }
   }
 
   const loginWithToken = async () => {
-    const token = getToken()
-    const response = await validateToken(token)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const token = getToken()
+      if (!token) return
+      
+      const data = await api.auth.validateToken()
       setAuth(true)
       setUsername(data.username)
       setUserRole(data.role)
-    } else {
-      const data = await response.json()
-      ToasterManager.showToast('error', data.message)
+    } catch (error) {
+      ToasterManager.showToast('error', error.response?.data?.message || 'Session expired')
       logOut()
     }
   }

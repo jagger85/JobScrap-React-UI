@@ -76,7 +76,8 @@ function AutomateScrapModal({ onClose, addAutomatedOperation }) {
     setKeywords(e.target.value)
   }
 
-  const handleSave = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     const newOperation = {
       platform: selectedPlatform.label,
       icon: selectedPlatform.icon,
@@ -97,7 +98,7 @@ function AutomateScrapModal({ onClose, addAutomatedOperation }) {
           <div className="modal-title">Add New Automated Scrap</div>
           <IconButton icon={CloseIcon} onClick={onClose} type="squared" />
         </div>
-        <form className="automate-scrap-form">
+        <form className="automate-scrap-form" onSubmit={handleSubmit}>
           <label>
             Platform
             <Select
@@ -118,6 +119,7 @@ function AutomateScrapModal({ onClose, addAutomatedOperation }) {
               placeholder="Enter keywords"
               value={keywords}
               onChange={handleKeywordsChange}
+              required
             />
           </label>
           <label>
@@ -150,7 +152,7 @@ function AutomateScrapModal({ onClose, addAutomatedOperation }) {
             width="180px"
             className="standard-button"
             text="Create"
-            onClick={handleSave}
+            type="submit"
           />
         </form>
       </div>
