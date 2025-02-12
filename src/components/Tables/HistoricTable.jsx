@@ -1,6 +1,7 @@
 import './tables.css'
 import PropTypes from 'prop-types'
 import IconButton from '../Buttons/IconButton'
+import Spinner from '../Spinners/Spinner'
 import {
   DownloadIcon,
   TrashIcon,
@@ -20,6 +21,7 @@ const HistoricTable = (props) => {
     pagination,
     order,
     setOrder,
+    isLoading,
   } = props
 
   function openDetails(listings) {
@@ -36,6 +38,7 @@ const HistoricTable = (props) => {
       <div className="table-container-header">
         <div className="table-title">Scraping History</div>
         <div className="table-buttons">
+        {isLoading && <Spinner />}
           <IconButton
             type="squared"
             icon={order ? SortAscIcon : SortDescIcon}
@@ -45,7 +48,7 @@ const HistoricTable = (props) => {
               alignItems: 'center',
               gap: 'var(--spacing-xs)',
               padding: '0,0,0,0',
-            }}
+             }}
           />
 
           <div
@@ -142,6 +145,7 @@ HistoricTable.propTypes = {
   pagination: PropTypes.object.isRequired,
   order: PropTypes.bool.isRequired,
   setOrder: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 }
 
 export default HistoricTable
