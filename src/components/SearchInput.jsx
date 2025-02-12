@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import { SearchIcon } from '@icons'
 
@@ -26,6 +25,10 @@ function SearchInput({ placeholder, onChange, value }) {
     )
 }
 
-
+SearchInput.propTypes = {
+    placeholder: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+}
 
 export default SearchInput

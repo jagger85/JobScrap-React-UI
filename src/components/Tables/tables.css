@@ -8,9 +8,11 @@ table {
 }
 .table-container {
   padding: var(--spacing-m);
+  min-width: 60vw;
 }
 .table-filter-container {
   padding: var(--spacing-m);
+  min-width: 60vw;
 }
 .table-filter-container{
   display: flex;
@@ -48,7 +50,7 @@ table {
 .table-actions {
   display: flex;
   gap: var(--spacing-s);
-  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .table-delete-button:hover {
