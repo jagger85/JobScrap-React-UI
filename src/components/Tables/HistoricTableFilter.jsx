@@ -11,27 +11,32 @@ const HistoricTableFilter = ({
   selectedUser,
   platformOptions,
   userOptions,
+  handleSearch,
 }) => {
   return (
     <div className="table-filter-container elevated">
-      <SearchInput placeholder="Search" />
+      <SearchInput placeholder="Search by keyword" onChange={handleSearch} />
       <div style={{ display: 'flex', gap: 'var(--spacing-xs)' }}>
-        <Select
-          placeholder="Source"
-          styles={customSelectStyle}
-          isSearchable={false}
-          value={selectedPlatform}
-          options={platformOptions}
-          onChange={handlePlatformChange}
-        />
-        <Select
-          value={selectedUser}
-          placeholder="Select User"
-          styles={customSelectStyle}
-          isSearchable={false}
-          onChange={handleUserChange}
-          options={userOptions}
-        />
+        <div style={{ minWidth: '20ch' }}>
+          <Select
+            placeholder="Source"
+            styles={customSelectStyle}
+            isSearchable={false}
+            value={selectedPlatform}
+            options={platformOptions}
+            onChange={handlePlatformChange}
+          />
+        </div>
+        <div style={{ minWidth: '20ch' }}>
+          <Select
+            value={selectedUser}
+            placeholder="Select User"
+            styles={customSelectStyle}
+            isSearchable={false}
+            onChange={handleUserChange}
+            options={userOptions}
+          />
+        </div>
       </div>
     </div>
   )
@@ -60,6 +65,8 @@ HistoricTableFilter.propTypes = {
       label: PropTypes.string.isRequired,
     })
   ).isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  searchValue: PropTypes.string.isRequired,
 }
 
 export default HistoricTableFilter
