@@ -24,9 +24,10 @@ export const useHistoryData = () => {
       })),
     ],
     userOptions: [{ value: 'all', label: 'All' }],
-    selectedPlatform: { value: 'all', label: 'All' },
-    selectedUser: { value: 'all', label: 'All' },
+    selectedPlatform: { value: 'all', label: 'All Platforms' },
+    selectedUser: { value: 'all', label: 'All Users' },
     order: true, // Default to ascending order
+    search: '',
   })
 
   // Update users when they are fetched
@@ -58,12 +59,13 @@ export const useHistoryData = () => {
       filters.selectedPlatform.value,
       filters.selectedUser.value,
       filters.order,
+      filters.search,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams()
       queryParams.append('limit', '10')
       queryParams.append('sort', filters.order ? 'asc' : 'desc')
-
+      if (filters.search !== '') queryParams.append('search', filters.search)
       if (cursor) queryParams.append('cursor', cursor)
       if (filters.selectedPlatform.value !== 'all') {
         queryParams.append(
@@ -86,7 +88,7 @@ export const useHistoryData = () => {
       queryParams.append('limit', '10')
       queryParams.append('sort', filters.order ? 'asc' : 'desc')
       queryParams.append('cursor', data.nextCursor)
-
+      queryParams.append('search', filters.search)
       if (filters.selectedPlatform.value !== 'all') {
         queryParams.append(
           'platform',
@@ -104,6 +106,7 @@ export const useHistoryData = () => {
           filters.selectedPlatform.value,
           filters.selectedUser.value,
           filters.order,
+          filters.search,
         ],
         queryFn: () => api.operations.fetchOperations(queryParams.toString()),
       })
@@ -120,6 +123,7 @@ export const useHistoryData = () => {
         queryParams.append('limit', '10')
         queryParams.append('sort', filters.order ? 'asc' : 'desc')
         queryParams.append('cursor', data.nextCursor)
+        queryParams.append('search', filters.search)
 
         if (filters.selectedPlatform.value !== 'all') {
           queryParams.append(
@@ -153,12 +157,17 @@ export const useHistoryData = () => {
   }
 
   const updateFilter = (type, value) => {
-    setFilters((prev) => ({
-      ...prev,
-      [type === 'order'
-        ? 'order'
-        : `selected${type.charAt(0).toUpperCase() + type.slice(1)}`]: value,
-    }))
+    setFilters((prev) => {
+      const key =
+        type === 'order' || type === 'search'
+          ? type
+          : `selected${type.charAt(0).toUpperCase() + type.slice(1)}`
+      const newFilters = {
+        ...prev,
+        [key]: value,
+      }
+      return newFilters
+    })
     setCursor(null)
     setCursorStack([])
   }
