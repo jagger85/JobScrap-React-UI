@@ -3,54 +3,26 @@ import { createAxiosInstance } from '../api/axiosInstance'
 import { UserService } from '../api/users'
 import { OperationsService } from '../api/operations'
 import { useMemo } from 'react'
+import { AuthService } from '../api/auth'
 const { BASE_URL, SOCKET_URL } = API_CONFIG
 
 import useStorage from './useStorage'
 
 const useApi = () => {
+  
   const { getToken } = useStorage()
 
-  const api = useMemo(() =>{
-
+  const api = useMemo(() => {
     const axiosInstance = createAxiosInstance(getToken)
     return {
       users: new UserService(axiosInstance),
-      operations: new OperationsService(axiosInstance)
+      operations: new OperationsService(axiosInstance),
+      auth: new AuthService(axiosInstance)
     }
-  },[getToken])
-
-
-  async function login(username, password, rememberMe) {
-    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.AUTH}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-        remember_me: rememberMe,
-      }),
-    })
-    return response
-  }
-
-
-  async function validateToken(token) {
-    const response = await fetch(`${BASE_URL}${API_CONFIG.ENDPOINTS.AUTH}/validate-token`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    return response
-  }
+  }, [getToken])
 
   return {
-    api,
-    login,
-    validateToken,
+    api
   }
 }
 
