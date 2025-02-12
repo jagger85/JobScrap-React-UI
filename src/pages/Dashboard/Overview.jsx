@@ -8,10 +8,10 @@ import useApi from '@hooks/useApi'
 import { useQuery } from '@tanstack/react-query'
 
 function Overview() {
-  const { fetchAllOperations } = useApi()
+  const { api } = useApi()
   const { data, isError, error, isLoading } = useQuery({
     queryKey: ['all-operations'],
-    queryFn: fetchAllOperations,
+    queryFn: api.operations.fetchAllOperations,
   })
 
   if (isLoading) return <h2>Loading...</h2>

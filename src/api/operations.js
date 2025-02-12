@@ -13,7 +13,7 @@ export class OperationsService {
   }
 
   async fetchAllOperations() {
-    return this.client.get(API_CONFIG.ENDPOINTS.OPERATIONS)
+    return await this.client.get(`${API_CONFIG.ENDPOINTS.OPERATIONS}/all`)
   }
 
   async fetchOperations(cursor = null, limit = 10) {
