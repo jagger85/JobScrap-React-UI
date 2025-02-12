@@ -44,6 +44,10 @@ function History() {
     updateFilter('user', selectedOption)
   }
 
+  const handleOrderChange = () => {
+    updateFilter('order', !filters.order)
+  }
+
   if (isLoading) return <h2>Loading...</h2>
   if (isError) return <h2>Oooops something went wrong {error}</h2>
 
@@ -62,6 +66,8 @@ function History() {
         handleDownload={handleDownload}
         handleDelete={handleDelete}
         pagination={pagination}
+        order={filters.order}
+        setOrder={handleOrderChange}
       />
     </PageLayout>
   )

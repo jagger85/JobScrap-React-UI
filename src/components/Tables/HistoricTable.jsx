@@ -18,6 +18,8 @@ const HistoricTable = (props) => {
     handleDownload,
     handleDelete,
     pagination,
+    order,
+    setOrder,
   } = props
 
   function openDetails(listings) {
@@ -36,7 +38,8 @@ const HistoricTable = (props) => {
         <div className="table-buttons">
           <IconButton
             type="squared"
-            icon={SortAscIcon}
+            icon={order ? SortAscIcon : SortDescIcon}
+            onClick={() => setOrder(!order)}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -137,7 +140,8 @@ HistoricTable.propTypes = {
   handleDownload: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   pagination: PropTypes.object.isRequired,
-
+  order: PropTypes.bool.isRequired,
+  setOrder: PropTypes.func.isRequired,
 }
 
 export default HistoricTable

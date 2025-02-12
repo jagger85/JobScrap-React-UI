@@ -26,6 +26,7 @@ export const useHistoryData = () => {
     userOptions: [{ value: 'all', label: 'All' }],
     selectedPlatform: { value: 'all', label: 'All' },
     selectedUser: { value: 'all', label: 'All' },
+    order: true, // Default to ascending order
   })
 
   // Update users when they are fetched
@@ -56,20 +57,24 @@ export const useHistoryData = () => {
       cursor,
       filters.selectedPlatform.value,
       filters.selectedUser.value,
+      filters.order,
     ],
     queryFn: async () => {
       const queryParams = new URLSearchParams()
       queryParams.append('limit', '10')
+      queryParams.append('sort', filters.order ? 'asc' : 'desc')
 
       if (cursor) queryParams.append('cursor', cursor)
       if (filters.selectedPlatform.value !== 'all') {
-        queryParams.append('platform', filters.selectedPlatform.value.toLowerCase())
+        queryParams.append(
+          'platform',
+          filters.selectedPlatform.value.toLowerCase()
+        )
       }
       if (filters.selectedUser.value !== 'all') {
         queryParams.append('user', filters.selectedUser.value)
       }
 
-      // Remove the leading '?' as the API client should handle this
       return api.operations.fetchOperations(queryParams.toString())
     },
     keepPreviousData: true,
@@ -77,9 +82,30 @@ export const useHistoryData = () => {
 
   useEffect(() => {
     if (data?.nextCursor) {
+      const queryParams = new URLSearchParams()
+      queryParams.append('limit', '10')
+      queryParams.append('sort', filters.order ? 'asc' : 'desc')
+      queryParams.append('cursor', data.nextCursor)
+
+      if (filters.selectedPlatform.value !== 'all') {
+        queryParams.append(
+          'platform',
+          filters.selectedPlatform.value.toLowerCase()
+        )
+      }
+      if (filters.selectedUser.value !== 'all') {
+        queryParams.append('user', filters.selectedUser.value)
+      }
+
       queryClient.prefetchQuery({
-        queryKey: ['operations', data.nextCursor, filters],
-        queryFn: () => api.operations.fetchOperations(data.nextCursor, filters),
+        queryKey: [
+          'operations',
+          data.nextCursor,
+          filters.selectedPlatform.value,
+          filters.selectedUser.value,
+          filters.order,
+        ],
+        queryFn: () => api.operations.fetchOperations(queryParams.toString()),
       })
     }
   }, [data, queryClient, filters])
@@ -89,9 +115,31 @@ export const useHistoryData = () => {
       if (data?.nextCursor) {
         setCursorStack((prev) => [...prev, cursor])
         setCursor(data.nextCursor)
+
+        const queryParams = new URLSearchParams()
+        queryParams.append('limit', '10')
+        queryParams.append('sort', filters.order ? 'asc' : 'desc')
+        queryParams.append('cursor', data.nextCursor)
+
+        if (filters.selectedPlatform.value !== 'all') {
+          queryParams.append(
+            'platform',
+            filters.selectedPlatform.value.toLowerCase()
+          )
+        }
+        if (filters.selectedUser.value !== 'all') {
+          queryParams.append('user', filters.selectedUser.value)
+        }
+
         queryClient.prefetchQuery({
-          queryKey: ['operations', data.nextCursor],
-          queryFn: () => api.operations.fetchOperations(data.nextCursor),
+          queryKey: [
+            'operations',
+            data.nextCursor,
+            filters.selectedPlatform.value,
+            filters.selectedUser.value,
+            filters.order,
+          ],
+          queryFn: () => api.operations.fetchOperations(queryParams.toString()),
         })
       }
     },
@@ -107,7 +155,9 @@ export const useHistoryData = () => {
   const updateFilter = (type, value) => {
     setFilters((prev) => ({
       ...prev,
-      [`selected${type.charAt(0).toUpperCase() + type.slice(1)}`]: value,
+      [type === 'order'
+        ? 'order'
+        : `selected${type.charAt(0).toUpperCase() + type.slice(1)}`]: value,
     }))
     setCursor(null)
     setCursorStack([])
