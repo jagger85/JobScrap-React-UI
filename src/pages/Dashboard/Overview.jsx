@@ -15,9 +15,15 @@ function Overview() {
   })
 
   if (isLoading) return <h2>Loading...</h2>
-  if (isError) return <h2>Oooops something went wrong {error}</h2>
 
-  // More detailed logging
+  if (isError)
+    return (
+      <h2>
+        Oooops something went wrong:{' '}
+        {error?.message || 'Unknown error occurred'}
+      </h2>
+    )
+
   console.log('Fetched data:', data)
   console.log('First item in data:', data?.[0])
   console.log('Data type:', typeof data)

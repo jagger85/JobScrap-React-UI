@@ -36,8 +36,13 @@ function Automation() {
 
 
   if (isLoading || isFetching) return <h2>Loading...</h2>
-  if (isError) return <h2>Oooops something went wrong {error}</h2>
-
+  if (isError)
+    return (
+      <h2>
+        Oooops something went wrong:{' '}
+        {error?.message || 'Unknown error occurred'}
+      </h2>
+    )
 
   return (
     <PageLayout title="Scheduled Tasks">

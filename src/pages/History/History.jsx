@@ -53,7 +53,13 @@ function History() {
     updateFilter('order', !filters.order)
   }
 
-  if (isError) return <h2>Oooops something went wrong {error}</h2>
+  if (isError)
+    return (
+      <h2>
+        Oooops something went wrong:{' '}
+        {error?.message || 'Unknown error occurred'}
+      </h2>
+    )
 
   return (
     <PageLayout title="History">
@@ -67,15 +73,15 @@ function History() {
         userOptions={filters.userOptions}
         handleSearch={handleSearch}
       />
-        <HistoricTable
-          isLoading={isLoading}
-          operations={operations}
-          handleDownload={handleDownload}
-          handleDelete={handleDelete}
-          pagination={pagination}
-          order={filters.order}
-          setOrder={handleOrderChange}
-        />
+      <HistoricTable
+        isLoading={isLoading}
+        operations={operations}
+        handleDownload={handleDownload}
+        handleDelete={handleDelete}
+        pagination={pagination}
+        order={filters.order}
+        setOrder={handleOrderChange}
+      />
     </PageLayout>
   )
 }
