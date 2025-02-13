@@ -88,7 +88,7 @@ export const useHistoryData = () => {
       queryParams.append('limit', '10')
       queryParams.append('sort', filters.order ? 'asc' : 'desc')
       queryParams.append('cursor', data.nextCursor)
-      queryParams.append('search', filters.search)
+      if (filters.search !== '') queryParams.append('search', filters.search)
       if (filters.selectedPlatform.value !== 'all') {
         queryParams.append(
           'platform',
