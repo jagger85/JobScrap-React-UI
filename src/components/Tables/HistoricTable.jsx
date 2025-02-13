@@ -13,6 +13,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import Badge from '@badges/Badge'
 const HistoricTable = (props) => {
+  
   const navigate = useNavigate()
   const {
     operations,
@@ -23,6 +24,7 @@ const HistoricTable = (props) => {
     setOrder,
     isLoading,
   } = props
+
 
   function openDetails(listings) {
     if (!listings || !Array.isArray(listings)) return
@@ -61,13 +63,13 @@ const HistoricTable = (props) => {
             &nbsp;{' '}
           </div>
           <IconButton
-            className="squared"
+            type="squared"
             icon={CollapseIcon}
             onClick={pagination.previousPage}
             disabled={!pagination.hasPreviousPage}
           />
           <IconButton
-            className="squared history-table-footer-button-right"
+            type="squared history-table-footer-button-right"
             icon={CollapseIcon}
             onClick={pagination.nextPage}
             disabled={!pagination.hasNextPage}
