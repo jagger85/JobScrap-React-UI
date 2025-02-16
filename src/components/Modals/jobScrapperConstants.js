@@ -1,4 +1,4 @@
-import linkedinIcon from '@platform-icons/linkedin.svg'
+import linkedinIcon from '@platform-icons/linkedIn.svg'
 import indeedIcon from '@platform-icons/indeed.svg'
 import kalibrrIcon from '@platform-icons/kalibrr.svg'
 import jobstreetIcon from '@platform-icons/jobstreet.svg'
