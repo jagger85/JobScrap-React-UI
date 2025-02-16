@@ -19,7 +19,6 @@
   padding-bottom: var(--spacing-m);
   border-bottom: 1px solid var(--font-secondary);
 }
-
 .company-info {
   flex: 1;
 }
