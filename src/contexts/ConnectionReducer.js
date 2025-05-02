@@ -6,11 +6,6 @@ export const initialConnectionState = {
 
 export const connectionReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_CONNECTION_ENABLED':
-      return {
-        ...state,
-        enabled: action.payload
-      }
     case 'SET_CONNECTION_STATUS':
       return {
         ...state,

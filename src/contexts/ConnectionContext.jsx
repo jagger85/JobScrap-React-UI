@@ -6,7 +6,6 @@ import { connectionReducer, initialConnectionState } from './ConnectionReducer'
  * Context for managing WebSocket connection state across the application
  * @type {React.Context<{
  *   connection: {isEnabled: boolean, isConnected: boolean, lastHeartbeat: number},
- *   setConnectionEnabled: Function,
  *   setConnectionStatus: Function,
  *   updateHeartbeat: Function
  * }>}
@@ -24,18 +23,10 @@ const ConnectionContext = createContext()
 function ConnectionContextProvider({ children }) {
   /**
    * Connection state and dispatch function from reducer
-   * @type {[{isEnabled: boolean, isConnected: boolean, lastHeartbeat: number}, Function]}
+   * @type {[{isConnected: boolean, lastHeartbeat: number}, Function]}
    */
   const [state, dispatch] = useReducer(connectionReducer, initialConnectionState)
 
-  /**
-   * Updates the connection enabled state
-   * @function
-   * @param {boolean} enabled - Whether the connection should be enabled
-   */
-  const setConnectionEnabled = useCallback((enabled) => {
-    dispatch({ type: 'SET_CONNECTION_ENABLED', payload: enabled })
-  }, [])
 
   /**
    * Updates the connection status
@@ -68,10 +59,9 @@ function ConnectionContextProvider({ children }) {
    */
   const value = useMemo(() => ({
     connection: state,
-    setConnectionEnabled,
     setConnectionStatus,
     updateHeartbeat
-  }), [state, setConnectionEnabled, setConnectionStatus, updateHeartbeat])
+  }), [state, setConnectionStatus, updateHeartbeat])
 
   return <ConnectionContext.Provider value={value}>{children}</ConnectionContext.Provider>
 }
