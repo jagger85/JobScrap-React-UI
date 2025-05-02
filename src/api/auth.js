@@ -3,7 +3,10 @@ import { API_CONFIG } from "./config"
 export class AuthService {
     constructor(axiosInstance) {
         this.client = axiosInstance
-        console.log('AuthService: Initialized with axios instance:', !!axiosInstance)
+        if (process.env.NODE_ENV === 'development' && !AuthService.hasLogged) {
+            console.log('AuthService: Initialized with axios instance:', !!axiosInstance)
+            AuthService.hasLogged = true
+        }
         
         // Bind methods to preserve 'this' context
         this.login = this.login.bind(this)
@@ -18,7 +21,6 @@ export class AuthService {
                 endpoint: API_CONFIG.ENDPOINTS.AUTH + '/login'
             })
             
-            // The response is already transformed by axios interceptor
             const data = await this.client.post(API_CONFIG.ENDPOINTS.AUTH + '/login', {
                 username,
                 password,
@@ -50,7 +52,6 @@ export class AuthService {
         try {
             console.log('AuthService: Validating token...')
             
-            // The response is already transformed by axios interceptor
             const data = await this.client.get(API_CONFIG.ENDPOINTS.AUTH + '/validate-token')
             
             console.log('AuthService: Token validation response:', data)

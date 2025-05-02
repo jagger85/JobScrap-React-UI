@@ -7,17 +7,23 @@ import MainLayout from './Layout/MainLayout'
 import Toasters from './components/Toasters/Toasters'
 import useServerConnection from './hooks/useServerConnection'
 import OperationContext  from './contexts/OperationContext'
+
 export default function App() {
   const { connect } = useServerConnection()
   const { loginWithUsenamePassword, loginWithToken } = useAuth()
   const { getToken } = useStorage()
   const { isAuthenticated } = useContext(AuthContext)
   const { resetOperations } = useContext(OperationContext)
-  useEffect(() => {
-    connect()
-    resetOperations()
-  }, []) // Empty dependency array, so it only runs on mount
 
+  // Effect for handling connection and operations reset when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      connect()
+      resetOperations()
+    }
+  }, [isAuthenticated]) // Only depend on isAuthenticated
+
+  // Effect for token-based authentication
   useEffect(() => {
     if (getToken() && !isAuthenticated) {
       loginWithToken()
@@ -25,7 +31,6 @@ export default function App() {
   }, [getToken, isAuthenticated, loginWithToken])
 
   function handleLogin(username, password, rememberMe) {
-    connect()
     loginWithUsenamePassword(username, password, rememberMe)
   }
 
